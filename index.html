@@ -1,0 +1,367 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Grow a Business - Structures</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+
+    body {
+      font-family: 'Poppins', Arial, sans-serif;
+      background: linear-gradient(270deg, 
+        red, orange, yellow, green, blue, indigo, violet);
+      background-size: 1400% 1400%;
+      animation: rainbowBG 90s ease infinite;
+      padding: 20px;
+      margin: 0;
+      color: #fff;
+      min-height: 100vh;
+    }
+    @keyframes rainbowBG {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+    }
+
+    .structure {
+      display: flex;
+      align-items: center;
+      background-color: rgba(255, 255, 255, 0.15);
+      margin: 15px auto;
+      padding: 15px 20px;
+      border-radius: 15px;
+      max-width: 650px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      backdrop-filter: blur(8px);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .structure:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 28px rgba(0,0,0,0.6);
+    }
+
+    .structure img {
+      width: 90px;
+      height: 90px;
+      margin-right: 25px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      transition: border-color 0.3s ease;
+      background: #222;
+      object-fit: contain;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+    .structure:hover img {
+      filter: drop-shadow(0 0 8px #fff);
+    }
+
+    .structure-details {
+      flex: 1;
+    }
+    .structure-details h2 {
+      margin: 0 0 6px;
+      font-weight: 700;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+    }
+    .structure-details p {
+      margin: 5px 0;
+      font-weight: 500;
+      text-shadow: 0 0 3px rgba(0,0,0,0.6);
+    }
+    .rarity {
+      font-weight: 700;
+      font-size: 0.9em;
+      margin-top: 4px;
+      text-transform: uppercase;
+      text-shadow: 0 0 4px rgba(0,0,0,0.7);
+    }
+
+    /* Rarity color codes on border and text */
+    .common img {
+      border-color: #808080; /* grigio */
+    }
+    .common .rarity {
+      color: #808080;
+    }
+
+    .uncommon img {
+      border-color: #28a745; /* verde */
+    }
+    .uncommon .rarity {
+      color: #28a745;
+    }
+
+    .rare img {
+      border-color: #007bff; /* blu */
+    }
+    .rare .rarity {
+      color: #007bff;
+    }
+
+    .legendary img {
+      border-color: #6f42c1; /* viola */
+    }
+    .legendary .rarity {
+      color: #6f42c1;
+    }
+
+    .mythic img {
+      border-color: #dc3545; /* rosso */
+    }
+    .mythic .rarity {
+      color: #dc3545;
+    }
+  </style>
+</head>
+<body>
+
+  <p style="
+  font-size: 2rem;
+  font-weight: bold;
+  background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+  background-size: 400% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbowShift 8s linear infinite;
+  text-align: center;
+  ">
+  Common Structures:
+</p>
+
+<style>
+@keyframes rainbowShift {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 400% 0%;
+  }
+}
+</style>
+
+  <div class="structure common">
+    <img src="m.png" alt="Noob Employee" />
+    <div class="structure-details">
+      <h2>Noob Employee</h2>
+      <p>Price: $30</p>
+      <p>Money: $1</p>
+      <p>Time: 2 seconds</p>
+      <p>Money/sec: $0.5</p>
+      <div class="rarity">Common</div>
+    </div>
+  </div>
+
+  <div class="structure common">
+    <img src="Business Man.png" alt="Business Man" />
+    <div class="structure-details">
+      <h2>Business Man</h2>
+      <p>Price: $200</p>
+      <p>Money: $5</p>
+      <p>Time: 4 seconds</p>
+      <p>Money/sec: $1.25</p>
+      <div class="rarity">Common</div>
+    </div>
+  </div>
+
+  <div class="structure common">
+    <img src="teacher.png" alt="Teacher" />
+    <div class="structure-details">
+      <h2>Teacher</h2>
+      <p>Price: $500</p>
+      <p>Money: $10</p>
+      <p>Time: 5 seconds</p>
+      <p>Money/sec: $2</p>
+      <div class="rarity">Common</div>
+    </div>
+  </div>
+<p style="
+  font-size: 2rem;
+  font-weight: bold;
+  background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+  background-size: 400% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbowShift 8s linear infinite;
+  text-align: center;
+  ">
+  Uncommon Structures:
+</p>
+
+<style>
+@keyframes rainbowShift {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 400% 0%;
+  }
+}
+</style>
+  <div class="structure uncommon">
+    <img src="Gardener.png" alt="Gardener" />
+    <div class="structure-details">
+      <h2>Gardener</h2>
+      <p>Price: $1,200</p>
+      <p>Money: $20</p>
+      <p>Time: 8 seconds</p>
+      <p>Money/sec: $2.5</p>
+      <div class="rarity">Uncommon</div>
+    </div>
+  </div>
+
+  <div class="structure uncommon">
+    <img src="Painter.png" alt="Painter" />
+    <div class="structure-details">
+      <h2>Painter</h2>
+      <p>Price: $3,500</p>
+      <p>Money: $75</p>
+      <p>Time: 10 seconds</p>
+      <p>Money/sec: $7.5</p>
+      <div class="rarity">Uncommon</div>
+    </div>
+  </div>
+
+  <div class="structure uncommon">
+    <img src="Chef.png" alt="Chef" />
+    <div class="structure-details">
+      <h2>Chef</h2>
+      <p>Price: $8,000</p>
+      <p>Money: $105</p>
+      <p>Time: 10 seconds</p>
+      <p>Money/sec: $10.5</p>
+      <div class="rarity">Uncommon</div>
+    </div>
+  </div>
+  <p style="
+  font-size: 2rem;
+  font-weight: bold;
+  background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+  background-size: 400% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbowShift 8s linear infinite;
+  text-align: center;
+  ">
+  Rare Structures:
+</p>
+
+  <div class="structure rare">
+    <img src="Mine.png" alt="Mine" />
+    <div class="structure-details">
+      <h2>Mine</h2>
+      <p>Price: $15,000</p>
+      <p>Money: $189</p>
+      <p>Time: 12 seconds</p>
+      <p>Money/sec: $15.75</p>
+      <div class="rarity">Rare</div>
+    </div>
+  </div>
+
+  <div class="structure rare">
+    <img src="Fortune Magician.png" alt="Fortune Magician" />
+    <div class="structure-details">
+      <h2>Fortune Magician</h2>
+      <p>Price: $45,000</p>
+      <p>Money: $450</p>
+      <p>Time: 15 seconds</p>
+      <p>Money/sec: $30</p>
+      <div class="rarity">Rare</div>
+    </div>
+  </div>
+  <p style="
+  font-size: 2rem;
+  font-weight: bold;
+  background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+  background-size: 400% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbowShift 8s linear infinite;
+  text-align: center;
+  ">
+  Legendary Structures:
+</p>
+
+  <div class="structure legendary">
+    <img src="Bank.png" alt="Bank" />
+    <div class="structure-details">
+      <h2>Bank</h2>
+      <p>Price: $200,000</p>
+      <p>Money: $1,500</p>
+      <p>Time: 20 seconds</p>
+      <p>Money/sec: $75</p>
+      <div class="rarity">Legendary</div>
+    </div>
+  </div>
+
+  <div class="structure legendary">
+    <img src="Skyscraper.png" alt="Skyscraper" />
+    <div class="structure-details">
+      <h2>Skyscraper</h2>
+      <p>Price: $750,000</p>
+      <p>Money: $4,500</p>
+      <p>Time: 35 seconds</p>
+      <p>Money/sec: $128.57</p>
+      <div class="rarity">Legendary</div>
+    </div>
+  </div>
+
+    <p style="
+  font-size: 2rem;
+  font-weight: bold;
+  background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+  background-size: 400% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: rainbowShift 8s linear infinite;
+  text-align: center;
+  ">
+  Mythical Structures:
+</p>
+
+
+  <div class="structure mythic">
+    <img src="Stadium.png" alt="Stadium" />
+    <div class="structure-details">
+      <h2>Stadium</h2>
+      <p>Price: $2,500,000</p>
+      <p>Money: $16,000</p>
+      <p>Time: 35 seconds</p>
+      <p>Money/sec: $457</p>
+      <div class="rarity">Mythic</div>
+    </div>
+  </div>
+
+  <div class="structure mythic">
+    <img src="Waterpark.png" alt="Waterpark" />
+    <div class="structure-details">
+      <h2>Waterpark</h2>
+      <p>Price: $10,000,000</p>
+      <p>Money: $60,000</p>
+      <p>Time: 45 seconds</p>
+      <p>Money/sec: $1333</p>
+      <div class="rarity">Mythic</div>
+    </div>
+  </div>
+
+  <div class="structure mythic">
+    <img src="Castle.png" alt="Castle" />
+    <div class="structure-details">
+      <h2>Castle</h2>
+      <p>Price: $150,000,000</p>
+      <p>Money: $250,000</p>
+      <p>Time: 40 seconds</p>
+      <p>Money/sec: $6250</p>
+      <div class="rarity">Mythic</div>
+    </div>
+  </div>
+
+</body>
+</html>
