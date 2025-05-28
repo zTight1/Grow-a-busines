@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Idle Life Wiki - Grafica Spettacolare</title>
+  <title>Idle Life Wiki</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     /* Reset e base */
@@ -86,7 +86,7 @@
       box-shadow: 0 6px 15px #8a2be2aa;
     }
     .variant.inferno {
-      background: linear-gradient(90deg, #ff4500, #ff6347);
+      background: linear-gradientc(90deg, #ff4500, #ff6347);
       color: white;
       font-weight: 700;
       box-shadow: 0 6px 15px #ff6347bb;
@@ -97,7 +97,12 @@
       font-weight: 700;
       box-shadow: 0 6px 15px #000000bb;
     }
-
+    .variant.Celestial {
+      background: linear-gradientc(90deg,#77a19f, #555555);
+      color: white;
+      font-weight: 700;
+      box-shadow: 0 6px 15px  #006977;
+     }
     /* Main area */
     .main {
       flex: 1;
@@ -257,7 +262,7 @@
 
   <div class="main">
     <div class="structures" id="structures-container"></div>
-    <div class="wiki-box" id="wiki-text">Seleziona una struttura per vedere i dettagli.</div>
+    <div class="wiki-box" id="wiki-text">Select a structure for more details.</div>
   </div>
 
   <script>
@@ -267,6 +272,7 @@
       Rainbow: 2,
       Inferno: 3,
       Oblivion: 4,
+      Celestial: 5,
     };
 
     const variantClasses = {
@@ -275,6 +281,7 @@
       Rainbow: "rainbow",
       Inferno: "inferno",
       Oblivion: "oblivion",
+      Celestial: "Celestial",
     };
 
     const variants = [
@@ -283,18 +290,20 @@
       { name: "Rainbow", multiplier: multipliers.Rainbow },
       { name: "Inferno", multiplier: multipliers.Inferno },
       { name: "Oblivion", multiplier: multipliers.Oblivion },
+      { name: "Celestial", multiplier: multipliers.Celestial },
     ];
 
     const managers = [
       { name: "Base Manager", multiplier: 1 },
       { name: "Clown Manager", multiplier: 1.2 },
-      { name: "Soldier Manager", multiplier: 1.5 },
-      { name: "Mayor Manager", multiplier: 2 },
-      { name: "King Manager", multiplier: 2.5 },
+      { name: "Soldier Manager", multiplier: 1.4 },
+      { name: "Mayor Manager", multiplier: 1.6 },
+      { name: "King Manager", multiplier: 2.0 },
+      { name: "Modern Manager", multiplier: 2.4 },
       { name: "Angel Manager", multiplier: 3 },
     ];
 
-    const prices = [30, 200, 500, 1200, 3500, 8000, 15000, 45000, 20000, 750000, 2500000, 5000000, 10000000, 150000000];
+    const prices = [30, 200, 500, 1200, 3500, 8000, 15000, 45000, 20000, 750000, 2500000, 5000000, 10000000, 150000000,1000000000,12000000000];
 
     const structuresData = [
       { name: "Noob", income: 1, cycleTime: 2, rarity: "common" },
@@ -308,9 +317,11 @@
       { name: "Fortune Magician", income: 450, cycleTime: 15, rarity: "rare" },
       { name: "Bank", income: 1500, cycleTime: 20, rarity: "legendary" },
       { name: "Skyscraper", income: 4500, cycleTime: 30, rarity: "legendary" },
-      { name: "Stadium", income: 16000, cycleTime: 35, rarity: "mythic" },
-      { name: "Waterpark", income: 60000, cycleTime: 45, rarity: "mythic" },
+      { name: "Stadium", income: 14000, cycleTime: 35, rarity: "mythic" },
+      { name: "Waterpark", income: 50000, cycleTime: 45, rarity: "mythic" },
       { name: "Castle", income: 250000, cycleTime: 40, rarity: "mythic" },
+      { name: "Club", income: 600000, cycleTime: 60, rarity: "Divine" },
+      { name: "Airport", income: 2500000, cycleTime: 60, rarity: "Divine" },
     ];
 
     let selectedVariant = variants[0];
