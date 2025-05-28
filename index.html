@@ -1,17 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Grow a Business - Structures</title>
+  <title>Grow a Business - Structures & Managers</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
-
     body {
       font-family: 'Poppins', Arial, sans-serif;
-      background: linear-gradient(270deg, 
-        red, orange, yellow, green, blue, indigo, violet);
+      background: linear-gradient(270deg, red, orange, yellow, green, blue, indigo, violet);
       background-size: 1400% 1400%;
       animation: rainbowBG 90s ease infinite;
       padding: 20px;
@@ -24,43 +21,16 @@
       50% {background-position: 100% 50%;}
       100% {background-position: 0% 50%;}
     }
-
     h1 {
       text-align: center;
       margin-bottom: 30px;
       text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
     }
-
-    .category-title {
-      font-size: 2rem;
-      font-weight: 700;
-      margin: 30px 0 15px;
-      background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
-      background-size: 400% 100%;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: rainbowShift 8s linear infinite;
-      cursor: pointer;
-      user-select: none;
-      text-align: center;
+    .container {
+      max-width: 900px;
+      margin: 0 auto 50px;
     }
-    @keyframes rainbowShift {
-      0% {background-position: 0% 0%;}
-      100% {background-position: 400% 0%;}
-    }
-
-    .structures-container {
-      max-width: 700px;
-      margin: 0 auto 40px;
-      display: none;
-      flex-direction: column;
-      gap: 15px;
-    }
-    .structures-container.active {
-      display: flex;
-    }
-
-    .structure {
+    .structure, .manager {
       display: flex;
       align-items: center;
       background-color: rgba(255, 255, 255, 0.15);
@@ -69,14 +39,14 @@
       box-shadow: 0 8px 16px rgba(0,0,0,0.3);
       backdrop-filter: blur(8px);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
-      cursor: default;
+      margin-bottom: 15px;
       gap: 20px;
     }
-    .structure:hover {
+    .structure:hover, .manager:hover {
       transform: scale(1.05);
       box-shadow: 0 12px 28px rgba(0,0,0,0.6);
+      cursor: default;
     }
-
     .structure img {
       width: 90px;
       height: 90px;
@@ -84,26 +54,25 @@
       border: 3px solid transparent;
       object-fit: contain;
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      transition: border-color 0.3s ease;
       background: #222;
       flex-shrink: 0;
+      transition: border-color 0.3s ease;
     }
     .structure:hover img {
       filter: drop-shadow(0 0 8px #fff);
     }
-
-    .structure-details {
+    .structure-details, .manager-details {
       flex: 1;
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
-    .structure-details h2 {
+    .structure-details h2, .manager-details h2 {
       margin: 0;
       font-weight: 700;
       text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
     }
-    .structure-details p {
+    .structure-details p, .manager-details p {
       margin: 0;
       font-weight: 500;
       text-shadow: 0 0 3px rgba(0,0,0,0.6);
@@ -120,47 +89,17 @@
       border-radius: 12px;
       user-select: none;
     }
-
-    /* Border and rarity color by base rarity */
-    .common img {
-      border-color: #808080;
-    }
-    .common .rarity {
-      color: #808080;
-      background-color: rgba(128,128,128,0.2);
-    }
-
-    .uncommon img {
-      border-color: #28a745;
-    }
-    .uncommon .rarity {
-      color: #28a745;
-      background-color: rgba(40,167,69,0.2);
-    }
-
-    .rare img {
-      border-color: #007bff;
-    }
-    .rare .rarity {
-      color: #007bff;
-      background-color: rgba(0,123,255,0.2);
-    }
-
-    .legendary img {
-      border-color: #6f42c1;
-    }
-    .legendary .rarity {
-      color: #6f42c1;
-      background-color: rgba(111,66,193,0.2);
-    }
-
-    .mythic img {
-      border-color: #dc3545;
-    }
-    .mythic .rarity {
-      color: #dc3545;
-      background-color: rgba(220,53,69,0.2);
-    }
+    /* Rarity colors */
+    .common .rarity { color: #808080; background-color: rgba(128,128,128,0.2); border-color: #808080; }
+    .uncommon .rarity { color: #28a745; background-color: rgba(40,167,69,0.2); border-color: #28a745; }
+    .rare .rarity { color: #007bff; background-color: rgba(0,123,255,0.2); border-color: #007bff; }
+    .legendary .rarity { color: #6f42c1; background-color: rgba(111,66,193,0.2); border-color: #6f42c1; }
+    .mythic .rarity { color: #dc3545; background-color: rgba(220,53,69,0.2); border-color: #dc3545; }
+    .structure.common img { border-color: #808080; }
+    .structure.uncommon img { border-color: #28a745; }
+    .structure.rare img { border-color: #007bff; }
+    .structure.legendary img { border-color: #6f42c1; }
+    .structure.mythic img { border-color: #dc3545; }
 
     /* Variants container */
     .variants {
@@ -197,8 +136,7 @@
     }
     .variant.rainbow {
       border-radius: 50%;
-      background: linear-gradient(45deg,
-        red, orange, yellow, green, blue, indigo, violet);
+      background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
       box-shadow: 0 0 12px 3px rgba(255,255,255,0.7);
       border: none;
       position: relative;
@@ -213,7 +151,7 @@
       0% {background-position: 0%;}
       100% {background-position: 360%;}
     }
-    .variant.infernal {
+    .variant.inferno {
       border-color: #ff3b3b;
       box-shadow: 0 0 15px 3px #ff3b3b;
       background: #330000;
@@ -227,280 +165,282 @@
       box-shadow: 0 0 18px 6px #fff !important;
     }
 
+    /* Manager selection */
+    .managers-list {
+      max-width: 500px;
+      margin: 0 auto 30px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .manager-btn {
+      background: rgba(255,255,255,0.15);
+      border-radius: 12px;
+      padding: 10px 18px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      user-select: none;
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: background-color 0.3s ease;
+      border: 2px solid transparent;
+    }
+    .manager-btn.selected {
+      background-color: rgba(255,255,255,0.35);
+      border-color: gold;
+      box-shadow: 0 0 15px gold;
+      color: #000;
+    }
+    .manager-btn:hover {
+      background-color: rgba(255,255,255,0.25);
+    }
+
+    /* Wiki container */
+    .wiki-container {
+      max-width: 700px;
+      margin: 0 auto;
+      background: rgba(0,0,0,0.3);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(255,255,255,0.15);
+      color: #eee;
+      user-select: none;
+    }
+    .wiki-title {
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: rainbowShift 8s linear infinite;
+    }
+    @keyframes rainbowShift {
+      0% {background-position: 0% 0%;}
+      100% {background-position: 360% 0%;}
+    }
+    .wiki-entry {
+      margin: 6px 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
 
-  <h1>Grow a Business - Structures</h1>
+<h1>Grow a Business — Structures & Managers</h1>
 
-  <!-- Categories toggles -->
-  <div class="category-title" data-target="common">Common Structures</div>
-  <div id="common" class="structures-container"></div>
+<div class="container" id="structures-container">
+  <!-- Structures will be rendered here -->
+</div>
 
-  <div class="category-title" data-target="uncommon">Uncommon Structures</div>
-  <div id="uncommon" class="structures-container"></div>
+<div class="container" id="managers-container">
+  <h2 style="text-align:center; margin-bottom: 15px; color: gold; text-shadow: 1px 1px 5px #000;">Managers</h2>
+  <div class="managers-list" id="managers-list">
+    <!-- Manager buttons -->
+  </div>
+</div>
 
-  <div class="category-title" data-target="rare">Rare Structures</div>
-  <div id="rare" class="structures-container"></div>
-
-  <div class="category-title" data-target="legendary">Legendary Structures</div>
-  <div id="legendary" class="structures-container"></div>
-
-  <div class="category-title" data-target="mythic">Mythical Structures</div>
-  <div id="mythic" class="structures-container"></div>
+<div class="wiki-container" id="wiki-container">
+  <h3 class="wiki-title">Info</h3>
+  <div id="wiki-content">
+    <!-- Info about selected structure variant -->
+  </div>
+</div>
 
 <script>
-  // Data as given
-  const structures = [
-    // COMMON
-    {
-      name: "Noob Employee",
-      img: "m.png",
-      price: 30,
-      money: 1,
-      time: 2,
-      rarity: "common"
-    },
-    {
-      name: "Business Man",
-      img: "Business Man.png",
-      price: 200,
-      money: 5,
-      time: 4,
-      rarity: "common"
-    },
-    {
-      name: "Teacher",
-      img: "teacher.png",
-      price: 500,
-      money: 10,
-      time: 5,
-      rarity: "common"
-    },
+  // Data setup
+  const variants = {
+    normal: {name: "Normal", multiplier: 1, color: "#ccc", imgSuffix: ""},
+    gold: {name: "Gold", multiplier: 1.5, color: "gold", imgSuffix: "-gold"},
+    rainbow: {name: "Rainbow", multiplier: 2, color: "linear-gradient(45deg, red,orange,yellow,green,blue,indigo,violet)", imgSuffix: "-rainbow"},
+    inferno: {name: "Inferno", multiplier: 3, color: "#ff3b3b", imgSuffix: "-inferno"},
+    oblivion: {name: "Oblivion", multiplier: 4, color: "#8a2be2", imgSuffix: "-oblivion"}
+  };
 
-    // UNCOMMON
-    {
-      name: "Gardener",
-      img: "Gardener.png",
-      price: 1200,
-      money: 20,
-      time: 8,
-      rarity: "uncommon"
-    },
-    {
-      name: "Painter",
-      img: "Painter.png",
-      price: 3500,
-      money: 75,
-      time: 10,
-      rarity: "uncommon"
-    },
-    {
-      name: "Chef",
-      img: "Chef.png",
-      price: 8000,
-      money: 105,
-      time: 10,
-      rarity: "uncommon"
-    },
-
-    // RARE
-    {
-      name: "Mine",
-      img: "Mine.png",
-      price: 15000,
-      money: 189,
-      time: 12,
-      rarity: "rare"
-    },
-    {
-      name: "Fortune Magician",
-      img: "Fortune Magician.png",
-      price: 45000,
-      money: 450,
-      time: 15,
-      rarity: "rare"
-    },
-
-    // LEGENDARY
-    {
-      name: "Bank",
-      img: "Bank.png",
-      price: 200000,
-      money: 1500,
-      time: 20,
-      rarity: "legendary"
-    },
-    {
-      name: "Skyscraper",
-      img: "Skyscraper.png",
-      price: 750000,
-      money: 4500,
-      time: 35,
-      rarity: "legendary"
-    },
-
-    // MYTHIC
-    {
-      name: "Stadium",
-      img: "Stadium.png",
-      price: 2500000,
-      money: 16000,
-      time: 35,
-      rarity: "mythic"
-    },
-    {
-      name: "Waterpark",
-      img: "Waterpark.png",
-      price: 10000000,
-      money: 60000,
-      time: 45,
-      rarity: "mythic"
-    },
-    {
-      name: "Castle",
-      img: "Castle.png",
-      price: 150000000,
-      money: 250000,
-      time: 40,
-      rarity: "mythic"
-    },
+  const managers = [
+    { id: "base-manager", name: "Base-Manager", multiplier: 1 },
+    { id: "clown-manager", name: "Clown-Manager", multiplier: 1.2 },
+    { id: "soldier-manager", name: "Soldier-Manager", multiplier: 1.5 },
+    { id: "mayor-manager", name: "Mayor-Manager", multiplier: 2 },
+    { id: "king-manager", name: "King-Manager", multiplier: 2.5 },
+    { id: "angel-manager", name: "Angel-Manager", multiplier: 3 }
   ];
 
-  // Multipliers for variants (only money, price stays)
-  const variants = [
-    { key: "base", label: "Base", multiplier: 1, color: "", textColor: "#fff" },
-    { key: "gold", label: "Gold", multiplier: 1.5, color: "gold", textColor: "#000" },
-    { key: "rainbow", label: "Rainbow", multiplier: 2, color: "rainbow", textColor: "#000" },
-    { key: "infernal", label: "Infernal", multiplier: 3, color: "#ff3b3b", textColor: "#000" },
-    { key: "oblivion", label: "Oblivion", multiplier: 4, color: "#8a2be2", textColor: "#fff" },
+  // Structures data
+  const structuresData = [
+    { rarity: "common", name: "Noob", price: 1, gain: 1, time: 1, img: "noob.png" },
+    { rarity: "common", name: "Business Man", price: 5, gain: 5, time: 4, img: "business-man.png" },
+    { rarity: "common", name: "Teacher", price: 10, gain: 10, time: 5, img: "teacher.png" },
+    { rarity: "common", name: "Builder", price: 10, gain: 10, time: 5, img: "builder.png" },
+    { rarity: "uncommon", name: "Gardener", price: 20, gain: 20, time: 8, img: "gardener.png" },
+    { rarity: "uncommon", name: "Painter", price: 75, gain: 75, time: 10, img: "painter.png" },
+    { rarity: "uncommon", name: "Chef", price: 105, gain: 105, time: 10, img: "chef.png" },
+    { rarity: "rare", name: "Mine", price: 189, gain: 189, time: 12, img: "mine.png" },
+    { rarity: "rare", name: "Fortune Magician", price: 450, gain: 450, time: 15, img: "fortune-magician.png" },
+    { rarity: "legendary", name: "Bank", price: 1500, gain: 1500, time: 20, img: "bank.png" },
+    { rarity: "legendary", name: "Skyscraper", price: 4500, gain: 4500, time: 30, img: "skyscraper.png" },
+    { rarity: "mythic", name: "Stadium", price: 16000, gain: 16000, time: 35, img: "stadium.png" },
+    { rarity: "mythic", name: "Waterpark", price: 60000, gain: 60000, time: 45, img: "waterpark.png" },
+    { rarity: "mythic", name: "Castle", price: 250000, gain: 250000, time: 40, img: "castle.png" }
   ];
 
-  // Helper to format numbers with commas
-  function formatNumber(n) {
-    return n.toLocaleString(undefined, { maximumFractionDigits: 2 });
+  // State
+  let selectedManager = managers[0]; // default Base-Manager
+  let selectedVariantKey = "normal";
+
+  // Utilities
+  function formatMoney(n) {
+    if (n >= 1_000_000_000) return (n/1_000_000_000).toFixed(2) + "B";
+    if (n >= 1_000_000) return (n/1_000_000).toFixed(2) + "M";
+    if (n >= 1_000) return (n/1_000).toFixed(2) + "K";
+    return n.toFixed(2);
   }
 
-  // Calculate money/sec (money/time)
-  function moneyPerSec(money, time) {
-    return money / time;
-  }
-
-  // Create structure element with variants toggle
-  function createStructureElement(structure) {
+  function createStructureHTML(structure) {
     const container = document.createElement("div");
     container.classList.add("structure", structure.rarity);
 
-    // Main image + details container
+    // Left: main image with rarity border
     const mainImg = document.createElement("img");
-    mainImg.src = structure.img;
+    mainImg.src = `img/structures/${structure.img}`;
     mainImg.alt = structure.name;
+    container.appendChild(mainImg);
 
+    // Details container
     const details = document.createElement("div");
     details.classList.add("structure-details");
 
-    // Title
-    const title = document.createElement("h2");
-    title.textContent = structure.name;
-    details.appendChild(title);
+    // Name + rarity label
+    const nameH2 = document.createElement("h2");
+    nameH2.textContent = structure.name;
+    details.appendChild(nameH2);
 
-    // Base price
-    const priceP = document.createElement("p");
-    priceP.textContent = `Price: $${formatNumber(structure.price)}`;
-    details.appendChild(priceP);
-
-    // Container for money/time/money/sec, updated on variant select
-    const moneyP = document.createElement("p");
-    moneyP.classList.add("money-earned");
-    const timeP = document.createElement("p");
-    timeP.textContent = `Time: ${structure.time} seconds`;
-    details.appendChild(timeP);
-    details.appendChild(moneyP);
-
-    // Rarity label
-    const rarityLabel = document.createElement("div");
+    const rarityLabel = document.createElement("span");
     rarityLabel.classList.add("rarity");
-    rarityLabel.textContent = structure.rarity.toUpperCase();
+    rarityLabel.textContent = structure.rarity;
     details.appendChild(rarityLabel);
 
-    // Variants container
+    // Variants selection
     const variantsContainer = document.createElement("div");
     variantsContainer.classList.add("variants");
 
-    // Create variant buttons
-    variants.forEach(v => {
-      const vbtn = document.createElement("div");
-      vbtn.classList.add("variant");
-      if (v.key !== "base") vbtn.classList.add(v.key);
-      if (v.key === "base") vbtn.classList.add("selected");
-      vbtn.title = v.label;
+    for (const [key, v] of Object.entries(variants)) {
+      const variantBtn = document.createElement("div");
+      variantBtn.classList.add("variant");
+      variantBtn.classList.add(key);
+      if (key === selectedVariantKey) variantBtn.classList.add("selected");
 
-      // Variant image same as main
-      const vimg = document.createElement("img");
-      vimg.src = structure.img;
-      vimg.alt = `${structure.name} ${v.label}`;
+      // variant image: same base image + suffix
+      const img = document.createElement("img");
+      img.src = `img/structures/${structure.img.replace('.png', '')}${v.imgSuffix}.png`;
+      img.alt = `${structure.name} ${v.name}`;
+      variantBtn.appendChild(img);
 
-      vbtn.appendChild(vimg);
-      variantsContainer.appendChild(vbtn);
+      variantBtn.title = v.name + " Variant";
 
-      // Click to select variant
-      vbtn.addEventListener("click", () => {
-        // Remove selected from siblings
-        Array.from(variantsContainer.children).forEach(sib => sib.classList.remove("selected"));
-        vbtn.classList.add("selected");
-        // Update money earned text with multiplier
-        const earned = structure.money * v.multiplier;
-        moneyP.textContent = `Money Earned: $${formatNumber(earned)} (${formatNumber(moneyPerSec(earned, structure.time))} / sec)`;
+      variantBtn.addEventListener("click", () => {
+        selectedVariantKey = key;
+        updateSelectedVariant();
       });
-    });
 
+      variantsContainer.appendChild(variantBtn);
+    }
     details.appendChild(variantsContainer);
-    container.appendChild(mainImg);
+
+    // Gain, time, money/sec calculation for current variant and manager
+    const variantMultiplier = variants[selectedVariantKey].multiplier;
+    const gain = structure.gain * variantMultiplier * selectedManager.multiplier;
+    const time = structure.time;
+    const moneyPerSec = gain / time;
+
+    // Display earnings info
+    const gainP = document.createElement("p");
+    gainP.textContent = `Generates $${formatMoney(gain)} in ${time} seconds`;
+    details.appendChild(gainP);
+
+    const moneySecP = document.createElement("p");
+    moneySecP.textContent = `Money/Second: $${formatMoney(moneyPerSec)}`;
+    details.appendChild(moneySecP);
+
     container.appendChild(details);
 
-    // Set initial money earned for base variant
-    moneyP.textContent = `Money Earned: $${formatNumber(structure.money)} (${formatNumber(moneyPerSec(structure.money, structure.time))} / sec)`;
+    container.addEventListener("mouseenter", () => {
+      updateWiki(structure, variants[selectedVariantKey]);
+    });
 
     return container;
   }
 
-  // Fill each category container with its structures
-  const categories = ["common", "uncommon", "rare", "legendary", "mythic"];
-  categories.forEach(cat => {
-    const container = document.getElementById(cat);
-    const filtered = structures.filter(s => s.rarity === cat);
-    filtered.forEach(s => container.appendChild(createStructureElement(s)));
-  });
+  // Render all structures
+  function renderStructures() {
+    const container = document.getElementById("structures-container");
+    container.innerHTML = "";
 
-  // Category toggling logic
-  const categoryTitles = document.querySelectorAll(".category-title");
-  function activateCategory(targetId) {
-    categoryTitles.forEach(t => t.classList.remove("active"));
-    categoryTitles.forEach(t => {
-      if (t.dataset.target === targetId) {
-        t.classList.add("active");
-      }
-    });
-
-    categories.forEach(cat => {
-      const c = document.getElementById(cat);
-      if (cat === targetId) {
-        c.classList.add("active");
-      } else {
-        c.classList.remove("active");
-      }
-    });
+    for (const structure of structuresData) {
+      container.appendChild(createStructureHTML(structure));
+    }
   }
 
-  categoryTitles.forEach(title => {
-    title.addEventListener("click", () => {
-      activateCategory(title.dataset.target);
+  // Render manager buttons
+  function renderManagers() {
+    const container = document.getElementById("managers-list");
+    container.innerHTML = "";
+    for (const mgr of managers) {
+      const btn = document.createElement("button");
+      btn.classList.add("manager-btn");
+      btn.textContent = mgr.name;
+      btn.dataset.id = mgr.id;
+      if (mgr.id === selectedManager.id) btn.classList.add("selected");
+      btn.addEventListener("click", () => {
+        selectedManager = mgr;
+        updateSelectedManager();
+      });
+      container.appendChild(btn);
+    }
+  }
+
+  // Update selection states for variant buttons and re-render money info
+  function updateSelectedVariant() {
+    const variantBtns = document.querySelectorAll(".variant");
+    variantBtns.forEach(btn => {
+      btn.classList.remove("selected");
     });
-  });
 
-  // Show first category by default
-  activateCategory("common");
+    const selectedVariantBtns = document.querySelectorAll(`.variant.${selectedVariantKey}`);
+    selectedVariantBtns.forEach(btn => btn.classList.add("selected"));
 
+    renderStructures();
+  }
+
+  // Update selection for managers, re-render structures too
+  function updateSelectedManager() {
+    const btns = document.querySelectorAll(".manager-btn");
+    btns.forEach(b => b.classList.remove("selected"));
+    const selectedBtn = document.querySelector(`.manager-btn[data-id="${selectedManager.id}"]`);
+    if (selectedBtn) selectedBtn.classList.add("selected");
+    renderStructures();
+  }
+
+  // Update wiki content on hover
+  function updateWiki(structure, variant) {
+    const wiki = document.getElementById("wiki-content");
+    wiki.innerHTML = `
+      <p><strong>${structure.name} — ${variant.name} Variant</strong></p>
+      <p>Rarity: <em>${structure.rarity}</em></p>
+      <p>Generates $${formatMoney(structure.gain * variant.multiplier * selectedManager.multiplier)} in ${structure.time} seconds</p>
+      <p>Price: $${formatMoney(structure.price)}</p>
+      <p>Money/Second: $${formatMoney((structure.gain * variant.multiplier * selectedManager.multiplier) / structure.time)}</p>
+      <p>Manager Bonus: ${selectedManager.multiplier}x</p>
+    `;
+  }
+
+  // Initial render
+  renderManagers();
+  renderStructures();
 </script>
 
 </body>
