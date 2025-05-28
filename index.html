@@ -1,447 +1,422 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Grow a Business - Structures & Managers</title>
+  <title>Idle Life Wiki - Grafica Spettacolare</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+    /* Reset e base */
+    * {
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
     body {
-      font-family: 'Poppins', Arial, sans-serif;
-      background: linear-gradient(270deg, red, orange, yellow, green, blue, indigo, violet);
-      background-size: 1400% 1400%;
-      animation: rainbowBG 90s ease infinite;
-      padding: 20px;
       margin: 0;
-      color: #fff;
-      min-height: 100vh;
-    }
-    @keyframes rainbowBG {
-      0% {background-position: 0% 50%;}
-      50% {background-position: 100% 50%;}
-      100% {background-position: 0% 50%;}
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 30px;
-      text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto 50px;
-    }
-    .structure, .manager {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1f1c2c, #928dab);
+      color: #eee;
       display: flex;
-      align-items: center;
-      background-color: rgba(255, 255, 255, 0.15);
-      padding: 15px 20px;
-      border-radius: 15px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-      backdrop-filter: blur(8px);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      margin-bottom: 15px;
-      gap: 20px;
+      height: 100vh;
+      overflow: hidden;
+      user-select: none;
     }
-    .structure:hover, .manager:hover {
-      transform: scale(1.05);
-      box-shadow: 0 12px 28px rgba(0,0,0,0.6);
-      cursor: default;
-    }
-    .structure img {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      border: 3px solid transparent;
-      object-fit: contain;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      background: #222;
-      flex-shrink: 0;
-      transition: border-color 0.3s ease;
-    }
-    .structure:hover img {
-      filter: drop-shadow(0 0 8px #fff);
-    }
-    .structure-details, .manager-details {
-      flex: 1;
+    /* Sidebar */
+    .sidebar {
+      width: 320px;
+      background: #2e2a44;
+      padding: 30px 25px;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      overflow-y: auto;
+      box-shadow: 5px 0 15px rgba(0,0,0,0.3);
     }
-    .structure-details h2, .manager-details h2 {
-      margin: 0;
-      font-weight: 700;
-      text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+    .sidebar h2 {
+      font-weight: 600;
+      margin-bottom: 20px;
+      letter-spacing: 1.2px;
+      color: #ffd700;
+      text-shadow: 1px 1px 4px #000;
     }
-    .structure-details p, .manager-details p {
-      margin: 0;
-      font-weight: 500;
-      text-shadow: 0 0 3px rgba(0,0,0,0.6);
-      font-size: 0.9rem;
+    /* Variants & Managers container */
+    .variants, .managers {
+      margin-bottom: 40px;
     }
-    .rarity {
-      font-weight: 700;
-      font-size: 0.9em;
-      text-transform: uppercase;
-      text-shadow: 0 0 4px rgba(0,0,0,0.7);
-      margin-top: 4px;
-      width: fit-content;
-      padding: 2px 8px;
+    /* Variant & Manager item */
+    .variant, .manager {
+      background: #3b3754;
       border-radius: 12px;
-      user-select: none;
-    }
-    /* Rarity colors */
-    .common .rarity { color: #808080; background-color: rgba(128,128,128,0.2); border-color: #808080; }
-    .uncommon .rarity { color: #28a745; background-color: rgba(40,167,69,0.2); border-color: #28a745; }
-    .rare .rarity { color: #007bff; background-color: rgba(0,123,255,0.2); border-color: #007bff; }
-    .legendary .rarity { color: #6f42c1; background-color: rgba(111,66,193,0.2); border-color: #6f42c1; }
-    .mythic .rarity { color: #dc3545; background-color: rgba(220,53,69,0.2); border-color: #dc3545; }
-    .structure.common img { border-color: #808080; }
-    .structure.uncommon img { border-color: #28a745; }
-    .structure.rare img { border-color: #007bff; }
-    .structure.legendary img { border-color: #6f42c1; }
-    .structure.mythic img { border-color: #dc3545; }
-
-    /* Variants container */
-    .variants {
-      display: flex;
-      gap: 12px;
-      margin-top: 8px;
-    }
-    .variant {
-      flex: 0 0 60px;
-      height: 60px;
-      border-radius: 50%;
-      border: 3px solid transparent;
+      margin: 8px 0;
+      padding: 12px 18px;
       cursor: pointer;
-      position: relative;
-      transition: box-shadow 0.3s ease;
-      background: #222;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      box-shadow: 0 0 8px rgba(0,0,0,0.5);
-    }
-    .variant img {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      object-fit: contain;
+      font-weight: 600;
+      font-size: 1.05rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      color: #ddd;
+      border: 2px solid transparent;
       user-select: none;
+    }
+    .variant:hover, .manager:hover {
+      background: #5a5580;
+      color: #fff;
+      box-shadow: 0 6px 15px #a2a0ffcc;
+    }
+    .variant.selected, .manager.selected {
+      border: 2px solid #ffd700;
+      background: linear-gradient(90deg, #ffcc00, #ffdd44);
+      color: #222;
+      font-weight: 700;
+      box-shadow: 0 8px 20px #ffd700aa;
+    }
+
+    /* Specific variant colors */
+    .variant.base {
+      background: #3b3754;
     }
     .variant.gold {
-      border-color: gold;
-      box-shadow: 0 0 10px gold;
-      background: #331a00;
+      background: linear-gradient(90deg, #ffd700 0%, #ffbf00 100%);
+      color: #222;
+      font-weight: 700;
+      box-shadow: 0 6px 12px #ffcc0099;
     }
     .variant.rainbow {
-      border-radius: 50%;
-      background: linear-gradient(45deg, red, orange, yellow, green, blue, indigo, violet);
-      box-shadow: 0 0 12px 3px rgba(255,255,255,0.7);
-      border: none;
-      position: relative;
-      animation: rainbowBorder 3s linear infinite;
-    }
-    .variant.rainbow img {
-      border-radius: 50%;
-      background: #222;
-      padding: 3px;
-    }
-    @keyframes rainbowBorder {
-      0% {background-position: 0%;}
-      100% {background-position: 360%;}
+      background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
+      color: white;
+      font-weight: 700;
+      box-shadow: 0 6px 15px #8a2be2aa;
     }
     .variant.inferno {
-      border-color: #ff3b3b;
-      box-shadow: 0 0 15px 3px #ff3b3b;
-      background: #330000;
+      background: linear-gradient(90deg, #ff4500, #ff6347);
+      color: white;
+      font-weight: 700;
+      box-shadow: 0 6px 15px #ff6347bb;
     }
     .variant.oblivion {
-      border-color: #8a2be2;
-      box-shadow: 0 0 15px 3px #8a2be2;
-      background: #200033;
-    }
-    .variant.selected {
-      box-shadow: 0 0 18px 6px #fff !important;
+      background: linear-gradient(90deg, #2f2f2f, #555555);
+      color: white;
+      font-weight: 700;
+      box-shadow: 0 6px 15px #000000bb;
     }
 
-    /* Manager selection */
-    .managers-list {
-      max-width: 500px;
-      margin: 0 auto 30px;
+    /* Main area */
+    .main {
+      flex: 1;
+      padding: 30px 40px;
+      background: #15141f;
       display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
+      flex-direction: column;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #555 #222;
     }
-    .manager-btn {
-      background: rgba(255,255,255,0.15);
-      border-radius: 12px;
-      padding: 10px 18px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      cursor: pointer;
-      user-select: none;
-      color: #fff;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      transition: background-color 0.3s ease;
-      border: 2px solid transparent;
+    .main::-webkit-scrollbar {
+      width: 10px;
     }
-    .manager-btn.selected {
-      background-color: rgba(255,255,255,0.35);
-      border-color: gold;
-      box-shadow: 0 0 15px gold;
-      color: #000;
+    .main::-webkit-scrollbar-track {
+      background: #222;
     }
-    .manager-btn:hover {
-      background-color: rgba(255,255,255,0.25);
+    .main::-webkit-scrollbar-thumb {
+      background-color: #555;
+      border-radius: 10px;
+      border: 2px solid #222;
     }
 
-    /* Wiki container */
-    .wiki-container {
-      max-width: 700px;
-      margin: 0 auto;
-      background: rgba(0,0,0,0.3);
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 0 30px rgba(255,255,255,0.15);
-      color: #eee;
+    /* Structures container */
+    .structures {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .structure {
+      background: linear-gradient(145deg, #393857, #2f2b4a);
+      border-radius: 18px;
+      padding: 20px 25px;
+      width: 210px;
+      cursor: pointer;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.7);
+      color: #ccc;
+      border: 2px solid transparent;
       user-select: none;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.4s ease;
     }
-    .wiki-title {
-      text-align: center;
+    .structure:hover {
+      box-shadow: 0 12px 25px #8a7affcc;
+      border-color: #8a7affcc;
+      color: #eee;
+      transform: translateY(-5px);
+    }
+    .structure.selected {
+      border: 2.5px solid #ffd700;
+      background: linear-gradient(145deg, #504c87, #736fc9);
+      color: #fff;
+      box-shadow: 0 15px 30px #ffd700cc;
+      transform: translateY(-7px);
+    }
+    .structure h3 {
+      margin: 0 0 10px;
       font-weight: 700;
-      font-size: 1.8rem;
-      margin-bottom: 15px;
-      background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: rainbowShift 8s linear infinite;
+      font-size: 1.3rem;
+      text-shadow: 0 1px 3px #0008;
     }
-    @keyframes rainbowShift {
-      0% {background-position: 0% 0%;}
-      100% {background-position: 360% 0%;}
+    .structure .rarity {
+      font-style: italic;
+      font-size: 0.9rem;
+      color: #aaa;
+      margin-bottom: 10px;
+      text-transform: capitalize;
+      letter-spacing: 0.03em;
+      text-shadow: 0 1px 1px #0006;
     }
-    .wiki-entry {
-      margin: 6px 0;
-      font-size: 1.1rem;
+    .structure p {
+      margin: 3px 0;
       font-weight: 600;
+      font-size: 1rem;
+      text-shadow: 0 1px 2px #0006;
+    }
+
+    /* Wiki box */
+    .wiki-box {
+      margin-top: 35px;
+      background: #2a2750;
+      border-radius: 20px;
+      padding: 30px 35px;
+      box-shadow: 0 15px 35px #000a inset;
+      font-size: 1.1rem;
+      color: #eee;
+      user-select: text;
+    }
+    .wiki-box h3 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-weight: 700;
+      color: #ffd700;
+      text-shadow: 0 0 10px #ffd700aa;
+    }
+    .wiki-box p {
+      margin: 8px 0;
+      line-height: 1.5;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      body {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        height: 250px;
+        flex-shrink: 0;
+        overflow-x: auto;
+        overflow-y: hidden;
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 30px;
+        padding: 20px;
+      }
+      .variants, .managers {
+        margin-bottom: 0;
+        display: flex;
+        flex-direction: row;
+        gap: 15px;
+        align-items: center;
+        flex-shrink: 0;
+      }
+      .variant, .manager {
+        min-width: 110px;
+        text-align: center;
+        border-radius: 12px;
+        padding: 10px 12px;
+      }
+      .main {
+        padding: 20px;
+        height: calc(100vh - 250px);
+      }
+      .structures {
+        justify-content: center;
+      }
+      .structure {
+        width: 45vw;
+      }
     }
   </style>
 </head>
 <body>
-
-<h1>Grow a Business — Structures & Managers</h1>
-
-<div class="container" id="structures-container">
-  <!-- Structures will be rendered here -->
-</div>
-
-<div class="container" id="managers-container">
-  <h2 style="text-align:center; margin-bottom: 15px; color: gold; text-shadow: 1px 1px 5px #000;">Managers</h2>
-  <div class="managers-list" id="managers-list">
-    <!-- Manager buttons -->
+  <div class="sidebar">
+    <div class="variants" id="variants-list">
+      <h2>Varianti</h2>
+    </div>
+    <div class="managers" id="managers-list">
+      <h2>Managers</h2>
+    </div>
   </div>
-</div>
 
-<div class="wiki-container" id="wiki-container">
-  <h3 class="wiki-title">Info</h3>
-  <div id="wiki-content">
-    <!-- Info about selected structure variant -->
+  <div class="main">
+    <div class="structures" id="structures-container"></div>
+    <div class="wiki-box" id="wiki-text">Seleziona una struttura per vedere i dettagli.</div>
   </div>
-</div>
 
-<script>
-  // Data setup
-  const variants = {
-    normal: {name: "Normal", multiplier: 1, color: "#ccc", imgSuffix: ""},
-    gold: {name: "Gold", multiplier: 1.5, color: "gold", imgSuffix: "-gold"},
-    rainbow: {name: "Rainbow", multiplier: 2, color: "linear-gradient(45deg, red,orange,yellow,green,blue,indigo,violet)", imgSuffix: "-rainbow"},
-    inferno: {name: "Inferno", multiplier: 3, color: "#ff3b3b", imgSuffix: "-inferno"},
-    oblivion: {name: "Oblivion", multiplier: 4, color: "#8a2be2", imgSuffix: "-oblivion"}
-  };
+  <script>
+    const multipliers = {
+      Base: 1,
+      Gold: 1.5,
+      Rainbow: 2,
+      Inferno: 3,
+      Oblivion: 4,
+    };
 
-  const managers = [
-    { id: "base-manager", name: "Base-Manager", multiplier: 1 },
-    { id: "clown-manager", name: "Clown-Manager", multiplier: 1.2 },
-    { id: "soldier-manager", name: "Soldier-Manager", multiplier: 1.5 },
-    { id: "mayor-manager", name: "Mayor-Manager", multiplier: 2 },
-    { id: "king-manager", name: "King-Manager", multiplier: 2.5 },
-    { id: "angel-manager", name: "Angel-Manager", multiplier: 3 }
-  ];
+    const variantClasses = {
+      Base: "base",
+      Gold: "gold",
+      Rainbow: "rainbow",
+      Inferno: "inferno",
+      Oblivion: "oblivion",
+    };
 
-  // Structures data
-  const structuresData = [
-    { rarity: "common", name: "Noob", price: 1, gain: 1, time: 1, img: "noob.png" },
-    { rarity: "common", name: "Business Man", price: 5, gain: 5, time: 4, img: "business-man.png" },
-    { rarity: "common", name: "Teacher", price: 10, gain: 10, time: 5, img: "teacher.png" },
-    { rarity: "common", name: "Builder", price: 10, gain: 10, time: 5, img: "builder.png" },
-    { rarity: "uncommon", name: "Gardener", price: 20, gain: 20, time: 8, img: "gardener.png" },
-    { rarity: "uncommon", name: "Painter", price: 75, gain: 75, time: 10, img: "painter.png" },
-    { rarity: "uncommon", name: "Chef", price: 105, gain: 105, time: 10, img: "chef.png" },
-    { rarity: "rare", name: "Mine", price: 189, gain: 189, time: 12, img: "mine.png" },
-    { rarity: "rare", name: "Fortune Magician", price: 450, gain: 450, time: 15, img: "fortune-magician.png" },
-    { rarity: "legendary", name: "Bank", price: 1500, gain: 1500, time: 20, img: "bank.png" },
-    { rarity: "legendary", name: "Skyscraper", price: 4500, gain: 4500, time: 30, img: "skyscraper.png" },
-    { rarity: "mythic", name: "Stadium", price: 16000, gain: 16000, time: 35, img: "stadium.png" },
-    { rarity: "mythic", name: "Waterpark", price: 60000, gain: 60000, time: 45, img: "waterpark.png" },
-    { rarity: "mythic", name: "Castle", price: 250000, gain: 250000, time: 40, img: "castle.png" }
-  ];
+    const variants = [
+      { name: "Base", multiplier: multipliers.Base },
+      { name: "Gold", multiplier: multipliers.Gold },
+      { name: "Rainbow", multiplier: multipliers.Rainbow },
+      { name: "Inferno", multiplier: multipliers.Inferno },
+      { name: "Oblivion", multiplier: multipliers.Oblivion },
+    ];
 
-  // State
-  let selectedManager = managers[0]; // default Base-Manager
-  let selectedVariantKey = "normal";
+    const managers = [
+      { name: "Base Manager", multiplier: 1 },
+      { name: "Clown Manager", multiplier: 1.2 },
+      { name: "Soldier Manager", multiplier: 1.5 },
+      { name: "Mayor Manager", multiplier: 2 },
+      { name: "King Manager", multiplier: 2.5 },
+      { name: "Angel Manager", multiplier: 3 },
+    ];
 
-  // Utilities
-  function formatMoney(n) {
-    if (n >= 1_000_000_000) return (n/1_000_000_000).toFixed(2) + "B";
-    if (n >= 1_000_000) return (n/1_000_000).toFixed(2) + "M";
-    if (n >= 1_000) return (n/1_000).toFixed(2) + "K";
-    return n.toFixed(2);
-  }
+    const prices = [30, 200, 500, 1200, 3500, 8000, 15000, 45000, 20000, 750000, 2500000, 5000000, 10000000, 150000000];
 
-  function createStructureHTML(structure) {
-    const container = document.createElement("div");
-    container.classList.add("structure", structure.rarity);
+    const structuresData = [
+      { name: "Noob", income: 1, cycleTime: 2, rarity: "common" },
+      { name: "Business Man", income: 5, cycleTime: 4, rarity: "common" },
+      { name: "Teacher", income: 10, cycleTime: 5, rarity: "common" },
+      { name: "Builder", income: 10, cycleTime: 5, rarity: "common" },
+      { name: "Gardener", income: 20, cycleTime: 8, rarity: "uncommon" },
+      { name: "Painter", income: 75, cycleTime: 10, rarity: "uncommon" },
+      { name: "Chef", income: 105, cycleTime: 10, rarity: "uncommon" },
+      { name: "Mine", income: 189, cycleTime: 12, rarity: "rare" },
+      { name: "Fortune Magician", income: 450, cycleTime: 15, rarity: "rare" },
+      { name: "Bank", income: 1500, cycleTime: 20, rarity: "legendary" },
+      { name: "Skyscraper", income: 4500, cycleTime: 30, rarity: "legendary" },
+      { name: "Stadium", income: 16000, cycleTime: 35, rarity: "mythic" },
+      { name: "Waterpark", income: 60000, cycleTime: 45, rarity: "mythic" },
+      { name: "Castle", income: 250000, cycleTime: 40, rarity: "mythic" },
+    ];
 
-    // Left: main image with rarity border
-    const mainImg = document.createElement("img");
-    mainImg.src = `img/structures/${structure.img}`;
-    mainImg.alt = structure.name;
-    container.appendChild(mainImg);
+    let selectedVariant = variants[0];
+    let selectedManager = managers[0];
+    let selectedStructureIndex = null;
 
-    // Details container
-    const details = document.createElement("div");
-    details.classList.add("structure-details");
+    function formatMoney(amount) {
+      if(amount >= 1e6) {
+        return "$" + (amount / 1e6).toFixed(2) + "M";
+      }
+      if(amount >= 1e3) {
+        return "$" + (amount / 1e3).toFixed(1) + "K";
+      }
+      return "$" + amount.toLocaleString();
+    }
 
-    // Name + rarity label
-    const nameH2 = document.createElement("h2");
-    nameH2.textContent = structure.name;
-    details.appendChild(nameH2);
-
-    const rarityLabel = document.createElement("span");
-    rarityLabel.classList.add("rarity");
-    rarityLabel.textContent = structure.rarity;
-    details.appendChild(rarityLabel);
-
-    // Variants selection
-    const variantsContainer = document.createElement("div");
-    variantsContainer.classList.add("variants");
-
-    for (const [key, v] of Object.entries(variants)) {
-      const variantBtn = document.createElement("div");
-      variantBtn.classList.add("variant");
-      variantBtn.classList.add(key);
-      if (key === selectedVariantKey) variantBtn.classList.add("selected");
-
-      // variant image: same base image + suffix
-      const img = document.createElement("img");
-      img.src = `img/structures/${structure.img.replace('.png', '')}${v.imgSuffix}.png`;
-      img.alt = `${structure.name} ${v.name}`;
-      variantBtn.appendChild(img);
-
-      variantBtn.title = v.name + " Variant";
-
-      variantBtn.addEventListener("click", () => {
-        selectedVariantKey = key;
-        updateSelectedVariant();
+    function renderManagers() {
+      const container = document.getElementById("managers-list");
+      container.innerHTML = '<h2>Managers</h2>';
+      managers.forEach((mgr) => {
+        const div = document.createElement("div");
+        div.className = "manager";
+        if (mgr === selectedManager) div.classList.add("selected");
+        div.textContent = `${mgr.name}: x${mgr.multiplier}`;
+        div.addEventListener("click", () => {
+          selectedManager = mgr;
+          document.querySelectorAll(".manager").forEach(el => el.classList.remove("selected"));
+          div.classList.add("selected");
+          updateWiki();
+          renderStructures();
+        });
+        container.appendChild(div);
       });
-
-      variantsContainer.appendChild(variantBtn);
     }
-    details.appendChild(variantsContainer);
 
-    // Gain, time, money/sec calculation for current variant and manager
-    const variantMultiplier = variants[selectedVariantKey].multiplier;
-    const gain = structure.gain * variantMultiplier * selectedManager.multiplier;
-    const time = structure.time;
-    const moneyPerSec = gain / time;
-
-    // Display earnings info
-    const gainP = document.createElement("p");
-    gainP.textContent = `Generates $${formatMoney(gain)} in ${time} seconds`;
-    details.appendChild(gainP);
-
-    const moneySecP = document.createElement("p");
-    moneySecP.textContent = `Money/Second: $${formatMoney(moneyPerSec)}`;
-    details.appendChild(moneySecP);
-
-    container.appendChild(details);
-
-    container.addEventListener("mouseenter", () => {
-      updateWiki(structure, variants[selectedVariantKey]);
-    });
-
-    return container;
-  }
-
-  // Render all structures
-  function renderStructures() {
-    const container = document.getElementById("structures-container");
-    container.innerHTML = "";
-
-    for (const structure of structuresData) {
-      container.appendChild(createStructureHTML(structure));
-    }
-  }
-
-  // Render manager buttons
-  function renderManagers() {
-    const container = document.getElementById("managers-list");
-    container.innerHTML = "";
-    for (const mgr of managers) {
-      const btn = document.createElement("button");
-      btn.classList.add("manager-btn");
-      btn.textContent = mgr.name;
-      btn.dataset.id = mgr.id;
-      if (mgr.id === selectedManager.id) btn.classList.add("selected");
-      btn.addEventListener("click", () => {
-        selectedManager = mgr;
-        updateSelectedManager();
+    function renderVariants() {
+      const container = document.getElementById("variants-list");
+      container.innerHTML = '<h2>Varianti</h2>';
+      variants.forEach((variant) => {
+        const div = document.createElement("div");
+        div.className = `variant ${variantClasses[variant.name]}`;
+        if (variant === selectedVariant) div.classList.add("selected");
+        div.textContent = variant.name;
+        div.addEventListener("click", () => {
+          selectedVariant = variant;
+          document.querySelectorAll(".variant").forEach(el => el.classList.remove("selected"));
+          div.classList.add("selected");
+          renderStructures();
+          updateWiki();
+        });
+        container.appendChild(div);
       });
-      container.appendChild(btn);
     }
-  }
 
-  // Update selection states for variant buttons and re-render money info
-  function updateSelectedVariant() {
-    const variantBtns = document.querySelectorAll(".variant");
-    variantBtns.forEach(btn => {
-      btn.classList.remove("selected");
-    });
+    function renderStructures() {
+      const container = document.getElementById("structures-container");
+      container.innerHTML = "";
+      structuresData.forEach((struc, i) => {
+        const income = struc.income * selectedVariant.multiplier * selectedManager.multiplier;
+        const moneyPerSec = (income / struc.cycleTime).toFixed(2);
+        const div = document.createElement("div");
+        div.className = "structure";
+        if (i === selectedStructureIndex) div.classList.add("selected");
+        div.innerHTML = `
+          <h3>${struc.name}</h3>
+          <p class="rarity">Rarity: ${struc.rarity}</p>
+          <p>Price: ${formatMoney(prices[i])}</p>
+          <p>Money/sec: ${moneyPerSec}</p>
+        `;
+        div.addEventListener("click", () => {
+          selectedStructureIndex = i;
+          updateWiki();
+          document.querySelectorAll(".structure").forEach(el => el.classList.remove("selected"));
+          div.classList.add("selected");
+        });
+        container.appendChild(div);
+      });
+    }
 
-    const selectedVariantBtns = document.querySelectorAll(`.variant.${selectedVariantKey}`);
-    selectedVariantBtns.forEach(btn => btn.classList.add("selected"));
+    function updateWiki() {
+      const container = document.getElementById("wiki-text");
+      if (selectedStructureIndex === null) {
+        container.innerHTML = "Seleziona una struttura per vedere i dettagli.";
+        return;
+      }
+      const struc = structuresData[selectedStructureIndex];
+      const price = prices[selectedStructureIndex];
+      const baseIncome = struc.income;
+      const finalIncome = baseIncome * selectedVariant.multiplier * selectedManager.multiplier;
+      const moneyPerSec = (finalIncome / struc.cycleTime).toFixed(2);
 
+      container.innerHTML = `
+        <h3>${struc.name} (${selectedVariant.name})</h3>
+        <p><strong>Price:</strong> ${formatMoney(price)}</p>
+        <p><strong>Money:</strong> ${formatMoney(finalIncome)}</p>
+        <p><strong>Time:</strong> ${struc.cycleTime} sec</p>
+        <p><strong>Money/sec:</strong> ${moneyPerSec}</p>
+        <p><strong>Manager boost:</strong> x${selectedManager.multiplier}</p>
+        <p><strong>Variant:</strong> x${selectedVariant.multiplier}</p>
+      `;
+    }
+
+    // Init
+    renderVariants();
+    renderManagers();
     renderStructures();
-  }
-
-  // Update selection for managers, re-render structures too
-  function updateSelectedManager() {
-    const btns = document.querySelectorAll(".manager-btn");
-    btns.forEach(b => b.classList.remove("selected"));
-    const selectedBtn = document.querySelector(`.manager-btn[data-id="${selectedManager.id}"]`);
-    if (selectedBtn) selectedBtn.classList.add("selected");
-    renderStructures();
-  }
-
-  // Update wiki content on hover
-  function updateWiki(structure, variant) {
-    const wiki = document.getElementById("wiki-content");
-    wiki.innerHTML = `
-      <p><strong>${structure.name} — ${variant.name} Variant</strong></p>
-      <p>Rarity: <em>${structure.rarity}</em></p>
-      <p>Generates $${formatMoney(structure.gain * variant.multiplier * selectedManager.multiplier)} in ${structure.time} seconds</p>
-      <p>Price: $${formatMoney(structure.price)}</p>
-      <p>Money/Second: $${formatMoney((structure.gain * variant.multiplier * selectedManager.multiplier) / structure.time)}</p>
-      <p>Manager Bonus: ${selectedManager.multiplier}x</p>
-    `;
-  }
-
-  // Initial render
-  renderManagers();
-  renderStructures();
-</script>
-
+  </script>
 </body>
 </html>
