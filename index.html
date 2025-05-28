@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Grow a Business - Structures</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
@@ -31,17 +31,46 @@
       text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
     }
 
+    .category-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 30px 0 15px;
+      background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+      background-size: 400% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: rainbowShift 8s linear infinite;
+      cursor: pointer;
+      user-select: none;
+      text-align: center;
+    }
+    @keyframes rainbowShift {
+      0% {background-position: 0% 0%;}
+      100% {background-position: 400% 0%;}
+    }
+
+    .structures-container {
+      max-width: 700px;
+      margin: 0 auto 40px;
+      display: none;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .structures-container.active {
+      display: flex;
+    }
+
     .structure {
       display: flex;
       align-items: center;
       background-color: rgba(255, 255, 255, 0.15);
-      margin: 15px auto;
       padding: 15px 20px;
       border-radius: 15px;
-      max-width: 650px;
       box-shadow: 0 8px 16px rgba(0,0,0,0.3);
       backdrop-filter: blur(8px);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
+      gap: 20px;
     }
     .structure:hover {
       transform: scale(1.05);
@@ -51,13 +80,13 @@
     .structure img {
       width: 90px;
       height: 90px;
-      margin-right: 25px;
       border-radius: 50%;
       border: 3px solid transparent;
-      transition: border-color 0.3s ease;
-      background: #222;
       object-fit: contain;
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      transition: border-color 0.3s ease;
+      background: #222;
+      flex-shrink: 0;
     }
     .structure:hover img {
       filter: drop-shadow(0 0 8px #fff);
@@ -65,303 +94,414 @@
 
     .structure-details {
       flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
     .structure-details h2 {
-      margin: 0 0 6px;
+      margin: 0;
       font-weight: 700;
       text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
     }
     .structure-details p {
-      margin: 5px 0;
+      margin: 0;
       font-weight: 500;
       text-shadow: 0 0 3px rgba(0,0,0,0.6);
+      font-size: 0.9rem;
     }
     .rarity {
       font-weight: 700;
       font-size: 0.9em;
-      margin-top: 4px;
       text-transform: uppercase;
       text-shadow: 0 0 4px rgba(0,0,0,0.7);
+      margin-top: 4px;
+      width: fit-content;
+      padding: 2px 8px;
+      border-radius: 12px;
+      user-select: none;
     }
 
-    /* Rarity color codes on border and text */
+    /* Border and rarity color by base rarity */
     .common img {
-      border-color: #808080; /* grigio */
+      border-color: #808080;
     }
     .common .rarity {
       color: #808080;
+      background-color: rgba(128,128,128,0.2);
     }
 
     .uncommon img {
-      border-color: #28a745; /* verde */
+      border-color: #28a745;
     }
     .uncommon .rarity {
       color: #28a745;
+      background-color: rgba(40,167,69,0.2);
     }
 
     .rare img {
-      border-color: #007bff; /* blu */
+      border-color: #007bff;
     }
     .rare .rarity {
       color: #007bff;
+      background-color: rgba(0,123,255,0.2);
     }
 
     .legendary img {
-      border-color: #6f42c1; /* viola */
+      border-color: #6f42c1;
     }
     .legendary .rarity {
       color: #6f42c1;
+      background-color: rgba(111,66,193,0.2);
     }
 
     .mythic img {
-      border-color: #dc3545; /* rosso */
+      border-color: #dc3545;
     }
     .mythic .rarity {
       color: #dc3545;
+      background-color: rgba(220,53,69,0.2);
     }
+
+    /* Variants container */
+    .variants {
+      display: flex;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .variant {
+      flex: 0 0 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      cursor: pointer;
+      position: relative;
+      transition: box-shadow 0.3s ease;
+      background: #222;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 0 8px rgba(0,0,0,0.5);
+    }
+    .variant img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: contain;
+      user-select: none;
+    }
+    .variant.gold {
+      border-color: gold;
+      box-shadow: 0 0 10px gold;
+      background: #331a00;
+    }
+    .variant.rainbow {
+      border-radius: 50%;
+      background: linear-gradient(45deg,
+        red, orange, yellow, green, blue, indigo, violet);
+      box-shadow: 0 0 12px 3px rgba(255,255,255,0.7);
+      border: none;
+      position: relative;
+      animation: rainbowBorder 3s linear infinite;
+    }
+    .variant.rainbow img {
+      border-radius: 50%;
+      background: #222;
+      padding: 3px;
+    }
+    @keyframes rainbowBorder {
+      0% {background-position: 0%;}
+      100% {background-position: 360%;}
+    }
+    .variant.infernal {
+      border-color: #ff3b3b;
+      box-shadow: 0 0 15px 3px #ff3b3b;
+      background: #330000;
+    }
+    .variant.oblivion {
+      border-color: #8a2be2;
+      box-shadow: 0 0 15px 3px #8a2be2;
+      background: #200033;
+    }
+    .variant.selected {
+      box-shadow: 0 0 18px 6px #fff !important;
+    }
+
   </style>
 </head>
 <body>
 
-  <p style="
-  font-size: 2rem;
-  font-weight: bold;
-  background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
-  background-size: 400% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: rainbowShift 8s linear infinite;
-  text-align: center;
-  ">
-  Common Structures:
-</p>
+  <h1>Grow a Business - Structures</h1>
 
-<style>
-@keyframes rainbowShift {
-  0% {
-    background-position: 0% 0%;
+  <!-- Categories toggles -->
+  <div class="category-title" data-target="common">Common Structures</div>
+  <div id="common" class="structures-container"></div>
+
+  <div class="category-title" data-target="uncommon">Uncommon Structures</div>
+  <div id="uncommon" class="structures-container"></div>
+
+  <div class="category-title" data-target="rare">Rare Structures</div>
+  <div id="rare" class="structures-container"></div>
+
+  <div class="category-title" data-target="legendary">Legendary Structures</div>
+  <div id="legendary" class="structures-container"></div>
+
+  <div class="category-title" data-target="mythic">Mythical Structures</div>
+  <div id="mythic" class="structures-container"></div>
+
+<script>
+  // Data as given
+  const structures = [
+    // COMMON
+    {
+      name: "Noob Employee",
+      img: "m.png",
+      price: 30,
+      money: 1,
+      time: 2,
+      rarity: "common"
+    },
+    {
+      name: "Business Man",
+      img: "Business Man.png",
+      price: 200,
+      money: 5,
+      time: 4,
+      rarity: "common"
+    },
+    {
+      name: "Teacher",
+      img: "teacher.png",
+      price: 500,
+      money: 10,
+      time: 5,
+      rarity: "common"
+    },
+
+    // UNCOMMON
+    {
+      name: "Gardener",
+      img: "Gardener.png",
+      price: 1200,
+      money: 20,
+      time: 8,
+      rarity: "uncommon"
+    },
+    {
+      name: "Painter",
+      img: "Painter.png",
+      price: 3500,
+      money: 75,
+      time: 10,
+      rarity: "uncommon"
+    },
+    {
+      name: "Chef",
+      img: "Chef.png",
+      price: 8000,
+      money: 105,
+      time: 10,
+      rarity: "uncommon"
+    },
+
+    // RARE
+    {
+      name: "Mine",
+      img: "Mine.png",
+      price: 15000,
+      money: 189,
+      time: 12,
+      rarity: "rare"
+    },
+    {
+      name: "Fortune Magician",
+      img: "Fortune Magician.png",
+      price: 45000,
+      money: 450,
+      time: 15,
+      rarity: "rare"
+    },
+
+    // LEGENDARY
+    {
+      name: "Bank",
+      img: "Bank.png",
+      price: 200000,
+      money: 1500,
+      time: 20,
+      rarity: "legendary"
+    },
+    {
+      name: "Skyscraper",
+      img: "Skyscraper.png",
+      price: 750000,
+      money: 4500,
+      time: 35,
+      rarity: "legendary"
+    },
+
+    // MYTHIC
+    {
+      name: "Stadium",
+      img: "Stadium.png",
+      price: 2500000,
+      money: 16000,
+      time: 35,
+      rarity: "mythic"
+    },
+    {
+      name: "Waterpark",
+      img: "Waterpark.png",
+      price: 10000000,
+      money: 60000,
+      time: 45,
+      rarity: "mythic"
+    },
+    {
+      name: "Castle",
+      img: "Castle.png",
+      price: 150000000,
+      money: 250000,
+      time: 40,
+      rarity: "mythic"
+    },
+  ];
+
+  // Multipliers for variants (only money, price stays)
+  const variants = [
+    { key: "base", label: "Base", multiplier: 1, color: "", textColor: "#fff" },
+    { key: "gold", label: "Gold", multiplier: 1.5, color: "gold", textColor: "#000" },
+    { key: "rainbow", label: "Rainbow", multiplier: 2, color: "rainbow", textColor: "#000" },
+    { key: "infernal", label: "Infernal", multiplier: 3, color: "#ff3b3b", textColor: "#000" },
+    { key: "oblivion", label: "Oblivion", multiplier: 4, color: "#8a2be2", textColor: "#fff" },
+  ];
+
+  // Helper to format numbers with commas
+  function formatNumber(n) {
+    return n.toLocaleString(undefined, { maximumFractionDigits: 2 });
   }
-  100% {
-    background-position: 400% 0%;
+
+  // Calculate money/sec (money/time)
+  function moneyPerSec(money, time) {
+    return money / time;
   }
-}
-</style>
 
-  <div class="structure common">
-    <img src="m.png" alt="Noob Employee" />
-    <div class="structure-details">
-      <h2>Noob Employee</h2>
-      <p>Price: $30</p>
-      <p>Money: $1</p>
-      <p>Time: 2 seconds</p>
-      <p>Money/sec: $0.5</p>
-      <div class="rarity">Common</div>
-    </div>
-  </div>
+  // Create structure element with variants toggle
+  function createStructureElement(structure) {
+    const container = document.createElement("div");
+    container.classList.add("structure", structure.rarity);
 
-  <div class="structure common">
-    <img src="Business Man.png" alt="Business Man" />
-    <div class="structure-details">
-      <h2>Business Man</h2>
-      <p>Price: $200</p>
-      <p>Money: $5</p>
-      <p>Time: 4 seconds</p>
-      <p>Money/sec: $1.25</p>
-      <div class="rarity">Common</div>
-    </div>
-  </div>
+    // Main image + details container
+    const mainImg = document.createElement("img");
+    mainImg.src = structure.img;
+    mainImg.alt = structure.name;
 
-  <div class="structure common">
-    <img src="teacher.png" alt="Teacher" />
-    <div class="structure-details">
-      <h2>Teacher</h2>
-      <p>Price: $500</p>
-      <p>Money: $10</p>
-      <p>Time: 5 seconds</p>
-      <p>Money/sec: $2</p>
-      <div class="rarity">Common</div>
-    </div>
-  </div>
-<p style="
-  font-size: 2rem;
-  font-weight: bold;
-  background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
-  background-size: 400% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: rainbowShift 8s linear infinite;
-  text-align: center;
-  ">
-  Uncommon Structures:
-</p>
+    const details = document.createElement("div");
+    details.classList.add("structure-details");
 
-<style>
-@keyframes rainbowShift {
-  0% {
-    background-position: 0% 0%;
+    // Title
+    const title = document.createElement("h2");
+    title.textContent = structure.name;
+    details.appendChild(title);
+
+    // Base price
+    const priceP = document.createElement("p");
+    priceP.textContent = `Price: $${formatNumber(structure.price)}`;
+    details.appendChild(priceP);
+
+    // Container for money/time/money/sec, updated on variant select
+    const moneyP = document.createElement("p");
+    moneyP.classList.add("money-earned");
+    const timeP = document.createElement("p");
+    timeP.textContent = `Time: ${structure.time} seconds`;
+    details.appendChild(timeP);
+    details.appendChild(moneyP);
+
+    // Rarity label
+    const rarityLabel = document.createElement("div");
+    rarityLabel.classList.add("rarity");
+    rarityLabel.textContent = structure.rarity.toUpperCase();
+    details.appendChild(rarityLabel);
+
+    // Variants container
+    const variantsContainer = document.createElement("div");
+    variantsContainer.classList.add("variants");
+
+    // Create variant buttons
+    variants.forEach(v => {
+      const vbtn = document.createElement("div");
+      vbtn.classList.add("variant");
+      if (v.key !== "base") vbtn.classList.add(v.key);
+      if (v.key === "base") vbtn.classList.add("selected");
+      vbtn.title = v.label;
+
+      // Variant image same as main
+      const vimg = document.createElement("img");
+      vimg.src = structure.img;
+      vimg.alt = `${structure.name} ${v.label}`;
+
+      vbtn.appendChild(vimg);
+      variantsContainer.appendChild(vbtn);
+
+      // Click to select variant
+      vbtn.addEventListener("click", () => {
+        // Remove selected from siblings
+        Array.from(variantsContainer.children).forEach(sib => sib.classList.remove("selected"));
+        vbtn.classList.add("selected");
+        // Update money earned text with multiplier
+        const earned = structure.money * v.multiplier;
+        moneyP.textContent = `Money Earned: $${formatNumber(earned)} (${formatNumber(moneyPerSec(earned, structure.time))} / sec)`;
+      });
+    });
+
+    details.appendChild(variantsContainer);
+    container.appendChild(mainImg);
+    container.appendChild(details);
+
+    // Set initial money earned for base variant
+    moneyP.textContent = `Money Earned: $${formatNumber(structure.money)} (${formatNumber(moneyPerSec(structure.money, structure.time))} / sec)`;
+
+    return container;
   }
-  100% {
-    background-position: 400% 0%;
+
+  // Fill each category container with its structures
+  const categories = ["common", "uncommon", "rare", "legendary", "mythic"];
+  categories.forEach(cat => {
+    const container = document.getElementById(cat);
+    const filtered = structures.filter(s => s.rarity === cat);
+    filtered.forEach(s => container.appendChild(createStructureElement(s)));
+  });
+
+  // Category toggling logic
+  const categoryTitles = document.querySelectorAll(".category-title");
+  function activateCategory(targetId) {
+    categoryTitles.forEach(t => t.classList.remove("active"));
+    categoryTitles.forEach(t => {
+      if (t.dataset.target === targetId) {
+        t.classList.add("active");
+      }
+    });
+
+    categories.forEach(cat => {
+      const c = document.getElementById(cat);
+      if (cat === targetId) {
+        c.classList.add("active");
+      } else {
+        c.classList.remove("active");
+      }
+    });
   }
-}
-</style>
-  <div class="structure uncommon">
-    <img src="Gardener.png" alt="Gardener" />
-    <div class="structure-details">
-      <h2>Gardener</h2>
-      <p>Price: $1,200</p>
-      <p>Money: $20</p>
-      <p>Time: 8 seconds</p>
-      <p>Money/sec: $2.5</p>
-      <div class="rarity">Uncommon</div>
-    </div>
-  </div>
 
-  <div class="structure uncommon">
-    <img src="Painter.png" alt="Painter" />
-    <div class="structure-details">
-      <h2>Painter</h2>
-      <p>Price: $3,500</p>
-      <p>Money: $75</p>
-      <p>Time: 10 seconds</p>
-      <p>Money/sec: $7.5</p>
-      <div class="rarity">Uncommon</div>
-    </div>
-  </div>
+  categoryTitles.forEach(title => {
+    title.addEventListener("click", () => {
+      activateCategory(title.dataset.target);
+    });
+  });
 
-  <div class="structure uncommon">
-    <img src="Chef.png" alt="Chef" />
-    <div class="structure-details">
-      <h2>Chef</h2>
-      <p>Price: $8,000</p>
-      <p>Money: $105</p>
-      <p>Time: 10 seconds</p>
-      <p>Money/sec: $10.5</p>
-      <div class="rarity">Uncommon</div>
-    </div>
-  </div>
-  <p style="
-  font-size: 2rem;
-  font-weight: bold;
-  background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
-  background-size: 400% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: rainbowShift 8s linear infinite;
-  text-align: center;
-  ">
-  Rare Structures:
-</p>
+  // Show first category by default
+  activateCategory("common");
 
-  <div class="structure rare">
-    <img src="Mine.png" alt="Mine" />
-    <div class="structure-details">
-      <h2>Mine</h2>
-      <p>Price: $15,000</p>
-      <p>Money: $189</p>
-      <p>Time: 12 seconds</p>
-      <p>Money/sec: $15.75</p>
-      <div class="rarity">Rare</div>
-    </div>
-  </div>
-
-  <div class="structure rare">
-    <img src="Fortune Magician.png" alt="Fortune Magician" />
-    <div class="structure-details">
-      <h2>Fortune Magician</h2>
-      <p>Price: $45,000</p>
-      <p>Money: $450</p>
-      <p>Time: 15 seconds</p>
-      <p>Money/sec: $30</p>
-      <div class="rarity">Rare</div>
-    </div>
-  </div>
-  <p style="
-  font-size: 2rem;
-  font-weight: bold;
-  background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
-  background-size: 400% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: rainbowShift 8s linear infinite;
-  text-align: center;
-  ">
-  Legendary Structures:
-</p>
-
-  <div class="structure legendary">
-    <img src="Bank.png" alt="Bank" />
-    <div class="structure-details">
-      <h2>Bank</h2>
-      <p>Price: $200,000</p>
-      <p>Money: $1,500</p>
-      <p>Time: 20 seconds</p>
-      <p>Money/sec: $75</p>
-      <div class="rarity">Legendary</div>
-    </div>
-  </div>
-
-  <div class="structure legendary">
-    <img src="Skyscraper.png" alt="Skyscraper" />
-    <div class="structure-details">
-      <h2>Skyscraper</h2>
-      <p>Price: $750,000</p>
-      <p>Money: $4,500</p>
-      <p>Time: 35 seconds</p>
-      <p>Money/sec: $128.57</p>
-      <div class="rarity">Legendary</div>
-    </div>
-  </div>
-
-    <p style="
-  font-size: 2rem;
-  font-weight: bold;
-  background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
-  background-size: 400% 100%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: rainbowShift 8s linear infinite;
-  text-align: center;
-  ">
-  Mythical Structures:
-</p>
-
-
-  <div class="structure mythic">
-    <img src="Stadium.png" alt="Stadium" />
-    <div class="structure-details">
-      <h2>Stadium</h2>
-      <p>Price: $2,500,000</p>
-      <p>Money: $16,000</p>
-      <p>Time: 35 seconds</p>
-      <p>Money/sec: $457</p>
-      <div class="rarity">Mythic</div>
-    </div>
-  </div>
-
-  <div class="structure mythic">
-    <img src="Waterpark.png" alt="Waterpark" />
-    <div class="structure-details">
-      <h2>Waterpark</h2>
-      <p>Price: $10,000,000</p>
-      <p>Money: $60,000</p>
-      <p>Time: 45 seconds</p>
-      <p>Money/sec: $1333</p>
-      <div class="rarity">Mythic</div>
-    </div>
-  </div>
-
-  <div class="structure mythic">
-    <img src="Castle.png" alt="Castle" />
-    <div class="structure-details">
-      <h2>Castle</h2>
-      <p>Price: $150,000,000</p>
-      <p>Money: $250,000</p>
-      <p>Time: 40 seconds</p>
-      <p>Money/sec: $6250</p>
-      <div class="rarity">Mythic</div>
-    </div>
-  </div>
+</script>
 
 </body>
 </html>
