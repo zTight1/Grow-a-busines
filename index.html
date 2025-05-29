@@ -3,144 +3,190 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Idle Life Wiki</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <title>Idle Life Wiki & Trade Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Reset and base */
+        /* General Reset & Base Styles */
         * {
             box-sizing: border-box;
-            transition: all 0.3s ease;
-        }
-        body {
             margin: 0;
+            padding: 0;
+            transition: all 0.3s ease-in-out; /* Smooth transitions for most elements */
+        }
+
+        body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            background: linear-gradient(135deg, #0a081a, #201e3d, #1a1a2e); /* Deeper, richer background */
             color: #e0e0f0;
             display: flex;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh; /* Use min-height for content flexibility */
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            background-attachment: fixed; /* Keep background fixed */
         }
 
         /* Sidebar */
         .sidebar {
-            width: 320px;
-            background: linear-gradient(180deg, #1a1a2e, #16213e);
-            padding: 30px 25px;
+            width: 300px; /* Slightly narrower sidebar */
+            background: linear-gradient(180deg, #101020, #151a30); /* Darker, more defined sidebar */
+            padding: 30px 20px;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
-            box-shadow: 6px 0 25px rgba(0, 0, 0, 0.7);
+            box-shadow: 6px 0 30px rgba(0, 0, 0, 0.8); /* Stronger shadow */
             border-top-right-radius: 25px;
             border-bottom-right-radius: 25px;
-            flex-shrink: 0; /* Prevent sidebar from shrinking */
+            flex-shrink: 0;
+            position: sticky; /* Keep sidebar in place */
+            top: 0; /* Align to top */
+            height: 100vh; /* Take full viewport height */
         }
 
         .sidebar h2 {
-            color: #00ffe7;
-            text-shadow: 0 0 10px #00ffe7;
-            margin-bottom: 25px;
-            font-size: 1.5rem;
+            color: #00e0ff; /* Brighter cyan */
+            text-shadow: 0 0 15px rgba(0, 224, 255, 0.7); /* More intense glow */
+            margin-bottom: 30px; /* More space */
+            font-size: 1.6rem;
             font-weight: 700;
-            letter-spacing: 1.1px;
+            letter-spacing: 1.2px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .sidebar h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: #00e0ff;
+            border-radius: 2px;
+            box-shadow: 0 0 8px rgba(0, 224, 255, 0.5);
         }
 
         /* Variants and Managers */
         .variant, .manager {
-            background: #2a2c42;
-            border-radius: 15px;
-            margin: 12px 0;
-            padding: 14px 22px;
+            background: #25263a; /* Subtle dark blue */
+            border-radius: 12px; /* Softer corners */
+            margin: 10px 0; /* Less vertical margin */
+            padding: 12px 20px;
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1rem; /* Slightly smaller font */
             cursor: pointer;
             border: 2px solid transparent;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-            color: #d9d9ffcc;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* Softer shadow */
+            color: #c9c9e6; /* Lighter text color */
             user-select: none;
-            transition:
-                background-color 0.3s ease,
-                box-shadow 0.3s ease,
-                color 0.3s ease,
-                border-color 0.3s ease,
-                transform 0.2s ease;
+            position: relative; /* For pseudo-elements */
+            overflow: hidden; /* For hover effects */
         }
 
         .variant:hover, .manager:hover {
-            background-color: #3f44aa;
+            background-color: #3b3d5e; /* Hover background */
             color: #fff;
-            box-shadow: 0 0 15px #7f5af0cc;
-            transform: translateY(-3px);
+            box-shadow: 0 0 18px rgba(127, 90, 240, 0.6); /* Purple glow */
+            transform: translateY(-5px) scale(1.02); /* More pronounced lift */
+            border-color: #7f5af0; /* Hover border color */
         }
 
         .variant.selected, .manager.selected {
-            border: 2.5px solid #f0a500;
-            background: linear-gradient(90deg, #f0a500, #ffc107);
-            color: #111;
-            box-shadow: 0 0 20px #ffcc00cc;
-            transform: translateY(-2px);
+            border: 3px solid; /* Solid border for selected */
+            border-image: linear-gradient(45deg, #ffc107, #f0a500, #ff8c00) 1; /* Gold gradient border */
+            background: linear-gradient(90deg, #f0a500, #ffc107); /* Gold background */
+            color: #1a1a1a; /* Darker text for contrast */
+            box-shadow: 0 0 25px rgba(255, 204, 0, 0.8), inset 0 0 10px rgba(0,0,0,0.5); /* Stronger glow */
+            transform: translateY(-3px) scale(1.03);
             font-weight: 700;
         }
 
-        /* Specific Variants */
+        /* Specific Variants - Refined gradients and shadows */
         .variant.gold {
-            background: linear-gradient(90deg, #ffcc00, #ffb300);
-            color: #222;
-            box-shadow: 0 0 12px #ffcc00cc;
+            background: linear-gradient(90deg, #ffcc00, #e6b800);
+            color: #1a1a1a;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
         }
         .variant.rainbow {
-            background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
+            background: linear-gradient(90deg, #f00, #f80, #ff0, #0f0, #0ff, #00f, #80f);
+            background-size: 400% 100%; /* For animation */
+            animation: rainbowBackground 8s linear infinite;
             color: #fff;
-            box-shadow: 0 0 18px #ffffffcc;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+        }
+        @keyframes rainbowBackground {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
         }
         .variant.inferno {
-            background: linear-gradient(90deg, #ff512f, #dd2476);
+            background: linear-gradient(90deg, #ff512f, #dd2476, #ff0000); /* More intense fire */
             color: #fff;
-            box-shadow: 0 0 14px #ff4f4fcc;
+            box-shadow: 0 0 18px rgba(255, 79, 79, 0.7);
         }
         .variant.oblivion {
-            background: linear-gradient(90deg, #232526, #414345);
-            color: #fff;
-            box-shadow: 0 0 12px #666666cc;
+            background: linear-gradient(90deg, #1e1e1e, #333333, #444444); /* Deeper dark */
+            color: #ddd;
+            box-shadow: 0 0 15px rgba(102, 102, 102, 0.7);
         }
         .variant.Celestial {
-            background: linear-gradient(90deg, #74ebd5, #acb6e5);
-            color: #111;
-            box-shadow: 0 0 14px #74ebd5cc;
+            background: linear-gradient(90deg, #74ebd5, #9face6, #acb6e5); /* Softer, celestial glow */
+            color: #1a1a1a;
+            box-shadow: 0 0 18px rgba(116, 235, 213, 0.7);
         }
 
         /* Main content */
         .main {
             flex: 1;
-            padding: 35px 40px;
+            padding: 40px; /* More generous padding */
             background: #121212;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
+            gap: 30px; /* Add some general spacing between sections */
         }
 
         /* Structure Filters/Sort */
         .structure-controls {
             display: flex;
             flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 25px;
+            gap: 20px; /* Increased gap */
+            margin-bottom: 30px; /* More space below */
             justify-content: center;
+            background: #1a1a2e; /* Match main section background */
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
         }
 
         .structure-controls label {
             font-weight: 600;
-            color: #cdd;
+            color: #b0b0d0; /* Softer label color */
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .structure-controls select {
-            padding: 8px 12px;
-            border-radius: 8px;
+            padding: 10px 15px; /* Larger padding */
+            border-radius: 10px; /* More rounded */
             border: 1px solid #4a4a6e;
-            background-color: #383852;
+            background-color: #30304a; /* Darker input background */
             color: #eee;
             font-family: 'Poppins', sans-serif;
-            font-size: 0.95rem;
+            font-size: 1rem; /* Slightly larger font */
+            appearance: none; /* Remove default arrow */
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23eeeeee%22%20d%3D%22M287%20197.3L159.2%2069.5c-4.7-4.7-12.3-4.7-17%200L5.4%20197.3c-4.7%204.7-4.7%2012.3%200%2017l17%2017c4.7%204.7%2012.3%204.7%2017%200l93.8-93.8l93.8%2093.8c4.7%204.7%2012.3%204.7%2017%200l17-17c4.7-4.7%204.7-12.3%200-17z%22%2F%3E%3C%2Fsvg%3E'); /* Custom arrow */
+            background-repeat: no-repeat;
+            background-position: right 10px top 50%;
+            background-size: 12px auto;
+            cursor: pointer;
+        }
+        .structure-controls select:focus {
+            outline: none;
+            border-color: #00e0ff;
+            box-shadow: 0 0 10px rgba(0, 224, 255, 0.5);
         }
 
         /* Game Boosts Inputs Section */
@@ -148,499 +194,739 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            gap: 30px;
-            margin-top: 25px;
-            margin-bottom: 35px;
-            padding: 20px;
+            gap: 40px; /* Larger gap for better visual separation */
+            margin-bottom: 40px;
+            padding: 30px; /* Increased padding */
             background: #1a1a2e;
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+            border-radius: 25px; /* More rounded */
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7); /* Stronger shadow */
             color: #e0e0f0;
             align-items: center;
+            position: relative; /* For decorative elements */
+        }
+
+        .game-boosts-inputs::before, .game-boosts-inputs::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            opacity: 0.2;
+            filter: blur(15px);
+        }
+        .game-boosts-inputs::before {
+            top: -20px;
+            left: -20px;
+            background: #00e0ff;
+        }
+        .game-boosts-inputs::after {
+            bottom: -20px;
+            right: -20px;
+            background: #ffc107;
         }
 
         .boost-input-group {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
-            padding: 15px 25px;
+            gap: 10px; /* Increased gap */
+            padding: 20px 30px;
             background: #2a2c42;
-            border-radius: 15px;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
-            min-width: 220px;
+            border-radius: 18px; /* More rounded */
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6); /* Deeper inset shadow */
+            min-width: 250px; /* Slightly wider */
+            border: 1px solid #383852;
+            backdrop-filter: blur(3px); /* Subtle blur effect */
         }
 
         .boost-input-group label {
             font-weight: 600;
             color: #cdd;
-            font-size: 1.1rem;
+            font-size: 1.15rem; /* Larger font */
             margin-bottom: 5px;
         }
 
         .boost-input-group input[type="number"],
         .boost-input-group input[type="checkbox"] {
-            padding: 10px;
-            border-radius: 8px;
+            padding: 12px; /* Larger padding */
+            border-radius: 10px; /* More rounded */
             border: 1px solid #4a4a6e;
             background-color: #383852;
             color: #eee;
             font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
+            font-size: 1.05rem; /* Slightly larger font */
             text-align: center;
         }
 
         .boost-input-group input[type="number"] {
-            width: 80px;
+            width: 90px; /* Wider input */
         }
 
         .boost-input-group input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
+            width: 24px; /* Larger checkbox */
+            height: 24px;
             appearance: none;
-            background-color: #ccc;
-            border: 2px solid #555;
+            background-color: #555; /* Darker unchecked background */
+            border: 2px solid #777; /* Stronger border */
             cursor: pointer;
             position: relative;
-            transition: background-color 0.2s ease, border-color 0.2s ease;
+            transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            outline: none;
         }
 
         .boost-input-group input[type="checkbox"]:checked {
             background-color: #00ff00;
             border-color: #00cc00;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
         }
 
-        /* Stile per il segno di spunta */
+        /* Checkmark style */
         .boost-input-group input[type="checkbox"]:checked::after {
             content: '✔';
             color: #111;
-            font-size: 1.2rem;
+            font-size: 1.4rem; /* Larger checkmark */
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            font-weight: bold;
         }
 
         .current-boost-display {
-            font-size: 1.3rem;
+            font-size: 1.4rem; /* Larger font */
             font-weight: 700;
-            margin-top: 10px;
+            margin-top: 15px; /* More margin */
             color: #ffd700;
-            text-shadow: 0 0 8px #ffd700;
-            display: flex; /* Rende il contenitore flex per allineare icona e testo */
-            align-items: center; /* Allinea verticalmente */
-            justify-content: center; /* Centra orizzontalmente */
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7); /* Enhanced glow */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .current-boost-display i {
-            margin-right: 8px;
+            margin-right: 10px; /* More space for icon */
             color: #00ffe7;
-            text-shadow: 0 0 5px #00ffe7;
+            text-shadow: 0 0 8px rgba(0, 255, 231, 0.6);
         }
 
         /* Structures container */
         .structures {
             display: flex;
             flex-wrap: wrap;
-            gap: 25px;
+            gap: 30px; /* Increased gap */
             justify-content: center;
+            margin-top: 20px;
         }
 
         /* Each structure card */
         .structure {
-            background: linear-gradient(145deg, #1e1e2e, #2e2e4e);
-            border-radius: 18px;
-            padding: 24px 22px;
-            width: 240px;
+            background: linear-gradient(145deg, #181825, #28283a); /* Deeper background */
+            border-radius: 20px; /* More rounded */
+            padding: 25px 22px; /* Slightly more padding */
+            width: 260px; /* Slightly wider cards */
             cursor: pointer;
             color: #eee;
             border: 2px solid transparent;
             text-align: center;
             box-shadow:
-                0 8px 20px rgba(0, 0, 0, 0.55),
-                inset 0 0 8px #101020aa;
+                0 10px 25px rgba(0, 0, 0, 0.6), /* More prominent shadow */
+                inset 0 0 10px rgba(16, 16, 32, 0.7); /* Deeper inset */
             transition:
                 box-shadow 0.3s ease,
                 border-color 0.3s ease,
-                transform 0.3s ease;
+                transform 0.3s ease,
+                background 0.3s ease; /* Add background transition */
             user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .structure::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top left, rgba(0, 224, 255, 0.1), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .structure:hover::before {
+            opacity: 1;
         }
 
         .structure:hover {
             box-shadow:
-                0 0 20px #00ffe7dd,
-                inset 0 0 12px #00ffe7bb;
-            border-color: #00ffe7;
-            transform: translateY(-6px) scale(1.03);
+                0 0 25px rgba(0, 224, 255, 0.8), /* Brighter cyan glow */
+                inset 0 0 15px rgba(0, 224, 255, 0.6); /* Brighter inset */
+            border-color: #00e0ff;
+            transform: translateY(-8px) scale(1.05); /* More lift and scale */
         }
 
+        .structure h3 {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+            color: #ffcc00; /* Gold for names */
+            text-shadow: 0 0 5px rgba(255, 204, 0, 0.5);
+        }
+        .structure p {
+            font-size: 0.95rem;
+            color: #b0b0d0;
+            margin-bottom: 5px;
+        }
+        .structure .rarity {
+            font-weight: 600;
+            color: #a3e635; /* Green for rarity */
+        }
         .structure.selected {
             position: relative;
-            background: linear-gradient(145deg, #7f5af0, #5f3dc4);
+            background: linear-gradient(145deg, #7f5af0, #5f3dc4); /* Purple background */
             color: #fff;
             font-weight: 700;
-            transform: translateY(-4px) scale(1.04);
+            transform: translateY(-6px) scale(1.06); /* Stronger lift */
             box-shadow:
-                0 0 25px #ffd700cc,
-                inset 0 0 18px #ffd70088;
-            border: none; /* remove normal border */
-            z-index: 0;
+                0 0 30px rgba(255, 215, 0, 0.9), /* Intense gold glow */
+                inset 0 0 20px rgba(255, 215, 0, 0.5);
+            border: none;
+            z-index: 1;
+            overflow: visible; /* Allow pseudo-element to extend */
         }
 
-        /* Pseudo-element for rainbow border */
         .structure.selected::before {
             content: "";
             position: absolute;
-            top: -4px;
-            left: -4px;
-            right: -4px;
-            bottom: -4px;
-            border-radius: 20px; /* border rounding */
-            padding: 2px;
-            background: linear-gradient(270deg, red, orange, yellow, green, blue, indigo, violet, red);
-            background-size: 1400% 1400%;
-            animation: rainbowBorder 8s linear infinite;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border-radius: 22px;
+            padding: 3px;
+            background: linear-gradient(270deg, #f00, #f80, #ff0, #0f0, #0ff, #00f, #80f, #f00);
+            background-size: 1600% 1600%; /* Wider range for animation */
+            animation: rainbowBorder 10s linear infinite; /* Slower, smoother animation */
             -webkit-mask:
                 linear-gradient(#fff 0 0) content-box,
                 linear-gradient(#fff 0 0);
             -webkit-mask-composite: destination-out;
             mask-composite: exclude;
             z-index: -1;
+            transition: none; /* Do not animate this on hover/select */
         }
 
-        /* Rainbow gradient animation */
         @keyframes rainbowBorder {
-            0% {
-                background-position: 0% 50%;
-            }
-            100% {
-                background-position: 100% 50%;
-            }
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
         }
 
         /* Wiki info box */
         .wiki-box {
             margin-top: 40px;
-            background: #1c1b29;
-            padding: 30px 35px;
-            border-radius: 22px;
-            box-shadow: inset 0 0 25px #000;
-            font-size: 1.1rem;
-            color: #ccc;
-            line-height: 1.5;
+            background: linear-gradient(145deg, #1c1b29, #252435); /* Subtle gradient */
+            padding: 35px 40px; /* More padding */
+            border-radius: 25px; /* More rounded */
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.6); /* Deeper inset shadow */
+            font-size: 1.15rem; /* Slightly larger font */
+            color: #d0d0e0; /* Softer text color */
+            line-height: 1.6; /* Better readability */
             user-select: text;
+            border: 1px solid #30304a; /* Subtle border */
         }
 
         .wiki-box h3 {
             color: #ffd700;
-            text-shadow: 0 0 10px #ffd700;
-            margin-bottom: 20px;
+            text-shadow: 0 0 12px rgba(255, 215, 0, 0.6); /* Stronger glow */
+            margin-bottom: 25px;
             font-weight: 700;
-            letter-spacing: 1.1px;
+            letter-spacing: 1.2px;
+            text-align: center;
         }
 
-        /* Responsive */
-        @media (max-width: 900px) {
-            body {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                flex-direction: row;
-                overflow-x: auto;
-                overflow-y: hidden;
-                width: 100%;
-                height: 240px;
-                padding: 25px 20px;
-                border-radius: 0;
-                box-shadow: none;
-            }
-
-            .variant, .manager {
-                min-width: 140px;
-                margin: 0 14px 0 0;
-                border-radius: 12px;
-            }
-
-            .main {
-                padding: 25px 20px;
-                height: calc(100vh - 240px);
-            }
-
-            .structure {
-                width: 48%;
-            }
-        }
-
-        /* Responsive adjustments for game boosts */
-        @media (max-width: 600px) {
-            .game-boosts-inputs {
-                flex-direction: column;
-                gap: 20px;
-                padding: 15px;
-            }
-            .boost-input-group {
-                width: 100%;
-                max-width: 280px; /* Limita la larghezza anche in colonna */
-            }
+        .wiki-box p strong {
+            color: #00e0ff; /* Cyan for key info */
+            text-shadow: 0 0 5px rgba(0, 224, 255, 0.3);
         }
 
         /* Trade section styles */
         .trade-section {
-            padding: 30px; /* Increased padding */
-            background: #1a1a2e; /* Darker background */
+            padding: 40px; /* Increased padding */
+            background: linear-gradient(145deg, #1a1a2e, #201e3d); /* Matched with body gradient for depth */
             color: #eee;
-            margin-top: 40px; /* More space from wiki box */
-            border-radius: 20px; /* Slightly larger radius */
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); /* More prominent shadow */
+            margin-top: 50px; /* More space */
+            border-radius: 30px; /* Significantly larger radius */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7); /* More prominent shadow */
+            border: 2px solid #282840; /* Subtle border */
+            position: relative;
+            overflow: hidden;
         }
 
-        .trade-section h2 {
-            color: #00ffe7;
-            text-shadow: 0 0 10px #00ffe7;
-            margin-bottom: 30px; /* More space below heading */
-            font-size: 1.8rem;
-            text-align: center;
+        .trade-section::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(127, 90, 240, 0.15), transparent 70%);
+            border-radius: 50%;
         }
+         .trade-section::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(255, 193, 7, 0.15), transparent 70%);
+            border-radius: 50%;
+        }
+
+
+        .trade-section h2 {
+            color: #00e0ff;
+            text-shadow: 0 0 15px rgba(0, 224, 255, 0.7);
+            margin-bottom: 40px; /* More space */
+            font-size: 2rem; /* Larger heading */
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        .trade-section h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: #00e0ff;
+            border-radius: 3px;
+            box-shadow: 0 0 10px rgba(0, 224, 255, 0.5);
+        }
+
 
         .trade-input-group {
             display: flex;
-            gap: 30px; /* Adjusted gap */
+            gap: 40px; /* Increased gap */
             flex-wrap: wrap;
             justify-content: center;
-            margin-bottom: 25px; /* Space before the calculate button */
+            margin-bottom: 35px; /* Space before the calculate button */
         }
 
         .trade-card {
-            background: #2a2c42;
-            border-radius: 18px; /* Larger radius for cards */
-            padding: 25px; /* Increased padding */
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
-            width: 320px; /* Slightly larger width */
+            background: linear-gradient(145deg, #2a2c42, #383a52); /* Deeper gradient */
+            border-radius: 25px; /* Larger radius for cards */
+            padding: 30px; /* Increased padding */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            width: 350px; /* Wider card */
             flex-shrink: 0;
-            border: 1px solid #3e3e5a; /* Subtle border */
+            border: 1px solid #4e4e6a; /* More visible border */
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .trade-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
         }
 
         .trade-card h3 {
             color: #ffd700;
             margin-top: 0;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             text-align: center;
+            font-size: 1.6rem;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
         }
 
         .trade-card label {
             display: block;
-            margin-bottom: 12px; /* Adjusted margin */
+            margin-bottom: 15px; /* Adjusted margin */
             font-weight: 600;
             color: #cdd;
+            font-size: 1.05rem;
         }
 
         .trade-card select, .trade-card button {
             width: 100%;
-            padding: 12px; /* Increased padding */
-            margin-top: 8px; /* Adjusted margin */
-            border-radius: 10px; /* Larger radius */
-            border: 1px solid #4a4a6e; /* Darker border */
-            background-color: #383852; /* Darker background */
+            padding: 14px; /* Increased padding */
+            margin-top: 10px; /* Adjusted margin */
+            border-radius: 12px; /* Larger radius */
+            border: 1px solid #4a4a6e;
+            background-color: #383852;
             color: #eee;
             font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
+            font-size: 1.05rem;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23eeeeee%22%20d%3D%22M287%20197.3L159.2%2069.5c-4.7-4.7-12.3-4.7-17%200L5.4%20197.3c-4.7%204.7-4.7%2012.3%200%2017l17%2017c4.7%204.7%2012.3%204.7%2017%200l93.8-93.8l93.8%2093.8c4.7%204.7%2012.3%204.7%2017%200l17-17c4.7-4.7%204.7-12.3%200-17z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 15px top 50%;
+            background-size: 14px auto;
+            cursor: pointer;
         }
 
         .trade-card select:focus, .trade-card button:focus {
             outline: none;
-            border-color: #00ffe7;
-            box-shadow: 0 0 8px rgba(0, 255, 231, 0.4);
+            border-color: #00e0ff;
+            box-shadow: 0 0 12px rgba(0, 224, 255, 0.5);
         }
 
         .trade-card button {
             cursor: pointer;
-            background-color: #00ffe7;
+            background-color: #00e0ff; /* Cyan button */
             color: #111;
             font-weight: 700;
-            margin-top: 20px; /* More space for buttons */
-            transition: background-color 0.2s ease, transform 0.2s ease;
+            margin-top: 25px; /* More space for buttons */
+            transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 10px rgba(0, 224, 255, 0.3);
         }
 
         .trade-card button:hover {
-            background-color: #00c7b0;
-            transform: translateY(-2px);
+            background-color: #00b3cc;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 224, 255, 0.4);
+        }
+        .trade-card button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0, 224, 255, 0.2);
         }
 
         .structures-list {
-            margin-top: 15px; /* Increased margin */
-            min-height: 60px; /* Taller min-height */
-            border: 1px dashed #555;
-            padding: 12px; /* Increased padding */
-            border-radius: 10px; /* Larger radius */
+            margin-top: 20px; /* Increased margin */
+            min-height: 80px; /* Taller min-height */
+            border: 2px dashed #555; /* More visible dashed border */
+            padding: 15px; /* Increased padding */
+            border-radius: 15px; /* Larger radius */
             display: flex;
             flex-wrap: wrap;
-            gap: 8px; /* Increased gap */
+            gap: 10px; /* Increased gap */
             background-color: #22223a; /* Slightly lighter background */
-            max-height: 150px; /* Limit height for structures list */
-            overflow-y: auto; /* Enable scrolling */
+            max-height: 200px; /* Increased max height */
+            overflow-y: auto;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
         }
 
         .structure-item {
             background-color: #3f44aa;
-            padding: 6px 12px; /* Adjusted padding */
-            border-radius: 6px; /* Slightly larger radius */
+            padding: 8px 14px; /* Adjusted padding */
+            border-radius: 8px; /* Slightly larger radius */
             display: flex;
             align-items: center;
-            font-size: 0.95em; /* Slightly larger font */
+            font-size: 0.9em; /* Slightly larger font */
             color: #fff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
             opacity: 1; /* Default opacity */
-            animation: fadeIn 0.3s ease-out; /* Fade in animation */
+            animation: fadeIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother fade in */
+            white-space: nowrap; /* Prevent wrapping */
         }
 
         .structure-item.removing {
-            animation: fadeOut 0.3s ease-in forwards; /* Fade out animation */
+            animation: fadeOut 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards; /* Smoother fade out */
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(15px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         @keyframes fadeOut {
-            from { opacity: 1; transform: translateY(0); }
-            to { opacity: 0; transform: translateY(10px); }
+            from { opacity: 1; transform: translateY(0) scale(1); }
+            to { opacity: 0; transform: translateY(15px) scale(0.9); }
         }
-
 
         .structure-item button {
             background: none;
             border: none;
             color: #fff;
-            font-size: 1.3em; /* Larger button */
+            font-size: 1.5em; /* Larger button */
             line-height: 1;
-            margin-left: 8px; /* More margin */
+            margin-left: 10px; /* More margin */
             cursor: pointer;
             padding: 0 5px;
             width: auto;
-            transition: color 0.2s ease;
+            transition: color 0.2s ease, transform 0.2s ease;
+            box-shadow: none; /* Override general button shadow */
         }
 
         .structure-item button:hover {
-            color: #ff5555;
+            color: #ff3333;
+            transform: rotate(15deg) scale(1.1);
         }
 
         #finishTradeBtn {
-            display: block; /* Make it a block element to center */
-            margin: 30px auto 0; /* Center the button and add top margin */
-            padding: 15px 30px; /* Larger padding */
-            font-size: 1.2rem; /* Larger font size */
+            display: block;
+            margin: 40px auto 0; /* Center and add more top margin */
+            padding: 18px 35px; /* Larger padding */
+            font-size: 1.35rem; /* Larger font size */
             font-weight: 700;
             background-color: #ffd700;
-            color: #111;
+            color: #1a1a1a;
             border: none;
-            border-radius: 12px; /* Larger radius */
+            border-radius: 15px; /* Larger radius */
             cursor: pointer;
-            box-shadow: 0 6px 15px rgba(255, 215, 0, 0.5); /* More prominent shadow */
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6); /* More prominent shadow */
             transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        #finishTradeBtn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        #finishTradeBtn:hover::before {
+            left: 100%;
         }
 
         #finishTradeBtn:hover {
             background-color: #ffc107;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.7);
+        }
+
+        #finishTradeBtn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(255, 215, 0, 0.4);
         }
 
         #resultBox {
-            margin-top: 30px;
+            margin-top: 35px;
             background: #0d0c1b; /* Even darker background for results */
-            color: #eee;
-            padding: 20px; /* Increased padding */
-            border-radius: 15px; /* Larger radius */
+            color: #00ff00; /* Green text for results */
+            padding: 25px; /* Increased padding */
+            border-radius: 20px; /* Larger radius */
             white-space: pre-wrap;
             font-family: 'Consolas', 'Monaco', monospace;
-            max-height: 350px; /* Increased max height */
+            max-height: 400px; /* Increased max height */
             overflow-y: auto;
-            border: 1px solid #2e2e4e; /* Darker border */
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.7);
+            border: 2px solid #2e2e4e; /* Darker border */
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8); /* Deeper inset shadow */
+            font-size: 0.95rem; /* Slightly smaller for monospace readability */
+            line-height: 1.4;
         }
+        /* Scrollbar styling for resultBox and structures-list */
+        #resultBox::-webkit-scrollbar, .structures-list::-webkit-scrollbar {
+            width: 8px;
+            background-color: #1a1a2e;
+            border-radius: 10px;
+        }
+        #resultBox::-webkit-scrollbar-thumb, .structures-list::-webkit-scrollbar-thumb {
+            background-color: #00e0ff;
+            border-radius: 10px;
+            border: 2px solid #1a1a2e;
+        }
+        #resultBox::-webkit-scrollbar-thumb:hover, .structures-list::-webkit-scrollbar-thumb:hover {
+            background-color: #00b3cc;
+        }
+
 
         /* Bar Chart Styles */
         .trade-chart {
-            margin-top: 30px;
-            padding: 20px;
-            background: #1c1b29;
-            border-radius: 15px;
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.7);
+            margin-top: 40px;
+            padding: 30px; /* More padding */
+            background: linear-gradient(145deg, #1c1b29, #252435);
+            border-radius: 20px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.7);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 15px;
+            gap: 20px; /* Increased gap */
+            border: 1px solid #30304a;
         }
 
         .trade-chart h3 {
             color: #ffd700;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
         }
 
         .chart-bars {
             display: flex;
-            width: 100%;
-            height: 150px; /* Fixed height for the bars */
+            width: 90%; /* Wider chart area */
+            height: 180px; /* Taller fixed height for the bars */
             align-items: flex-end;
             justify-content: space-around;
-            gap: 15px;
-            border-bottom: 2px solid #555; /* Baseline */
-            padding-bottom: 5px; /* Space for labels */
+            gap: 25px; /* Increased gap between bars */
+            border-bottom: 3px solid #555; /* Thicker baseline */
+            padding-bottom: 10px; /* Space for labels */
         }
 
         .chart-bar {
             flex-grow: 1;
             background-color: #00ffe7;
-            width: 45%; /* Adjust width for 2 bars */
-            border-radius: 8px 8px 0 0;
+            width: 48%; /* Adjust width for 2 bars to be more distinct */
+            border-radius: 10px 10px 0 0; /* More rounded top corners */
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             align-items: center;
             position: relative;
-            transition: height 0.5s ease-out; /* Smooth transition for height change */
+            transition: height 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Bounce effect */
+            box-shadow: 0 -5px 15px rgba(0,0,0,0.3);
         }
 
-        .chart-bar.trade1 { background-color: #7f5af0; } /* Trade 1 color */
-        .chart-bar.trade2 { background-color: #f0a500; } /* Trade 2 color */
+        .chart-bar.trade1 { background-color: #7f5af0; box-shadow: 0 -5px 15px rgba(127, 90, 240, 0.5); } /* Trade 1 color */
+        .chart-bar.trade2 { background-color: #f0a500; box-shadow: 0 -5px 15px rgba(240, 165, 0, 0.5); } /* Trade 2 color */
 
 
         .bar-label {
             color: #eee;
-            font-size: 0.9em;
-            margin-top: 5px;
+            font-size: 1rem; /* Larger label */
+            margin-top: 8px;
             text-align: center;
+            font-weight: 600;
         }
 
         .bar-value {
             color: #111;
             font-weight: 700;
-            font-size: 0.9em;
+            font-size: 1.1em; /* Larger value */
             position: absolute;
-            top: -20px; /* Position above the bar */
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 2px 5px;
-            border-radius: 4px;
+            top: -28px; /* Position further above the bar */
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 4px 8px;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
 
-
-        /* Responsive adjustments for trade section */
-        @media (max-width: 768px) {
+        /* Responsive */
+        @media (max-width: 1200px) {
+            body {
+                flex-direction: column;
+                height: auto; /* Allow body to grow */
+            }
+            .sidebar {
+                flex-direction: row;
+                flex-wrap: wrap; /* Allow wrapping of items */
+                overflow-x: auto;
+                overflow-y: hidden;
+                width: 100%;
+                height: auto; /* Adjust height dynamically */
+                max-height: 280px; /* Max height for scrollable sidebar */
+                padding: 25px 20px;
+                border-radius: 0;
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+                position: sticky;
+                top: 0;
+                z-index: 1000; /* Ensure it stays on top */
+                justify-content: center; /* Center items on smaller screens */
+            }
+            .sidebar h2 {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+            .variant, .manager {
+                min-width: 150px; /* Ensure minimum width */
+                margin: 0 10px 15px 0; /* Space between items */
+                flex-shrink: 0; /* Prevent shrinking too much */
+            }
+            .main {
+                padding: 30px;
+                height: auto; /* Allow main content to take necessary height */
+            }
             .trade-input-group {
                 flex-direction: column;
                 align-items: center;
             }
             .trade-card {
-                width: 90%; /* Make trade cards take more width on smaller screens */
-            }
-            .trade-section {
-                padding: 20px;
-                margin-top: 25px;
+                width: 90%;
+                max-width: 400px;
             }
             .chart-bars {
-                height: 120px; /* Smaller height on mobile */
+                height: 150px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main {
+                padding: 20px;
+            }
+            .structure-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            .game-boosts-inputs {
+                flex-direction: column;
+                gap: 25px;
+                padding: 20px;
+            }
+            .boost-input-group {
+                width: 100%;
+                max-width: 300px;
+                padding: 15px 20px;
+            }
+            .structures {
+                gap: 20px;
+            }
+            .structure {
+                width: 46%; /* Adjust width for 2 columns */
+                padding: 20px 18px;
+            }
+            .trade-section {
+                padding: 25px;
+                margin-top: 35px;
+            }
+            .trade-section h2 {
+                font-size: 1.6rem;
+                margin-bottom: 30px;
+            }
+            .trade-card {
+                padding: 25px;
+            }
+            .chart-bars {
+                height: 120px;
+                width: 95%;
+            }
+            .bar-value {
+                font-size: 1em;
+                top: -25px;
+            }
+            #finishTradeBtn {
+                padding: 15px 25px;
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                max-height: 220px; /* Even smaller sidebar on very small screens */
+            }
+            .variant, .manager {
+                min-width: 120px;
+                font-size: 0.9rem;
+                padding: 10px 15px;
+            }
+            .main {
+                padding: 15px;
+            }
+            .structure {
+                width: 95%; /* Single column layout for structures */
+            }
+            .trade-card {
+                width: 95%;
+            }
+            .wiki-box {
+                padding: 25px;
+                font-size: 1rem;
+            }
+            .trade-section h2 {
+                font-size: 1.4rem;
+            }
+            .trade-chart h3 {
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -680,7 +966,7 @@
 
         <div class="game-boosts-inputs">
             <div class="boost-input-group">
-                <label for="friendsCount">Amici Online (0-5):</label>
+                <label for="friendsCount">Online Friends (0-5):</label>
                 <input type="number" id="friendsCount" value="0" min="0" max="5">
                 <span id="onlineFriendsPercentageDisplay" class="current-boost-display"><i class="fas fa-users"></i> +0%</span>
             </div>
@@ -791,12 +1077,12 @@
         let selectedManager = managers[0];
         let selectedStructureIndex = null;
 
-        // State for Trades
+        // State for Trades - now stores captured global boost multipliers
         const tradeStates = {
             1: {
                 variant: variants[0],
                 manager: managers[0],
-                structures: []
+                structures: [] // Each structure here will store its income, cycleTime, and *captured global boosts*
             },
             2: {
                 variant: variants[0],
@@ -809,7 +1095,7 @@
         let currentRarityFilter = 'All';
         let currentSortOrder = 'name-asc';
 
-        // Global Boosts
+        // Global Boosts - These are dynamic inputs affecting the WIKI and when adding items to TRADE
         let globalFriendsBoostMultiplier = 1;
         let globalPremiumMultiplier = 1;
 
@@ -828,16 +1114,16 @@
             const friendsCount = parseInt(document.getElementById('friendsCount').value);
             const isPremiumActive = document.getElementById('isPremium').checked;
 
-            // --- Calcolo del bonus amici ---
+            // --- Calculate Friends Bonus ---
             const MAX_FRIENDS_FOR_BOOST = 5;
-            const FRIEND_BONUS_PER_FRIEND = 0.05; // 5% per amico
+            const FRIEND_BONUS_PER_FRIEND = 0.05; // 5% per friend
 
             let actualFriendsCount = Math.min(friendsCount, MAX_FRIENDS_FOR_BOOST);
             globalFriendsBoostMultiplier = 1 + (actualFriendsCount * FRIEND_BONUS_PER_FRIEND);
             document.getElementById('onlineFriendsPercentageDisplay').innerHTML = `<i class="fas fa-users"></i> +${(actualFriendsCount * 5)}%`;
 
-            // --- Calcolo del bonus Premium ---
-            const PREMIUM_BONUS_MULTIPLIER = 1.10; // 10% di bonus
+            // --- Calculate Premium Bonus ---
+            const PREMIUM_BONUS_MULTIPLIER = 1.10; // 10% bonus
             globalPremiumMultiplier = isPremiumActive ? PREMIUM_BONUS_MULTIPLIER : 1;
 
             const premiumStatusElement = document.getElementById('premiumStatusDisplay');
@@ -845,11 +1131,15 @@
             premiumStatusElement.style.color = isPremiumActive ? '#00ff00' : '#ff5555';
             premiumStatusElement.style.textShadow = isPremiumActive ? '0 0 8px #00ff00' : '0 0 8px #ff5555';
 
-            // Re-render sections that depend on these boosts
+            // Re-render sections that depend on these boosts (Wiki and Structures display)
             renderStructures();
             updateWiki();
-            updateTradeStructureList(1);
-            updateTradeStructureList(2);
+            // Trade lists are NOT re-rendered here because their boost values are captured on add.
+            // However, we still need to call updateTradeStructureList for each trade state
+            // to ensure the _displayed_ values are updated if trade-specific variant/manager changes.
+            // But importantly, the _captured global boosts_ will remain fixed for each item.
+            updateTradeStructureList(1); // Re-render for Trade 1 with its current selections
+            updateTradeStructureList(2); // Re-render for Trade 2 with its current selections
         }
 
         // Rendering functions for Sidebar and Wiki
@@ -905,8 +1195,9 @@
                 if (currentSortOrder === 'name-asc') {
                     return a.name.localeCompare(b.name);
                 } else if (currentSortOrder === 'name-desc') {
-                    return b.name.localeCompare(a.name);
+                    return b.name.localeCompare(a.name); // Corrected localeCompare order
                 } else if (currentSortOrder === 'mps-asc') {
+                    // Calculate MPS with current global boosts for sorting display
                     const mpsA = (a.income * selectedVariant.multiplier * selectedManager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier) / a.cycleTime;
                     const mpsB = (b.income * selectedVariant.multiplier * selectedManager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier) / b.cycleTime;
                     return mpsA - mpsB;
@@ -922,7 +1213,7 @@
                 return 0;
             });
 
-            filteredStructures.forEach((struc, i) => {
+            filteredStructures.forEach((struc) => {
                 const income = struc.income * selectedVariant.multiplier * selectedManager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier;
                 const moneyPerSec = (income / struc.cycleTime).toFixed(2);
                 const div = document.createElement("div");
@@ -950,7 +1241,11 @@
         function updateWiki() {
             const container = document.getElementById("wiki-text");
             if (selectedStructureIndex === null) {
-                container.innerHTML = "Select a structure to see details.";
+                container.innerHTML = `
+                    <h3>Idle Life Wiki</h3>
+                    <p>Select a structure from the list above to see its detailed information,
+                    calculated with your currently selected Variant, Manager, and global boosts.</p>
+                `;
                 return;
             }
             const s = structuresData[selectedStructureIndex];
@@ -959,9 +1254,10 @@
             container.innerHTML = `
                 <h3>${s.name} (${selectedVariant.name})</h3>
                 <p><strong>Price:</strong> ${formatMoney(s.price)}</p>
+                <p><strong>Rarity:</strong> ${s.rarity}</p>
                 <p><strong>Money per cycle:</strong> ${formatMoney(income)}</p>
                 <p><strong>Cycle time:</strong> ${s.cycleTime} sec</p>
-                <p><strong>Money/sec:</strong> ${mps}</p>
+                <p><strong>Money/sec (Current):</strong> ${mps}</p>
                 <p><strong>Manager boost:</strong> x${selectedManager.multiplier}</p>
                 <p><strong>Variant boost:</strong> x${selectedVariant.multiplier}</p>
                 <p><strong>Friends boost:</strong> x${globalFriendsBoostMultiplier.toFixed(2)} (${((globalFriendsBoostMultiplier - 1) * 100).toFixed(0)}%)</p>
@@ -996,9 +1292,10 @@
                     option.textContent = v.name;
                     variantSelect.appendChild(option);
                 });
+                variantSelect.value = tradeStates[num].variant.name; // Set initial selection
                 variantSelect.addEventListener('change', (event) => {
                     tradeStates[num].variant = variants.find(v => v.name === event.target.value);
-                    updateTradeStructureList(num); // Update the list to reflect bonuses
+                    updateTradeStructureList(num); // Update the list to reflect current variant/manager bonuses
                 });
 
                 // Populate managers
@@ -1009,12 +1306,13 @@
                     option.textContent = m.name;
                     managerSelect.appendChild(option);
                 });
+                managerSelect.value = tradeStates[num].manager.name; // Set initial selection
                 managerSelect.addEventListener('change', (event) => {
                     tradeStates[num].manager = managers.find(m => m.name === event.target.value);
-                    updateTradeStructureList(num); // Update the list to reflect bonuses
+                    updateTradeStructureList(num); // Update the list to reflect current variant/manager bonuses
                 });
 
-                // Populate structures
+                // Populate structures (all structures are available to add)
                 structureSelect.innerHTML = "";
                 structuresData.forEach((str) => {
                     const option = document.createElement("option");
@@ -1022,6 +1320,10 @@
                     option.textContent = `${str.name} (${str.rarity})`;
                     structureSelect.appendChild(option);
                 });
+                // Ensure the select defaults to the first option, or a placeholder if available
+                if (structuresData.length > 0) {
+                    structureSelect.value = structuresData[0].name;
+                }
             });
         }
 
@@ -1029,10 +1331,22 @@
             const select = document.getElementById(`tradeStructureSelect${tradeNum}`);
             const selectedName = select.value;
             const structure = structuresData.find((s) => s.name === selectedName);
+
             if (structure) {
-                tradeStates[tradeNum].structures.push(structure);
+                // CAPTURE GLOBAL BOOSTS AT THE MOMENT OF ADDITION
+                const capturedFriendsBoost = globalFriendsBoostMultiplier;
+                const capturedPremiumBoost = globalPremiumMultiplier;
+
+                // Create a new object for the trade item, including the captured boosts
+                const tradeItem = {
+                    ...structure, // Copy all properties from the base structure
+                    capturedFriendsBoost: capturedFriendsBoost,
+                    capturedPremiumBoost: capturedPremiumBoost
+                };
+
+                tradeStates[tradeNum].structures.push(tradeItem);
                 updateTradeStructureList(tradeNum);
-                select.value = ""; // Reset selection
+                select.value = structuresData[0].name; // Reset selection to first item
             }
         }
 
@@ -1049,7 +1363,6 @@
             }
         }
 
-
         function updateTradeStructureList(tradeNum) {
             const container = document.getElementById(`structuresList${tradeNum}`);
             container.innerHTML = "";
@@ -1057,7 +1370,9 @@
             const currentManager = tradeStates[tradeNum].manager;
 
             tradeStates[tradeNum].structures.forEach((str, i) => {
-                const effectiveIncome = str.income * currentVariant.multiplier * currentManager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier;
+                // IMPORTANT FIX: Use the CAPTURED global boosts (str.capturedFriendsBoost, str.capturedPremiumBoost)
+                // for displaying the income value inside the trade item.
+                const effectiveIncome = str.income * currentVariant.multiplier * currentManager.multiplier * str.capturedFriendsBoost * str.capturedPremiumBoost;
                 const div = document.createElement("div");
                 div.classList.add("structure-item");
                 div.innerHTML = `
@@ -1083,19 +1398,21 @@
             chartContainer.style.display = 'flex'; // Show the chart container
 
             const maxValue = Math.max(value1, value2);
-            const scaleFactor = maxValue > 0 ? 100 / maxValue : 0; // Max height 100%
+            // Ensure a minimum height for bars even if value is 0
+            const scaleFactor = maxValue > 0 ? 100 / maxValue : 0;
+            const minHeightPercentage = 5; // 5% minimum height for a visible bar
 
             const bar1Height = value1 * scaleFactor;
             const bar2Height = value2 * scaleFactor;
 
             const bar1 = document.createElement('div');
             bar1.className = 'chart-bar trade1';
-            bar1.style.height = `${Math.max(bar1Height, 5)}%`; // Min height for visibility
+            bar1.style.height = `${Math.max(bar1Height, minHeightPercentage)}%`;
             bar1.innerHTML = `<span class="bar-value">${value1.toFixed(2)}</span><span class="bar-label">Trade 1</span>`;
 
             const bar2 = document.createElement('div');
             bar2.className = 'chart-bar trade2';
-            bar2.style.height = `${Math.max(bar2Height, 5)}%`; // Min height for visibility
+            bar2.style.height = `${Math.max(bar2Height, minHeightPercentage)}%`;
             bar2.innerHTML = `<span class="bar-value">${value2.toFixed(2)}</span><span class="bar-label">Trade 2</span>`;
 
             chartBars.appendChild(bar1);
@@ -1120,7 +1437,8 @@
             const calculateTotalIncomePerSecond = (trade) => {
                 let totalIncomePerSecond = 0;
                 trade.structures.forEach((str) => {
-                    const effectiveIncome = str.income * trade.variant.multiplier * trade.manager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier;
+                    // Use captured global boosts, and current trade-specific variant/manager boosts
+                    const effectiveIncome = str.income * trade.variant.multiplier * trade.manager.multiplier * str.capturedFriendsBoost * str.capturedPremiumBoost;
                     totalIncomePerSecond += effectiveIncome / str.cycleTime;
                 });
                 return totalIncomePerSecond;
@@ -1134,23 +1452,29 @@
             results += `Trade 1:\n`;
             results += `  Variant: ${trade1.variant.name} (x${trade1.variant.multiplier})\n`;
             results += `  Manager: ${trade1.manager.name} (x${trade1.manager.multiplier})\n`;
-            results += `  Structures: ${trade1.structures.map(s => s.name).join(', ')}\n`;
+            results += `  Structures:\n`;
+            trade1.structures.forEach(s => {
+                results += `    - ${s.name} (Captured Friends x${s.capturedFriendsBoost.toFixed(2)}, Premium x${s.capturedPremiumBoost.toFixed(2)})\n`;
+            });
             results += `  Total income per second: ${totalIncomePerSecond1.toFixed(2)}\n\n`;
 
             results += `Trade 2:\n`;
             results += `  Variant: ${trade2.variant.name} (x${trade2.variant.multiplier})\n`;
             results += `  Manager: ${trade2.manager.name} (x${trade2.manager.multiplier})\n`;
-            results += `  Structures: ${trade2.structures.map(s => s.name).join(', ')}\n`;
+            results += `  Structures:\n`;
+            trade2.structures.forEach(s => {
+                results += `    - ${s.name} (Captured Friends x${s.capturedFriendsBoost.toFixed(2)}, Premium x${s.capturedPremiumBoost.toFixed(2)})\n`;
+            });
             results += `  Total income per second: ${totalIncomePerSecond2.toFixed(2)}\n\n`;
 
             const difference = totalIncomePerSecond1 - totalIncomePerSecond2;
             results += `--- Comparison Result ---\n`;
-            if (difference > 0) {
+            if (difference > 0.01) { // Add a small epsilon for floating point comparison
                 results += `Trade 1 is better than Trade 2 by ${difference.toFixed(2)} money/sec.\n`;
-            } else if (difference < 0) {
+            } else if (difference < -0.01) {
                 results += `Trade 2 is better than Trade 1 by ${Math.abs(difference).toFixed(2)} money/sec.\n`;
             } else {
-                results += `Both trades have an equivalent income per second value.\n`;
+                results += `Both trades have an equivalent income per second value (difference: ${difference.toFixed(2)}).\n`;
             }
 
             document.getElementById("resultBox").textContent = results;
@@ -1163,18 +1487,16 @@
         document.addEventListener("DOMContentLoaded", () => {
             renderVariants();
             renderManagers();
+            updateGlobalBoosts(); // Initial call to set global boost display
             renderStructures(); // Initial render with default filter/sort
-            populateTradeSelects();
-            // Initialize empty trade lists display
-            updateTradeStructureList(1);
+
+            populateTradeSelects(); // Populate the trade variant, manager, and structure selects
+            updateTradeStructureList(1); // Initialize empty trade lists display
             updateTradeStructureList(2);
 
-            // Add event listeners for global boosts
+            // Add event listeners for global boosts inputs
             document.getElementById('friendsCount').addEventListener('input', updateGlobalBoosts);
             document.getElementById('isPremium').addEventListener('change', updateGlobalBoosts);
-            
-            // Call updateGlobalBoosts at startup to set initial values
-            updateGlobalBoosts();
         });
 
     </script>
