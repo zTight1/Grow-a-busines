@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -8,185 +6,252 @@
   <title>Idle Life Wiki</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    * {
-      box-sizing: border-box;
-      transition: all 0.3s ease;
-    }
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      color: #e0e0f0;
-      display: flex;
-      height: 100vh;
-      overflow: hidden;
-    }
+/* Reset e base */
+* {
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  color: #e0e0f0;
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
 
-    .sidebar {
-      width: 330px;
-      background: linear-gradient(180deg, #1a1a2e, #16213e);
-      padding: 30px 20px;
-      display: flex;
-      flex-direction: column;
-      overflow-y: auto;
-      box-shadow: 5px 0 20px rgba(0, 0, 0, 0.5);
-    }
+/* Sidebar */
+.sidebar {
+  width: 320px;
+  background: linear-gradient(180deg, #1a1a2e, #16213e);
+  padding: 30px 25px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  box-shadow: 6px 0 25px rgba(0, 0, 0, 0.7);
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
+}
 
-    .sidebar h2 {
-      color: #00ffe7;
-      text-shadow: 0 0 8px #00ffe7;
-      margin-bottom: 18px;
-      font-size: 1.4rem;
-    }
+.sidebar h2 {
+  color: #00ffe7;
+  text-shadow: 0 0 10px #00ffe7;
+  margin-bottom: 25px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+}
 
-    .variant, .manager {
-      background: #232946;
-      border-radius: 12px;
-      margin: 10px 0;
-      padding: 12px 18px;
-      font-weight: 600;
-      font-size: 1.05rem;
-      cursor: pointer;
-      border: 2px solid transparent;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-      color: #ffffffcc;
-    }
+/* Variants e Managers */
+.variant, .manager {
+  background: #2a2c42;
+  border-radius: 15px;
+  margin: 12px 0;
+  padding: 14px 22px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  border: 2px solid transparent;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  color: #d9d9ffcc;
+  user-select: none;
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.2s ease;
+}
 
-    .variant:hover, .manager:hover {
-      background: #393e8d;
-      color: #fff;
-      box-shadow: 0 0 12px #7f5af0aa;
-    }
+.variant:hover, .manager:hover {
+  background-color: #3f44aa;
+  color: #fff;
+  box-shadow: 0 0 15px #7f5af0cc;
+  transform: translateY(-3px);
+}
 
-    .variant.selected, .manager.selected {
-      border: 2px solid #f0a500;
-      background: linear-gradient(90deg, #f0a500, #ffc107);
-      color: #111;
-      box-shadow: 0 0 15px #ffcc00aa;
-    }
+.variant.selected, .manager.selected {
+  border: 2.5px solid #f0a500;
+  background: linear-gradient(90deg, #f0a500, #ffc107);
+  color: #111;
+  box-shadow: 0 0 20px #ffcc00cc;
+  transform: translateY(-2px);
+  font-weight: 700;
+}
 
-    .variant.gold {
-      background: linear-gradient(90deg, #ffcc00, #ffb300);
-      color: #222;
-    }
-    .variant.rainbow {
-      background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
-      color: #fff;
-    }
-    .variant.inferno {
-      background: linear-gradient(90deg, #ff512f, #dd2476);
-      color: #fff;
-    }
-    .variant.oblivion {
-      background: linear-gradient(90deg, #232526, #414345);
-      color: #fff;
-    }
-    .variant.Celestial {
-      background: linear-gradient(90deg, #74ebd5, #acb6e5);
-      color: #111;
-    }
+/* Variants specifici */
+.variant.gold {
+  background: linear-gradient(90deg, #ffcc00, #ffb300);
+  color: #222;
+  box-shadow: 0 0 12px #ffcc00cc;
+}
+.variant.rainbow {
+  background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
+  color: #fff;
+  box-shadow: 0 0 18px #ffffffcc;
+}
+.variant.inferno {
+  background: linear-gradient(90deg, #ff512f, #dd2476);
+  color: #fff;
+  box-shadow: 0 0 14px #ff4f4fcc;
+}
+.variant.oblivion {
+  background: linear-gradient(90deg, #232526, #414345);
+  color: #fff;
+  box-shadow: 0 0 12px #666666cc;
+}
+.variant.Celestial {
+  background: linear-gradient(90deg, #74ebd5, #acb6e5);
+  color: #111;
+  box-shadow: 0 0 14px #74ebd5cc;
+}
 
-    .main {
-      flex: 1;
-      padding: 30px;
-      background: #121212;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-    }
+/* Main content */
+.main {
+  flex: 1;
+  padding: 35px 40px;
+  background: #121212;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
 
-    .structures {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-    }
+/* Structures container */
+.structures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  justify-content: center;
+}
 
-    .structure {
-      background: linear-gradient(145deg, #1e1e2e, #2e2e4e);
-      border-radius: 16px;
-      padding: 20px;
-      width: 230px;
-      cursor: pointer;
-      color: #eee;
-      border: 2px solid transparent;
-      text-align: center;
-      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
-    }
+/* Each structure card */
+.structure {
+  background: linear-gradient(145deg, #1e1e2e, #2e2e4e);
+  border-radius: 18px;
+  padding: 24px 22px;
+  width: 240px;
+  cursor: pointer;
+  color: #eee;
+  border: 2px solid transparent;
+  text-align: center;
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.55),
+    inset 0 0 8px #101020aa;
+  transition:
+    box-shadow 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.3s ease;
+  user-select: none;
+}
 
-    .structure:hover {
-      box-shadow: 0 0 15px #00ffe7aa;
-      border-color: #00ffe7;
-      transform: translateY(-5px);
-    }
+.structure:hover {
+  box-shadow:
+    0 0 20px #00ffe7dd,
+    inset 0 0 12px #00ffe7bb;
+  border-color: #00ffe7;
+  transform: translateY(-6px) scale(1.03);
+}
 
-    .structure.selected {
-      background: linear-gradient(145deg, #7f5af0, #5f3dc4);
-      border: 2.5px solid #ffd700;
-      color: #fff;
-      box-shadow: 0 0 20px #ffd700aa;
-    }
+.structure.selected {
+  position: relative;
+  background: linear-gradient(145deg, #7f5af0, #5f3dc4);
+  color: #fff;
+  font-weight: 700;
+  transform: translateY(-4px) scale(1.04);
+  box-shadow:
+    0 0 25px #ffd700cc,
+    inset 0 0 18px #ffd70088;
+  border: none; /* togli il bordo normale */
+  z-index: 0;
+}
 
-    .structure h3 {
-      margin: 0 0 10px;
-      font-size: 1.3rem;
-      color: #f0f0f0;
-    }
+/* Pseudo-elemento per il bordo rainbow */
+.structure.selected::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 20px; /* arrotondamento bordo */
+  padding: 2px;
+  background: linear-gradient(270deg, red, orange, yellow, green, blue, indigo, violet, red);
+  background-size: 1400% 1400%;
+  animation: rainbowBorder 8s linear infinite;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  z-index: -1;
+}
 
-    .structure .rarity {
-      color: #999;
-      font-size: 0.85rem;
-      margin-bottom: 10px;
-      font-style: italic;
-    }
+/* Animazione gradiente rainbow */
+@keyframes rainbowBorder {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
 
-    .wiki-box {
-      margin-top: 30px;
-      background: #1c1b29;
-      padding: 25px 30px;
-      border-radius: 20px;
-      box-shadow: inset 0 0 20px #000;
-    }
+/* Wiki info box */
+.wiki-box {
+  margin-top: 40px;
+  background: #1c1b29;
+  padding: 30px 35px;
+  border-radius: 22px;
+  box-shadow: inset 0 0 25px #000;
+  font-size: 1.1rem;
+  color: #ccc;
+  line-height: 1.5;
+  user-select: text;
+}
 
-    .wiki-box h3 {
-      color: #ffd700;
-      text-shadow: 0 0 8px #ffd700;
-      margin-bottom: 15px;
-    }
+.wiki-box h3 {
+  color: #ffd700;
+  text-shadow: 0 0 10px #ffd700;
+  margin-bottom: 20px;
+  font-weight: 700;
+  letter-spacing: 1.1px;
+}
 
-    .wiki-box p {
-      margin: 6px 0;
-      font-size: 1rem;
-      color: #ccc;
-    }
+/* Responsive */
+@media (max-width: 900px) {
+  body {
+    flex-direction: column;
+  }
 
-    @media (max-width: 900px) {
-      body {
-        flex-direction: column;
-      }
+  .sidebar {
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    height: 240px;
+    padding: 25px 20px;
+    border-radius: 0;
+    box-shadow: none;
+  }
 
-      .sidebar {
-        flex-direction: row;
-        overflow-x: auto;
-        overflow-y: hidden;
-        width: 100%;
-        height: 220px;
-      }
+  .variant, .manager {
+    min-width: 140px;
+    margin: 0 14px 0 0;
+    border-radius: 12px;
+  }
 
-      .variant, .manager {
-        min-width: 130px;
-        margin: 0 10px 0 0;
-      }
+  .main {
+    padding: 25px 20px;
+    height: calc(100vh - 240px);
+  }
 
-      .main {
-        padding: 20px;
-        height: calc(100vh - 220px);
-      }
+  .structure {
+    width: 48%;
+  }
+}
 
-      .structure {
-        width: 48%;
-      }
-    }
+
   </style>
 </head>
 <body>
@@ -219,7 +284,7 @@
       { name: "Modern Manager", multiplier: 2.4 },
       { name: "Angel Manager", multiplier: 3 },
     ];
-    const prices = [30, 200,0, 500, 1200, 3500, 8000, 15000, 45000, 200000, 750000, 2500000, 10000000, 150000000, 1000000000, 12000000000,0,0,0,0,0,0];
+    const prices = [30, 200, 0, 500, 1200, 3500, 8000, 15000, 45000, 200000, 750000, 2500000, 10000000, 150000000, 1000000000, 12000000000, 0, 0, 0, 0, 0, 0];
     const structuresData = [
       { name: "Noob", income: 1, cycleTime: 4, rarity: "common" },
       { name: "Business Man", income: 5, cycleTime: 4, rarity: "common" },
@@ -266,7 +331,8 @@
           selectedManager = mgr;
           document.querySelectorAll(".manager").forEach(el => el.classList.remove("selected"));
           div.classList.add("selected");
-          updateWiki(); renderStructures();
+          updateWiki();
+          renderStructures();
         });
         container.appendChild(div);
       });
@@ -284,7 +350,8 @@
           selectedVariant = variant;
           document.querySelectorAll(".variant").forEach(el => el.classList.remove("selected"));
           div.classList.add("selected");
-          updateWiki(); renderStructures();
+          updateWiki();
+          renderStructures();
         });
         container.appendChild(div);
       });
@@ -339,3 +406,4 @@
   </script>
 </body>
 </html>
+
