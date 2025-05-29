@@ -1,1018 +1,1182 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Idle Life Wiki</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  <style>
-/* Reset and base */
-* {
-  box-sizing: border-box;
-  transition: all 0.3s ease;
-}
-body {
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-  color: #e0e0f0;
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
-}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Idle Life Wiki</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Reset and base */
+        * {
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #e0e0f0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-/* Sidebar */
-.sidebar {
-  width: 320px;
-  background: linear-gradient(180deg, #1a1a2e, #16213e);
-  padding: 30px 25px;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  box-shadow: 6px 0 25px rgba(0, 0, 0, 0.7);
-  border-top-right-radius: 25px;
-  border-bottom-right-radius: 25px;
-  flex-shrink: 0; /* Prevent sidebar from shrinking */
-}
+        /* Sidebar */
+        .sidebar {
+            width: 320px;
+            background: linear-gradient(180deg, #1a1a2e, #16213e);
+            padding: 30px 25px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            box-shadow: 6px 0 25px rgba(0, 0, 0, 0.7);
+            border-top-right-radius: 25px;
+            border-bottom-right-radius: 25px;
+            flex-shrink: 0; /* Prevent sidebar from shrinking */
+        }
 
-.sidebar h2 {
-  color: #00ffe7;
-  text-shadow: 0 0 10px #00ffe7;
-  margin-bottom: 25px;
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: 1.1px;
-}
+        .sidebar h2 {
+            color: #00ffe7;
+            text-shadow: 0 0 10px #00ffe7;
+            margin-bottom: 25px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1.1px;
+        }
 
-/* Variants and Managers */
-.variant, .manager {
-  background: #2a2c42;
-  border-radius: 15px;
-  margin: 12px 0;
-  padding: 14px 22px;
-  font-weight: 600;
-  font-size: 1.1rem;
-  cursor: pointer;
-  border: 2px solid transparent;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-  color: #d9d9ffcc;
-  user-select: none;
-  transition:
-    background-color 0.3s ease,
-    box-shadow 0.3s ease,
-    color 0.3s ease,
-    border-color 0.3s ease,
-    transform 0.2s ease;
-}
+        /* Variants and Managers */
+        .variant, .manager {
+            background: #2a2c42;
+            border-radius: 15px;
+            margin: 12px 0;
+            padding: 14px 22px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            border: 2px solid transparent;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            color: #d9d9ffcc;
+            user-select: none;
+            transition:
+                background-color 0.3s ease,
+                box-shadow 0.3s ease,
+                color 0.3s ease,
+                border-color 0.3s ease,
+                transform 0.2s ease;
+        }
 
-.variant:hover, .manager:hover {
-  background-color: #3f44aa;
-  color: #fff;
-  box-shadow: 0 0 15px #7f5af0cc;
-  transform: translateY(-3px);
-}
+        .variant:hover, .manager:hover {
+            background-color: #3f44aa;
+            color: #fff;
+            box-shadow: 0 0 15px #7f5af0cc;
+            transform: translateY(-3px);
+        }
 
-.variant.selected, .manager.selected {
-  border: 2.5px solid #f0a500;
-  background: linear-gradient(90deg, #f0a500, #ffc107);
-  color: #111;
-  box-shadow: 0 0 20px #ffcc00cc;
-  transform: translateY(-2px);
-  font-weight: 700;
-}
+        .variant.selected, .manager.selected {
+            border: 2.5px solid #f0a500;
+            background: linear-gradient(90deg, #f0a500, #ffc107);
+            color: #111;
+            box-shadow: 0 0 20px #ffcc00cc;
+            transform: translateY(-2px);
+            font-weight: 700;
+        }
 
-/* Specific Variants */
-.variant.gold {
-  background: linear-gradient(90deg, #ffcc00, #ffb300);
-  color: #222;
-  box-shadow: 0 0 12px #ffcc00cc;
-}
-.variant.rainbow {
-  background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
-  color: #fff;
-  box-shadow: 0 0 18px #ffffffcc;
-}
-.variant.inferno {
-  background: linear-gradient(90deg, #ff512f, #dd2476);
-  color: #fff;
-  box-shadow: 0 0 14px #ff4f4fcc;
-}
-.variant.oblivion {
-  background: linear-gradient(90deg, #232526, #414345);
-  color: #fff;
-  box-shadow: 0 0 12px #666666cc;
-}
-.variant.Celestial {
-  background: linear-gradient(90deg, #74ebd5, #acb6e5);
-  color: #111;
-  box-shadow: 0 0 14px #74ebd5cc;
-}
+        /* Specific Variants */
+        .variant.gold {
+            background: linear-gradient(90deg, #ffcc00, #ffb300);
+            color: #222;
+            box-shadow: 0 0 12px #ffcc00cc;
+        }
+        .variant.rainbow {
+            background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
+            color: #fff;
+            box-shadow: 0 0 18px #ffffffcc;
+        }
+        .variant.inferno {
+            background: linear-gradient(90deg, #ff512f, #dd2476);
+            color: #fff;
+            box-shadow: 0 0 14px #ff4f4fcc;
+        }
+        .variant.oblivion {
+            background: linear-gradient(90deg, #232526, #414345);
+            color: #fff;
+            box-shadow: 0 0 12px #666666cc;
+        }
+        .variant.Celestial {
+            background: linear-gradient(90deg, #74ebd5, #acb6e5);
+            color: #111;
+            box-shadow: 0 0 14px #74ebd5cc;
+        }
 
-/* Main content */
-.main {
-  flex: 1;
-  padding: 35px 40px;
-  background: #121212;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-}
+        /* Main content */
+        .main {
+            flex: 1;
+            padding: 35px 40px;
+            background: #121212;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
 
-/* Structure Filters/Sort */
-.structure-controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 25px;
-  justify-content: center;
-}
+        /* Structure Filters/Sort */
+        .structure-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+            justify-content: center;
+        }
 
-.structure-controls label {
-  font-weight: 600;
-  color: #cdd;
-}
+        .structure-controls label {
+            font-weight: 600;
+            color: #cdd;
+        }
 
-.structure-controls select {
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1px solid #4a4a6e;
-  background-color: #383852;
-  color: #eee;
-  font-family: 'Poppins', sans-serif;
-  font-size: 0.95rem;
-}
+        .structure-controls select {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid #4a4a6e;
+            background-color: #383852;
+            color: #eee;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+        }
 
-/* Structures container */
-.structures {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 25px;
-  justify-content: center;
-}
+        /* Game Boosts Inputs Section */
+        .game-boosts-inputs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 25px;
+            margin-bottom: 35px;
+            padding: 20px;
+            background: #1a1a2e;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+            color: #e0e0f0;
+            align-items: center;
+        }
 
-/* Each structure card */
-.structure {
-  background: linear-gradient(145deg, #1e1e2e, #2e2e4e);
-  border-radius: 18px;
-  padding: 24px 22px;
-  width: 240px;
-  cursor: pointer;
-  color: #eee;
-  border: 2px solid transparent;
-  text-align: center;
-  box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.55),
-    inset 0 0 8px #101020aa;
-  transition:
-    box-shadow 0.3s ease,
-    border-color 0.3s ease,
-    transform 0.3s ease;
-  user-select: none;
-}
+        .boost-input-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 15px 25px;
+            background: #2a2c42;
+            border-radius: 15px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
+            min-width: 220px;
+        }
 
-.structure:hover {
-  box-shadow:
-    0 0 20px #00ffe7dd,
-    inset 0 0 12px #00ffe7bb;
-  border-color: #00ffe7;
-  transform: translateY(-6px) scale(1.03);
-}
+        .boost-input-group label {
+            font-weight: 600;
+            color: #cdd;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
 
-.structure.selected {
-  position: relative;
-  background: linear-gradient(145deg, #7f5af0, #5f3dc4);
-  color: #fff;
-  font-weight: 700;
-  transform: translateY(-4px) scale(1.04);
-  box-shadow:
-    0 0 25px #ffd700cc,
-    inset 0 0 18px #ffd70088;
-  border: none; /* remove normal border */
-  z-index: 0;
-}
+        .boost-input-group input[type="number"],
+        .boost-input-group input[type="checkbox"] {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #4a4a6e;
+            background-color: #383852;
+            color: #eee;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            text-align: center;
+        }
 
-/* Pseudo-element for rainbow border */
-.structure.selected::before {
-  content: "";
-  position: absolute;
-  top: -4px;
-  left: -4px;
-  right: -4px;
-  bottom: -4px;
-  border-radius: 20px; /* border rounding */
-  padding: 2px;
-  background: linear-gradient(270deg, red, orange, yellow, green, blue, indigo, violet, red);
-  background-size: 1400% 1400%;
-  animation: rainbowBorder 8s linear infinite;
-  -webkit-mask:
-    linear-gradient(#fff 0 0) content-box,
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: destination-out;
-  mask-composite: exclude;
-  z-index: -1;
-}
+        .boost-input-group input[type="number"] {
+            width: 80px;
+        }
 
-/* Rainbow gradient animation */
-@keyframes rainbowBorder {
-  0% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 100% 50%;
-  }
-}
+        .boost-input-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            appearance: none;
+            background-color: #ccc;
+            border: 2px solid #555;
+            cursor: pointer;
+            position: relative;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
 
-/* Wiki info box */
-.wiki-box {
-  margin-top: 40px;
-  background: #1c1b29;
-  padding: 30px 35px;
-  border-radius: 22px;
-  box-shadow: inset 0 0 25px #000;
-  font-size: 1.1rem;
-  color: #ccc;
-  line-height: 1.5;
-  user-select: text;
-}
+        .boost-input-group input[type="checkbox"]:checked {
+            background-color: #00ff00;
+            border-color: #00cc00;
+        }
 
-.wiki-box h3 {
-  color: #ffd700;
-  text-shadow: 0 0 10px #ffd700;
-  margin-bottom: 20px;
-  font-weight: 700;
-  letter-spacing: 1.1px;
-}
+        /* Stile per il segno di spunta */
+        .boost-input-group input[type="checkbox"]:checked::after {
+            content: '✔';
+            color: #111;
+            font-size: 1.2rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
 
-/* Responsive */
-@media (max-width: 900px) {
-  body {
-    flex-direction: column;
-  }
+        .current-boost-display {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-top: 10px;
+            color: #ffd700;
+            text-shadow: 0 0 8px #ffd700;
+            display: flex; /* Rende il contenitore flex per allineare icona e testo */
+            align-items: center; /* Allinea verticalmente */
+            justify-content: center; /* Centra orizzontalmente */
+        }
 
-  .sidebar {
-    flex-direction: row;
-    overflow-x: auto;
-    overflow-y: hidden;
-    width: 100%;
-    height: 240px;
-    padding: 25px 20px;
-    border-radius: 0;
-    box-shadow: none;
-  }
+        .current-boost-display i {
+            margin-right: 8px;
+            color: #00ffe7;
+            text-shadow: 0 0 5px #00ffe7;
+        }
 
-  .variant, .manager {
-    min-width: 140px;
-    margin: 0 14px 0 0;
-    border-radius: 12px;
-  }
+        /* Structures container */
+        .structures {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+        }
 
-  .main {
-    padding: 25px 20px;
-    height: calc(100vh - 240px);
-  }
+        /* Each structure card */
+        .structure {
+            background: linear-gradient(145deg, #1e1e2e, #2e2e4e);
+            border-radius: 18px;
+            padding: 24px 22px;
+            width: 240px;
+            cursor: pointer;
+            color: #eee;
+            border: 2px solid transparent;
+            text-align: center;
+            box-shadow:
+                0 8px 20px rgba(0, 0, 0, 0.55),
+                inset 0 0 8px #101020aa;
+            transition:
+                box-shadow 0.3s ease,
+                border-color 0.3s ease,
+                transform 0.3s ease;
+            user-select: none;
+        }
 
-  .structure {
-    width: 48%;
-  }
-}
+        .structure:hover {
+            box-shadow:
+                0 0 20px #00ffe7dd,
+                inset 0 0 12px #00ffe7bb;
+            border-color: #00ffe7;
+            transform: translateY(-6px) scale(1.03);
+        }
 
-/* Trade section styles */
-.trade-section {
-  padding: 30px; /* Increased padding */
-  background: #1a1a2e; /* Darker background */
-  color: #eee;
-  margin-top: 40px; /* More space from wiki box */
-  border-radius: 20px; /* Slightly larger radius */
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); /* More prominent shadow */
-}
+        .structure.selected {
+            position: relative;
+            background: linear-gradient(145deg, #7f5af0, #5f3dc4);
+            color: #fff;
+            font-weight: 700;
+            transform: translateY(-4px) scale(1.04);
+            box-shadow:
+                0 0 25px #ffd700cc,
+                inset 0 0 18px #ffd70088;
+            border: none; /* remove normal border */
+            z-index: 0;
+        }
 
-.trade-section h2 {
-  color: #00ffe7;
-  text-shadow: 0 0 10px #00ffe7;
-  margin-bottom: 30px; /* More space below heading */
-  font-size: 1.8rem;
-  text-align: center;
-}
+        /* Pseudo-element for rainbow border */
+        .structure.selected::before {
+            content: "";
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border-radius: 20px; /* border rounding */
+            padding: 2px;
+            background: linear-gradient(270deg, red, orange, yellow, green, blue, indigo, violet, red);
+            background-size: 1400% 1400%;
+            animation: rainbowBorder 8s linear infinite;
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+            z-index: -1;
+        }
 
-.trade-input-group {
-  display: flex;
-  gap: 30px; /* Adjusted gap */
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-bottom: 25px; /* Space before the calculate button */
-}
+        /* Rainbow gradient animation */
+        @keyframes rainbowBorder {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 100% 50%;
+            }
+        }
 
-.trade-card {
-  background: #2a2c42;
-  border-radius: 18px; /* Larger radius for cards */
-  padding: 25px; /* Increased padding */
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
-  width: 320px; /* Slightly larger width */
-  flex-shrink: 0;
-  border: 1px solid #3e3e5a; /* Subtle border */
-}
+        /* Wiki info box */
+        .wiki-box {
+            margin-top: 40px;
+            background: #1c1b29;
+            padding: 30px 35px;
+            border-radius: 22px;
+            box-shadow: inset 0 0 25px #000;
+            font-size: 1.1rem;
+            color: #ccc;
+            line-height: 1.5;
+            user-select: text;
+        }
 
-.trade-card h3 {
-    color: #ffd700;
-    margin-top: 0;
-    margin-bottom: 20px;
-    text-align: center;
-}
+        .wiki-box h3 {
+            color: #ffd700;
+            text-shadow: 0 0 10px #ffd700;
+            margin-bottom: 20px;
+            font-weight: 700;
+            letter-spacing: 1.1px;
+        }
 
-.trade-card label {
-  display: block;
-  margin-bottom: 12px; /* Adjusted margin */
-  font-weight: 600;
-  color: #cdd;
-}
+        /* Responsive */
+        @media (max-width: 900px) {
+            body {
+                flex-direction: column;
+            }
 
-.trade-card select, .trade-card button {
-  width: 100%;
-  padding: 12px; /* Increased padding */
-  margin-top: 8px; /* Adjusted margin */
-  border-radius: 10px; /* Larger radius */
-  border: 1px solid #4a4a6e; /* Darker border */
-  background-color: #383852; /* Darker background */
-  color: #eee;
-  font-family: 'Poppins', sans-serif;
-  font-size: 1rem;
-}
+            .sidebar {
+                flex-direction: row;
+                overflow-x: auto;
+                overflow-y: hidden;
+                width: 100%;
+                height: 240px;
+                padding: 25px 20px;
+                border-radius: 0;
+                box-shadow: none;
+            }
 
-.trade-card select:focus, .trade-card button:focus {
-  outline: none;
-  border-color: #00ffe7;
-  box-shadow: 0 0 8px rgba(0, 255, 231, 0.4);
-}
+            .variant, .manager {
+                min-width: 140px;
+                margin: 0 14px 0 0;
+                border-radius: 12px;
+            }
 
-.trade-card button {
-  cursor: pointer;
-  background-color: #00ffe7;
-  color: #111;
-  font-weight: 700;
-  margin-top: 20px; /* More space for buttons */
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
+            .main {
+                padding: 25px 20px;
+                height: calc(100vh - 240px);
+            }
 
-.trade-card button:hover {
-  background-color: #00c7b0;
-  transform: translateY(-2px);
-}
+            .structure {
+                width: 48%;
+            }
+        }
 
-.structures-list {
-  margin-top: 15px; /* Increased margin */
-  min-height: 60px; /* Taller min-height */
-  border: 1px dashed #555;
-  padding: 12px; /* Increased padding */
-  border-radius: 10px; /* Larger radius */
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px; /* Increased gap */
-  background-color: #22223a; /* Slightly lighter background */
-  max-height: 150px; /* Limit height for structures list */
-  overflow-y: auto; /* Enable scrolling */
-}
+        /* Responsive adjustments for game boosts */
+        @media (max-width: 600px) {
+            .game-boosts-inputs {
+                flex-direction: column;
+                gap: 20px;
+                padding: 15px;
+            }
+            .boost-input-group {
+                width: 100%;
+                max-width: 280px; /* Limita la larghezza anche in colonna */
+            }
+        }
 
-.structure-item {
-  background-color: #3f44aa;
-  padding: 6px 12px; /* Adjusted padding */
-  border-radius: 6px; /* Slightly larger radius */
-  display: flex;
-  align-items: center;
-  font-size: 0.95em; /* Slightly larger font */
-  color: #fff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  opacity: 1; /* Default opacity */
-  animation: fadeIn 0.3s ease-out; /* Fade in animation */
-}
+        /* Trade section styles */
+        .trade-section {
+            padding: 30px; /* Increased padding */
+            background: #1a1a2e; /* Darker background */
+            color: #eee;
+            margin-top: 40px; /* More space from wiki box */
+            border-radius: 20px; /* Slightly larger radius */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); /* More prominent shadow */
+        }
 
-.structure-item.removing {
-  animation: fadeOut 0.3s ease-in forwards; /* Fade out animation */
-}
+        .trade-section h2 {
+            color: #00ffe7;
+            text-shadow: 0 0 10px #00ffe7;
+            margin-bottom: 30px; /* More space below heading */
+            font-size: 1.8rem;
+            text-align: center;
+        }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
+        .trade-input-group {
+            display: flex;
+            gap: 30px; /* Adjusted gap */
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 25px; /* Space before the calculate button */
+        }
 
-@keyframes fadeOut {
-  from { opacity: 1; transform: translateY(0); }
-  to { opacity: 0; transform: translateY(10px); }
-}
+        .trade-card {
+            background: #2a2c42;
+            border-radius: 18px; /* Larger radius for cards */
+            padding: 25px; /* Increased padding */
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+            width: 320px; /* Slightly larger width */
+            flex-shrink: 0;
+            border: 1px solid #3e3e5a; /* Subtle border */
+        }
 
+        .trade-card h3 {
+            color: #ffd700;
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+        }
 
-.structure-item button {
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 1.3em; /* Larger button */
-  line-height: 1;
-  margin-left: 8px; /* More margin */
-  cursor: pointer;
-  padding: 0 5px;
-  width: auto;
-  transition: color 0.2s ease;
-}
+        .trade-card label {
+            display: block;
+            margin-bottom: 12px; /* Adjusted margin */
+            font-weight: 600;
+            color: #cdd;
+        }
 
-.structure-item button:hover {
-  color: #ff5555;
-}
+        .trade-card select, .trade-card button {
+            width: 100%;
+            padding: 12px; /* Increased padding */
+            margin-top: 8px; /* Adjusted margin */
+            border-radius: 10px; /* Larger radius */
+            border: 1px solid #4a4a6e; /* Darker border */
+            background-color: #383852; /* Darker background */
+            color: #eee;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+        }
 
-#finishTradeBtn {
-  display: block; /* Make it a block element to center */
-  margin: 30px auto 0; /* Center the button and add top margin */
-  padding: 15px 30px; /* Larger padding */
-  font-size: 1.2rem; /* Larger font size */
-  font-weight: 700;
-  background-color: #ffd700;
-  color: #111;
-  border: none;
-  border-radius: 12px; /* Larger radius */
-  cursor: pointer;
-  box-shadow: 0 6px 15px rgba(255, 215, 0, 0.5); /* More prominent shadow */
-  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-}
+        .trade-card select:focus, .trade-card button:focus {
+            outline: none;
+            border-color: #00ffe7;
+            box-shadow: 0 0 8px rgba(0, 255, 231, 0.4);
+        }
 
-#finishTradeBtn:hover {
-  background-color: #ffc107;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6);
-}
+        .trade-card button {
+            cursor: pointer;
+            background-color: #00ffe7;
+            color: #111;
+            font-weight: 700;
+            margin-top: 20px; /* More space for buttons */
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
 
-#resultBox {
-  margin-top: 30px;
-  background: #0d0c1b; /* Even darker background for results */
-  color: #eee;
-  padding: 20px; /* Increased padding */
-  border-radius: 15px; /* Larger radius */
-  white-space: pre-wrap;
-  font-family: 'Consolas', 'Monaco', monospace;
-  max-height: 350px; /* Increased max height */
-  overflow-y: auto;
-  border: 1px solid #2e2e4e; /* Darker border */
-  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.7);
-}
+        .trade-card button:hover {
+            background-color: #00c7b0;
+            transform: translateY(-2px);
+        }
 
-/* Bar Chart Styles */
-.trade-chart {
-  margin-top: 30px;
-  padding: 20px;
-  background: #1c1b29;
-  border-radius: 15px;
-  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.7);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-}
+        .structures-list {
+            margin-top: 15px; /* Increased margin */
+            min-height: 60px; /* Taller min-height */
+            border: 1px dashed #555;
+            padding: 12px; /* Increased padding */
+            border-radius: 10px; /* Larger radius */
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px; /* Increased gap */
+            background-color: #22223a; /* Slightly lighter background */
+            max-height: 150px; /* Limit height for structures list */
+            overflow-y: auto; /* Enable scrolling */
+        }
 
-.trade-chart h3 {
-  color: #ffd700;
-  margin-bottom: 15px;
-}
+        .structure-item {
+            background-color: #3f44aa;
+            padding: 6px 12px; /* Adjusted padding */
+            border-radius: 6px; /* Slightly larger radius */
+            display: flex;
+            align-items: center;
+            font-size: 0.95em; /* Slightly larger font */
+            color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            opacity: 1; /* Default opacity */
+            animation: fadeIn 0.3s ease-out; /* Fade in animation */
+        }
 
-.chart-bars {
-  display: flex;
-  width: 100%;
-  height: 150px; /* Fixed height for the bars */
-  align-items: flex-end;
-  justify-content: space-around;
-  gap: 15px;
-  border-bottom: 2px solid #555; /* Baseline */
-  padding-bottom: 5px; /* Space for labels */
-}
+        .structure-item.removing {
+            animation: fadeOut 0.3s ease-in forwards; /* Fade out animation */
+        }
 
-.chart-bar {
-  flex-grow: 1;
-  background-color: #00ffe7;
-  width: 45%; /* Adjust width for 2 bars */
-  border-radius: 8px 8px 0 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  position: relative;
-  transition: height 0.5s ease-out; /* Smooth transition for height change */
-}
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-.chart-bar.trade1 { background-color: #7f5af0; } /* Trade 1 color */
-.chart-bar.trade2 { background-color: #f0a500; } /* Trade 2 color */
-
-
-.bar-label {
-  color: #eee;
-  font-size: 0.9em;
-  margin-top: 5px;
-  text-align: center;
-}
-
-.bar-value {
-  color: #111;
-  font-weight: 700;
-  font-size: 0.9em;
-  position: absolute;
-  top: -20px; /* Position above the bar */
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 2px 5px;
-  border-radius: 4px;
-}
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(10px); }
+        }
 
 
-/* Responsive adjustments for trade section */
-@media (max-width: 768px) {
-  .trade-input-group {
-    flex-direction: column;
-    align-items: center;
-  }
-  .trade-card {
-    width: 90%; /* Make trade cards take more width on smaller screens */
-  }
-  .trade-section {
-    padding: 20px;
-    margin-top: 25px;
-  }
-  .chart-bars {
-    height: 120px; /* Smaller height on mobile */
-  }
-}
-  </style>
+        .structure-item button {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.3em; /* Larger button */
+            line-height: 1;
+            margin-left: 8px; /* More margin */
+            cursor: pointer;
+            padding: 0 5px;
+            width: auto;
+            transition: color 0.2s ease;
+        }
+
+        .structure-item button:hover {
+            color: #ff5555;
+        }
+
+        #finishTradeBtn {
+            display: block; /* Make it a block element to center */
+            margin: 30px auto 0; /* Center the button and add top margin */
+            padding: 15px 30px; /* Larger padding */
+            font-size: 1.2rem; /* Larger font size */
+            font-weight: 700;
+            background-color: #ffd700;
+            color: #111;
+            border: none;
+            border-radius: 12px; /* Larger radius */
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(255, 215, 0, 0.5); /* More prominent shadow */
+            transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        #finishTradeBtn:hover {
+            background-color: #ffc107;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6);
+        }
+
+        #resultBox {
+            margin-top: 30px;
+            background: #0d0c1b; /* Even darker background for results */
+            color: #eee;
+            padding: 20px; /* Increased padding */
+            border-radius: 15px; /* Larger radius */
+            white-space: pre-wrap;
+            font-family: 'Consolas', 'Monaco', monospace;
+            max-height: 350px; /* Increased max height */
+            overflow-y: auto;
+            border: 1px solid #2e2e4e; /* Darker border */
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Bar Chart Styles */
+        .trade-chart {
+            margin-top: 30px;
+            padding: 20px;
+            background: #1c1b29;
+            border-radius: 15px;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.7);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .trade-chart h3 {
+            color: #ffd700;
+            margin-bottom: 15px;
+        }
+
+        .chart-bars {
+            display: flex;
+            width: 100%;
+            height: 150px; /* Fixed height for the bars */
+            align-items: flex-end;
+            justify-content: space-around;
+            gap: 15px;
+            border-bottom: 2px solid #555; /* Baseline */
+            padding-bottom: 5px; /* Space for labels */
+        }
+
+        .chart-bar {
+            flex-grow: 1;
+            background-color: #00ffe7;
+            width: 45%; /* Adjust width for 2 bars */
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            position: relative;
+            transition: height 0.5s ease-out; /* Smooth transition for height change */
+        }
+
+        .chart-bar.trade1 { background-color: #7f5af0; } /* Trade 1 color */
+        .chart-bar.trade2 { background-color: #f0a500; } /* Trade 2 color */
+
+
+        .bar-label {
+            color: #eee;
+            font-size: 0.9em;
+            margin-top: 5px;
+            text-align: center;
+        }
+
+        .bar-value {
+            color: #111;
+            font-weight: 700;
+            font-size: 0.9em;
+            position: absolute;
+            top: -20px; /* Position above the bar */
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+
+
+        /* Responsive adjustments for trade section */
+        @media (max-width: 768px) {
+            .trade-input-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            .trade-card {
+                width: 90%; /* Make trade cards take more width on smaller screens */
+            }
+            .trade-section {
+                padding: 20px;
+                margin-top: 25px;
+            }
+            .chart-bars {
+                height: 120px; /* Smaller height on mobile */
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="sidebar">
-    <div class="variants" id="variants-list"><h2>Variants</h2></div>
-    <div class="managers" id="managers-list"><h2>Managers</h2></div>
-  </div>
-
-  <div class="main">
-    <div class="structure-controls">
-        <label for="rarityFilter">Filter by Rarity:
-            <select id="rarityFilter">
-                <option value="All">All</option>
-                <option value="common">Common</option>
-                <option value="uncommon">Uncommon</option>
-                <option value="rare">Rare</option>
-                <option value="legendary">Legendary</option>
-                <option value="mythic">Mythic</option>
-                <option value="Divine">Divine</option>
-                <option value="Exclusive">Exclusive</option>
-                <option value="starter">Starter</option>
-            </select>
-        </label>
-        <label for="sortOrder">Sort by:
-            <select id="sortOrder">
-                <option value="name-asc">Name (A-Z)</option>
-                <option value="name-desc">Name (Z-A)</option>
-                <option value="mps-asc">Money/sec (Low to High)</option>
-                <option value="mps-desc">Money/sec (High to Low)</option>
-                <option value="price-asc">Price (Low to High)</option>
-                <option value="price-desc">Price (High to Low)</option>
-            </select>
-        </label>
+    <div class="sidebar">
+        <div class="variants" id="variants-list"><h2>Variants</h2></div>
+        <div class="managers" id="managers-list"><h2>Managers</h2></div>
     </div>
 
-    <div class="structures" id="structures-container"></div>
-    <div class="wiki-box" id="wiki-text">Select a structure to see details.</div>
-
-    <div class="trade-section">
-      <h2>Trade Calculator</h2>
-      
-      <div class="trade-input-group">
-        
-        <div class="trade-card">
-          <h3>Trade 1</h3>
-          <label>Variant:
-            <select id="tradeVariant1"></select>
-          </label>
-          <label>Manager:
-            <select id="tradeManager1"></select>
-          </label>
-          <select id="tradeStructureSelect1"></select>
-          <button onclick="addTradeStructure(1)">Add Structure</button>
-          <div id="structuresList1" class="structures-list"></div>
-          <button onclick="clearTradeStructures(1)">Clear Trade 1</button>
+    <div class="main">
+        <div class="structure-controls">
+            <label for="rarityFilter">Filter by Rarity:
+                <select id="rarityFilter">
+                    <option value="All">All</option>
+                    <option value="common">Common</option>
+                    <option value="uncommon">Uncommon</option>
+                    <option value="rare">Rare</option>
+                    <option value="legendary">Legendary</option>
+                    <option value="mythic">Mythic</option>
+                    <option value="Divine">Divine</option>
+                    <option value="Exclusive">Exclusive</option>
+                    <option value="starter">Starter</option>
+                </select>
+            </label>
+            <label for="sortOrder">Sort by:
+                <select id="sortOrder">
+                    <option value="name-asc">Name (A-Z)</option>
+                    <option value="name-desc">Name (Z-A)</option>
+                    <option value="mps-asc">Money/sec (Low to High)</option>
+                    <option value="mps-desc">Money/sec (High to Low)</option>
+                    <option value="price-asc">Price (Low to High)</option>
+                    <option value="price-desc">Price (High to Low)</option>
+                </select>
+            </label>
         </div>
 
-        <div class="trade-card">
-          <h3>Trade 2</h3>
-          <label>Variant:
-            <select id="tradeVariant2"></select>
-          </label>
-          <label>Manager:
-            <select id="tradeManager2"></select>
-          </label>
-          <select id="tradeStructureSelect2"></select>
-          <button onclick="addTradeStructure(2)">Add Structure</button>
-          <div id="structuresList2" class="structures-list"></div>
-          <button onclick="clearTradeStructures(2)">Clear Trade 2</button>
+        <div class="game-boosts-inputs">
+            <div class="boost-input-group">
+                <label for="friendsCount">Amici Online (0-5):</label>
+                <input type="number" id="friendsCount" value="0" min="0" max="5">
+                <span id="onlineFriendsPercentageDisplay" class="current-boost-display"><i class="fas fa-users"></i> +0%</span>
+            </div>
+            <div class="boost-input-group">
+                <label for="isPremium">Premium Account:</label>
+                <input type="checkbox" id="isPremium">
+                <span id="premiumStatusDisplay" class="current-boost-display"><i class="fas fa-crown"></i> Inactive</span>
+            </div>
         </div>
-      </div>
 
-      <button id="finishTradeBtn" onclick="calculateTrades()">Calculate Trades</button>
+        <div class="structures" id="structures-container"></div>
+        <div class="wiki-box" id="wiki-text">Select a structure to see details.</div>
 
-      <div id="tradeChartContainer" class="trade-chart" style="display: none;">
-        <h3>Trade Comparison (Money/sec)</h3>
-        <div class="chart-bars" id="chartBars">
-          </div>
-      </div>
+        <div class="trade-section">
+            <h2>Trade Calculator</h2>
 
-      <pre id="resultBox"></pre>
+            <div class="trade-input-group">
+
+                <div class="trade-card">
+                    <h3>Trade 1</h3>
+                    <label>Variant:
+                        <select id="tradeVariant1"></select>
+                    </label>
+                    <label>Manager:
+                        <select id="tradeManager1"></select>
+                    </label>
+                    <select id="tradeStructureSelect1"></select>
+                    <button onclick="addTradeStructure(1)">Add Structure</button>
+                    <div id="structuresList1" class="structures-list"></div>
+                    <button onclick="clearTradeStructures(1)">Clear Trade 1</button>
+                </div>
+
+                <div class="trade-card">
+                    <h3>Trade 2</h3>
+                    <label>Variant:
+                        <select id="tradeVariant2"></select>
+                    </label>
+                    <label>Manager:
+                        <select id="tradeManager2"></select>
+                    </label>
+                    <select id="tradeStructureSelect2"></select>
+                    <button onclick="addTradeStructure(2)">Add Structure</button>
+                    <div id="structuresList2" class="structures-list"></div>
+                    <button onclick="clearTradeStructures(2)">Clear Trade 2</button>
+                </div>
+            </div>
+
+            <button id="finishTradeBtn" onclick="calculateTrades()">Calculate Trades</button>
+
+            <div id="tradeChartContainer" class="trade-chart" style="display: none;">
+                <h3>Trade Comparison (Money/sec)</h3>
+                <div class="chart-bars" id="chartBars">
+                </div>
+            </div>
+
+            <pre id="resultBox"></pre>
+        </div>
     </div>
-  </div>
 
-  <script>
-    // Base Data
-    const multipliers = {
-      Base: 1, Gold: 1.5, Rainbow: 2, Inferno: 3, Oblivion: 4, Celestial: 5
-    };
-    const variantClasses = {
-      Base: "base", Gold: "gold", Rainbow: "rainbow",
-      Inferno: "inferno", Oblivion: "oblivion", Celestial: "Celestial"
-    };
-    const variants = Object.keys(multipliers).map(name => ({ name, multiplier: multipliers[name] }));
+    <script>
+        // Base Data
+        const multipliers = {
+            Base: 1, Gold: 1.5, Rainbow: 2, Inferno: 3, Oblivion: 4, Celestial: 5
+        };
+        const variantClasses = {
+            Base: "base", Gold: "gold", Rainbow: "rainbow",
+            Inferno: "inferno", Oblivion: "oblivion", Celestial: "Celestial"
+        };
+        const variants = Object.keys(multipliers).map(name => ({ name, multiplier: multipliers[name] }));
 
-    const managers = [
-      { name: "Base Manager", multiplier: 1 },
-      { name: "Clown Manager", multiplier: 1.2 },
-      { name: "Soldier Manager", multiplier: 1.4 },
-      { name: "Mayor Manager", multiplier: 1.6 },
-      { name: "King Manager", multiplier: 2.0 },
-      { name: "Modern Manager", multiplier: 2.4 },
-      { name: "Angel Manager", multiplier: 3 },
-    ];
+        const managers = [
+            { name: "Base Manager", multiplier: 1 },
+            { name: "Clown Manager", multiplier: 1.2 },
+            { name: "Soldier Manager", multiplier: 1.4 },
+            { name: "Mayor Manager", multiplier: 1.6 },
+            { name: "King Manager", multiplier: 2.0 },
+            { name: "Modern Manager", multiplier: 2.4 },
+            { name: "Angel Manager", multiplier: 3 },
+        ];
 
-    // Array of objects for structures, including price and adjusting index
-    const structuresData = [
-      { name: "Noob", income: 1, cycleTime: 4, rarity: "common", price: 30 },
-      { name: "Business Man", income: 5, cycleTime: 4, rarity: "common", price: 200 },
-      { name: "Builder", income: 10, cycleTime: 4, rarity: "starter", price: 0 }, // Price 0 as per your original array
-      { name: "Teacher", income: 10, cycleTime: 5, rarity: "common", price: 500 },
-      { name: "Gardener", income: 20, cycleTime: 8, rarity: "uncommon", price: 1200 },
-      { name: "Painter", income: 75, cycleTime: 10, rarity: "uncommon", price: 3500 },
-      { name: "Chef", income: 105, cycleTime: 10, rarity: "uncommon", price: 8000 },
-      { name: "Mine", income: 189, cycleTime: 12, rarity: "rare", price: 15000 },
-      { name: "Fortune Magician", income: 450, cycleTime: 15, rarity: "rare", price: 45000 },
-      { name: "Bank", income: 1500, cycleTime: 20, rarity: "legendary", price: 200000 },
-      { name: "Skyscraper", income: 4500, cycleTime: 30, rarity: "legendary", price: 750000 },
-      { name: "Stadium", income: 14000, cycleTime: 35, rarity: "mythic", price: 2500000 },
-      { name: "Waterpark", income: 50000, cycleTime: 45, rarity: "mythic", price: 10000000 },
-      { name: "Castle", income: 250000, cycleTime: 40, rarity: "mythic", price: 150000000 },
-      { name: "Club", income: 600000, cycleTime: 60, rarity: "Divine", price: 1000000000 },
-      { name: "Airport", income: 2500000, cycleTime: 60, rarity: "Divine", price: 12000000000 },
-      { name: "Astronaut", income: 1000, cycleTime: 8, rarity: "Exclusive", price: 0 },
-      { name: "Alien Gardener", income: 1800, cycleTime: 10, rarity: "Exclusive", price: 0 },
-      { name: "Ufo", income: 10000, cycleTime: 20, rarity: "Exclusive", price: 0 },
-      { name: "Black Hole", income: 100000, cycleTime: 25, rarity: "Exclusive", price: 0 },
-      { name: "Galaxy", income: 200000, cycleTime: 10, rarity: "Exclusive", price: 0 },
-    ];
+        // Array of objects for structures, including price and adjusting index
+        const structuresData = [
+            { name: "Noob", income: 1, cycleTime: 4, rarity: "common", price: 30 },
+            { name: "Business Man", income: 5, cycleTime: 4, rarity: "common", price: 200 },
+            { name: "Builder", income: 10, cycleTime: 4, rarity: "starter", price: 0 },
+            { name: "Teacher", income: 10, cycleTime: 5, rarity: "common", price: 500 },
+            { name: "Gardener", income: 20, cycleTime: 8, rarity: "uncommon", price: 1200 },
+            { name: "Painter", income: 75, cycleTime: 10, rarity: "uncommon", price: 3500 },
+            { name: "Chef", income: 105, cycleTime: 10, rarity: "uncommon", price: 8000 },
+            { name: "Mine", income: 189, cycleTime: 12, rarity: "rare", price: 15000 },
+            { name: "Fortune Magician", income: 450, cycleTime: 15, rarity: "rare", price: 45000 },
+            { name: "Bank", income: 1500, cycleTime: 20, rarity: "legendary", price: 200000 },
+            { name: "Skyscraper", income: 4500, cycleTime: 30, rarity: "legendary", price: 750000 },
+            { name: "Stadium", income: 14000, cycleTime: 35, rarity: "mythic", price: 2500000 },
+            { name: "Waterpark", income: 50000, cycleTime: 45, rarity: "mythic", price: 10000000 },
+            { name: "Castle", income: 250000, cycleTime: 40, rarity: "mythic", price: 150000000 },
+            { name: "Club", income: 600000, cycleTime: 60, rarity: "Divine", price: 1000000000 },
+            { name: "Airport", income: 2500000, cycleTime: 60, rarity: "Divine", price: 12000000000 },
+            { name: "Astronaut", income: 1000, cycleTime: 8, rarity: "Exclusive", price: 0 },
+            { name: "Alien Gardener", income: 1800, cycleTime: 10, rarity: "Exclusive", price: 0 },
+            { name: "Ufo", income: 10000, cycleTime: 20, rarity: "Exclusive", price: 0 },
+            { name: "Black Hole", income: 100000, cycleTime: 25, rarity: "Exclusive", price: 0 },
+            { name: "Galaxy", income: 200000, cycleTime: 10, rarity: "Exclusive", price: 0 },
+        ];
 
-    // Selected state for the Wiki
-    let selectedVariant = variants[0];
-    let selectedManager = managers[0];
-    let selectedStructureIndex = null;
+        // Selected state for the Wiki
+        let selectedVariant = variants[0];
+        let selectedManager = managers[0];
+        let selectedStructureIndex = null;
 
-    // State for Trades
-    const tradeStates = {
-      1: {
-        variant: variants[0],
-        manager: managers[0],
-        structures: []
-      },
-      2: {
-        variant: variants[0],
-        manager: managers[0],
-        structures: []
-      }
-    };
+        // State for Trades
+        const tradeStates = {
+            1: {
+                variant: variants[0],
+                manager: managers[0],
+                structures: []
+            },
+            2: {
+                variant: variants[0],
+                manager: managers[0],
+                structures: []
+            }
+        };
 
-    // Filter and Sort state for Wiki structures
-    let currentRarityFilter = 'All';
-    let currentSortOrder = 'name-asc';
+        // Filter and Sort state for Wiki structures
+        let currentRarityFilter = 'All';
+        let currentSortOrder = 'name-asc';
 
-    // Function to format money
-    function formatMoney(amount) {
-      if (amount === undefined || amount === null) return "$0";
-      if (amount >= 1e12) return "$" + (amount / 1e12).toFixed(2) + "T"; // Trillions
-      if (amount >= 1e9) return "$" + (amount / 1e9).toFixed(2) + "B"; // Billions
-      if (amount >= 1e6) return "$" + (amount / 1e6).toFixed(2) + "M"; // Millions
-      if (amount >= 1e3) return "$" + (amount / 1e3).toFixed(1) + "K"; // Thousands
-      return "$" + amount.toLocaleString('en-US'); // Use US localization for numbers
-    }
+        // Global Boosts
+        let globalFriendsBoostMultiplier = 1;
+        let globalPremiumMultiplier = 1;
 
-    // Rendering functions for Sidebar and Wiki
-    function renderManagers() {
-      const container = document.getElementById("managers-list");
-      container.innerHTML = '<h2>Managers</h2>';
-      managers.forEach((mgr) => {
-        const div = document.createElement("div");
-        div.className = "manager";
-        if (mgr === selectedManager) div.classList.add("selected");
-        div.textContent = `${mgr.name}: x${mgr.multiplier}`;
-        div.addEventListener("click", () => {
-          selectedManager = mgr;
-          document.querySelectorAll(".manager").forEach(el => el.classList.remove("selected"));
-          div.classList.add("selected");
-          updateWiki();
-          renderStructures(); // Re-render structures with new manager multiplier
-        });
-        container.appendChild(div);
-      });
-    }
-
-    function renderVariants() {
-      const container = document.getElementById("variants-list");
-      container.innerHTML = '<h2>Variants</h2>';
-      variants.forEach((variant) => {
-        const div = document.createElement("div");
-        div.className = `variant ${variantClasses[variant.name]}`;
-        if (variant === selectedVariant) div.classList.add("selected");
-        div.textContent = variant.name;
-        div.addEventListener("click", () => {
-          selectedVariant = variant;
-          document.querySelectorAll(".variant").forEach(el => el.classList.remove("selected"));
-          div.classList.add("selected");
-          updateWiki();
-          renderStructures(); // Re-render structures with new variant multiplier
-        });
-        container.appendChild(div);
-      });
-    }
-
-    function renderStructures() {
-      const container = document.getElementById("structures-container");
-      container.innerHTML = "";
-
-      // Apply filter
-      let filteredStructures = structuresData.filter(s =>
-        currentRarityFilter === 'All' || s.rarity.toLowerCase() === currentRarityFilter.toLowerCase()
-      );
-
-      // Apply sort
-      filteredStructures.sort((a, b) => {
-        if (currentSortOrder === 'name-asc') {
-          return a.name.localeCompare(b.name);
-        } else if (currentSortOrder === 'name-desc') {
-          return b.name.localeCompare(a.name);
-        } else if (currentSortOrder === 'mps-asc') {
-          const mpsA = (a.income * selectedVariant.multiplier * selectedManager.multiplier) / a.cycleTime;
-          const mpsB = (b.income * selectedVariant.multiplier * selectedManager.multiplier) / b.cycleTime;
-          return mpsA - mpsB;
-        } else if (currentSortOrder === 'mps-desc') {
-          const mpsA = (a.income * selectedVariant.multiplier * selectedManager.multiplier) / a.cycleTime;
-          const mpsB = (b.income * selectedVariant.multiplier * selectedManager.multiplier) / b.cycleTime;
-          return mpsB - mpsA;
-        } else if (currentSortOrder === 'price-asc') {
-          return a.price - b.price;
-        } else if (currentSortOrder === 'price-desc') {
-          return b.price - a.price;
+        // Function to format money
+        function formatMoney(amount) {
+            if (amount === undefined || amount === null) return "$0";
+            if (amount >= 1e12) return "$" + (amount / 1e12).toFixed(2) + "T"; // Trillions
+            if (amount >= 1e9) return "$" + (amount / 1e9).toFixed(2) + "B"; // Billions
+            if (amount >= 1e6) return "$" + (amount / 1e6).toFixed(2) + "M"; // Millions
+            if (amount >= 1e3) return "$" + (amount / 1e3).toFixed(1) + "K"; // Thousands
+            return "$" + amount.toLocaleString('en-US'); // Use US localization for numbers
         }
-        return 0;
-      });
 
-      filteredStructures.forEach((struc, i) => {
-        const income = struc.income * selectedVariant.multiplier * selectedManager.multiplier;
-        const moneyPerSec = (income / struc.cycleTime).toFixed(2);
-        const div = document.createElement("div");
-        div.className = "structure";
-        // Find original index to maintain selected state across filter/sort
-        const originalIndex = structuresData.findIndex(s => s.name === struc.name);
-        if (originalIndex === selectedStructureIndex) div.classList.add("selected");
+        // Function to update global boosts and re-render affected sections
+        function updateGlobalBoosts() {
+            const friendsCount = parseInt(document.getElementById('friendsCount').value);
+            const isPremiumActive = document.getElementById('isPremium').checked;
 
-        div.innerHTML = `
-          <h3>${struc.name}</h3>
-          <p class="rarity">Rarity: ${struc.rarity}</p>
-          <p>Price: ${formatMoney(struc.price)}</p>
-          <p>Money/sec: ${moneyPerSec}</p>
-        `;
-        div.addEventListener("click", () => {
-          selectedStructureIndex = originalIndex; // Store original index
-          document.querySelectorAll(".structure").forEach(el => el.classList.remove("selected"));
-          div.classList.add("selected");
-          updateWiki();
-        });
-        container.appendChild(div);
-      });
-    }
+            // --- Calcolo del bonus amici ---
+            const MAX_FRIENDS_FOR_BOOST = 5;
+            const FRIEND_BONUS_PER_FRIEND = 0.05; // 5% per amico
 
-    function updateWiki() {
-      const container = document.getElementById("wiki-text");
-      if (selectedStructureIndex === null) {
-        container.innerHTML = "Select a structure to see details.";
-        return;
-      }
-      const s = structuresData[selectedStructureIndex];
-      const income = s.income * selectedVariant.multiplier * selectedManager.multiplier;
-      const mps = (income / s.cycleTime).toFixed(2);
-      container.innerHTML = `
-        <h3>${s.name} (${selectedVariant.name})</h3>
-        <p><strong>Price:</strong> ${formatMoney(s.price)}</p>
-        <p><strong>Money per cycle:</strong> ${formatMoney(income)}</p>
-        <p><strong>Cycle time:</strong> ${s.cycleTime} sec</p>
-        <p><strong>Money/sec:</strong> ${mps}</p>
-        <p><strong>Manager boost:</strong> x${selectedManager.multiplier}</p>
-        <p><strong>Variant boost:</strong> x${selectedVariant.multiplier}</p>
-      `;
-    }
+            let actualFriendsCount = Math.min(friendsCount, MAX_FRIENDS_FOR_BOOST);
+            globalFriendsBoostMultiplier = 1 + (actualFriendsCount * FRIEND_BONUS_PER_FRIEND);
+            document.getElementById('onlineFriendsPercentageDisplay').innerHTML = `<i class="fas fa-users"></i> +${(actualFriendsCount * 5)}%`;
 
-    // Event Listeners for Filters and Sort
-    document.getElementById('rarityFilter').addEventListener('change', (event) => {
-        currentRarityFilter = event.target.value;
-        renderStructures();
-    });
+            // --- Calcolo del bonus Premium ---
+            const PREMIUM_BONUS_MULTIPLIER = 1.10; // 10% di bonus
+            globalPremiumMultiplier = isPremiumActive ? PREMIUM_BONUS_MULTIPLIER : 1;
 
-    document.getElementById('sortOrder').addEventListener('change', (event) => {
-        currentSortOrder = event.target.value;
-        renderStructures();
-    });
+            const premiumStatusElement = document.getElementById('premiumStatusDisplay');
+            premiumStatusElement.innerHTML = `<i class="fas fa-crown"></i> ${isPremiumActive ? `Active (x${PREMIUM_BONUS_MULTIPLIER})` : 'Inactive'}`;
+            premiumStatusElement.style.color = isPremiumActive ? '#00ff00' : '#ff5555';
+            premiumStatusElement.style.textShadow = isPremiumActive ? '0 0 8px #00ff00' : '0 0 8px #ff5555';
 
-
-    // Functions for the Trade section
-    function populateTradeSelects() {
-      [1, 2].forEach((num) => {
-        const variantSelect = document.getElementById(`tradeVariant${num}`);
-        const managerSelect = document.getElementById(`tradeManager${num}`);
-        const structureSelect = document.getElementById(`tradeStructureSelect${num}`);
-
-        // Populate variants
-        variantSelect.innerHTML = "";
-        variants.forEach(v => {
-          const option = document.createElement("option");
-          option.value = v.name;
-          option.textContent = v.name;
-          variantSelect.appendChild(option);
-        });
-        variantSelect.addEventListener('change', (event) => {
-          tradeStates[num].variant = variants.find(v => v.name === event.target.value);
-          updateTradeStructureList(num); // Update the list to reflect bonuses
-        });
-
-        // Populate managers
-        managerSelect.innerHTML = "";
-        managers.forEach(m => {
-          const option = document.createElement("option");
-          option.value = m.name;
-          option.textContent = m.name;
-          managerSelect.appendChild(option);
-        });
-        managerSelect.addEventListener('change', (event) => {
-          tradeStates[num].manager = managers.find(m => m.name === event.target.value);
-          updateTradeStructureList(num); // Update the list to reflect bonuses
-        });
-
-        // Populate structures
-        structureSelect.innerHTML = "";
-        structuresData.forEach((str) => {
-          const option = document.createElement("option");
-          option.value = str.name;
-          option.textContent = `${str.name} (${str.rarity})`;
-          structureSelect.appendChild(option);
-        });
-      });
-    }
-
-    function addTradeStructure(tradeNum) {
-      const select = document.getElementById(`tradeStructureSelect${tradeNum}`);
-      const selectedName = select.value;
-      const structure = structuresData.find((s) => s.name === selectedName);
-      if (structure) {
-        tradeStates[tradeNum].structures.push(structure);
-        updateTradeStructureList(tradeNum);
-        select.value = ""; // Reset selection
-      }
-    }
-
-    function removeTradeStructure(tradeNum, index) {
-        const container = document.getElementById(`structuresList${tradeNum}`);
-        const itemToRemove = container.children[index]; // Get the specific element
-
-        if (itemToRemove) {
-            itemToRemove.classList.add('removing'); // Add removing class for animation
-            itemToRemove.addEventListener('animationend', () => {
-                tradeStates[tradeNum].structures.splice(index, 1);
-                updateTradeStructureList(tradeNum); // Re-render after animation
-            }, { once: true }); // Ensure event listener fires only once
+            // Re-render sections that depend on these boosts
+            renderStructures();
+            updateWiki();
+            updateTradeStructureList(1);
+            updateTradeStructureList(2);
         }
-    }
 
-
-    function updateTradeStructureList(tradeNum) {
-      const container = document.getElementById(`structuresList${tradeNum}`);
-      container.innerHTML = "";
-      const currentVariant = tradeStates[tradeNum].variant;
-      const currentManager = tradeStates[tradeNum].manager;
-
-      tradeStates[tradeNum].structures.forEach((str, i) => {
-        const effectiveIncome = str.income * currentVariant.multiplier * currentManager.multiplier;
-        const div = document.createElement("div");
-        div.classList.add("structure-item");
-        div.innerHTML = `
-          ${str.name} (${formatMoney(effectiveIncome)} / ${str.cycleTime}s)
-          <button onclick="removeTradeStructure(${tradeNum}, ${i})">×</button>
-        `;
-        container.appendChild(div);
-      });
-    }
-
-    function clearTradeStructures(tradeNum) {
-      tradeStates[tradeNum].structures = [];
-      updateTradeStructureList(tradeNum);
-      document.getElementById("resultBox").textContent = "";
-      document.getElementById("tradeChartContainer").style.display = 'none'; // Hide chart on clear
-    }
-
-    function renderTradeChart(value1, value2) {
-        const chartContainer = document.getElementById("tradeChartContainer");
-        const chartBars = document.getElementById("chartBars");
-        chartBars.innerHTML = ''; // Clear previous bars
-
-        chartContainer.style.display = 'flex'; // Show the chart container
-
-        const maxValue = Math.max(value1, value2);
-        const scaleFactor = maxValue > 0 ? 100 / maxValue : 0; // Max height 100%
-
-        const bar1Height = value1 * scaleFactor;
-        const bar2Height = value2 * scaleFactor;
-
-        const bar1 = document.createElement('div');
-        bar1.className = 'chart-bar trade1';
-        bar1.style.height = `${Math.max(bar1Height, 5)}%`; // Min height for visibility
-        bar1.innerHTML = `<span class="bar-value">${value1.toFixed(2)}</span><span class="bar-label">Trade 1</span>`;
-
-        const bar2 = document.createElement('div');
-        bar2.className = 'chart-bar trade2';
-        bar2.style.height = `${Math.max(bar2Height, 5)}%`; // Min height for visibility
-        bar2.innerHTML = `<span class="bar-value">${value2.toFixed(2)}</span><span class="bar-label">Trade 2</span>`;
-
-        chartBars.appendChild(bar1);
-        chartBars.appendChild(bar2);
-    }
-
-    function calculateTrades() {
-      let results = "";
-      const allTradesValid = [1, 2].every(tradeNum => {
-        if (tradeStates[tradeNum].structures.length === 0) {
-          alert(`Please add at least one structure to Trade ${tradeNum}.`);
-          return false;
+        // Rendering functions for Sidebar and Wiki
+        function renderManagers() {
+            const container = document.getElementById("managers-list");
+            container.innerHTML = '<h2>Managers</h2>';
+            managers.forEach((mgr) => {
+                const div = document.createElement("div");
+                div.className = "manager";
+                if (mgr === selectedManager) div.classList.add("selected");
+                div.textContent = `${mgr.name}: x${mgr.multiplier}`;
+                div.addEventListener("click", () => {
+                    selectedManager = mgr;
+                    document.querySelectorAll(".manager").forEach(el => el.classList.remove("selected"));
+                    div.classList.add("selected");
+                    updateWiki();
+                    renderStructures(); // Re-render structures with new manager multiplier
+                });
+                container.appendChild(div);
+            });
         }
-        return true;
-      });
 
-      if (!allTradesValid) return;
+        function renderVariants() {
+            const container = document.getElementById("variants-list");
+            container.innerHTML = '<h2>Variants</h2>';
+            variants.forEach((variant) => {
+                const div = document.createElement("div");
+                div.className = `variant ${variantClasses[variant.name]}`;
+                if (variant === selectedVariant) div.classList.add("selected");
+                div.textContent = variant.name;
+                div.addEventListener("click", () => {
+                    selectedVariant = variant;
+                    document.querySelectorAll(".variant").forEach(el => el.classList.remove("selected"));
+                    div.classList.add("selected");
+                    updateWiki();
+                    renderStructures(); // Re-render structures with new variant multiplier
+                });
+                container.appendChild(div);
+            });
+        }
 
-      const trade1 = tradeStates[1];
-      const trade2 = tradeStates[2];
+        function renderStructures() {
+            const container = document.getElementById("structures-container");
+            container.innerHTML = "";
 
-      const calculateTotalIncomePerSecond = (trade) => {
-        let totalIncomePerSecond = 0;
-        trade.structures.forEach((str) => {
-          const effectiveIncome = str.income * trade.variant.multiplier * trade.manager.multiplier;
-          totalIncomePerSecond += effectiveIncome / str.cycleTime;
+            // Apply filter
+            let filteredStructures = structuresData.filter(s =>
+                currentRarityFilter === 'All' || s.rarity.toLowerCase() === currentRarityFilter.toLowerCase()
+            );
+
+            // Apply sort
+            filteredStructures.sort((a, b) => {
+                if (currentSortOrder === 'name-asc') {
+                    return a.name.localeCompare(b.name);
+                } else if (currentSortOrder === 'name-desc') {
+                    return b.name.localeCompare(a.name);
+                } else if (currentSortOrder === 'mps-asc') {
+                    const mpsA = (a.income * selectedVariant.multiplier * selectedManager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier) / a.cycleTime;
+                    const mpsB = (b.income * selectedVariant.multiplier * selectedManager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier) / b.cycleTime;
+                    return mpsA - mpsB;
+                } else if (currentSortOrder === 'mps-desc') {
+                    const mpsA = (a.income * selectedVariant.multiplier * selectedManager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier) / a.cycleTime;
+                    const mpsB = (b.income * selectedVariant.multiplier * selectedManager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier) / b.cycleTime;
+                    return mpsB - mpsA;
+                } else if (currentSortOrder === 'price-asc') {
+                    return a.price - b.price;
+                } else if (currentSortOrder === 'price-desc') {
+                    return b.price - a.price;
+                }
+                return 0;
+            });
+
+            filteredStructures.forEach((struc, i) => {
+                const income = struc.income * selectedVariant.multiplier * selectedManager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier;
+                const moneyPerSec = (income / struc.cycleTime).toFixed(2);
+                const div = document.createElement("div");
+                div.className = "structure";
+                // Find original index to maintain selected state across filter/sort
+                const originalIndex = structuresData.findIndex(s => s.name === struc.name);
+                if (originalIndex === selectedStructureIndex) div.classList.add("selected");
+
+                div.innerHTML = `
+                    <h3>${struc.name}</h3>
+                    <p class="rarity">Rarity: ${struc.rarity}</p>
+                    <p>Price: ${formatMoney(struc.price)}</p>
+                    <p>Money/sec: ${moneyPerSec}</p>
+                `;
+                div.addEventListener("click", () => {
+                    selectedStructureIndex = originalIndex; // Store original index
+                    document.querySelectorAll(".structure").forEach(el => el.classList.remove("selected"));
+                    div.classList.add("selected");
+                    updateWiki();
+                });
+                container.appendChild(div);
+            });
+        }
+
+        function updateWiki() {
+            const container = document.getElementById("wiki-text");
+            if (selectedStructureIndex === null) {
+                container.innerHTML = "Select a structure to see details.";
+                return;
+            }
+            const s = structuresData[selectedStructureIndex];
+            const income = s.income * selectedVariant.multiplier * selectedManager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier;
+            const mps = (income / s.cycleTime).toFixed(2);
+            container.innerHTML = `
+                <h3>${s.name} (${selectedVariant.name})</h3>
+                <p><strong>Price:</strong> ${formatMoney(s.price)}</p>
+                <p><strong>Money per cycle:</strong> ${formatMoney(income)}</p>
+                <p><strong>Cycle time:</strong> ${s.cycleTime} sec</p>
+                <p><strong>Money/sec:</strong> ${mps}</p>
+                <p><strong>Manager boost:</strong> x${selectedManager.multiplier}</p>
+                <p><strong>Variant boost:</strong> x${selectedVariant.multiplier}</p>
+                <p><strong>Friends boost:</strong> x${globalFriendsBoostMultiplier.toFixed(2)} (${((globalFriendsBoostMultiplier - 1) * 100).toFixed(0)}%)</p>
+                <p><strong>Premium boost:</strong> x${globalPremiumMultiplier.toFixed(2)} (${((globalPremiumMultiplier - 1) * 100).toFixed(0)}%)</p>
+            `;
+        }
+
+        // Event Listeners for Filters and Sort
+        document.getElementById('rarityFilter').addEventListener('change', (event) => {
+            currentRarityFilter = event.target.value;
+            renderStructures();
         });
-        return totalIncomePerSecond;
-      };
 
-      const totalIncomePerSecond1 = calculateTotalIncomePerSecond(trade1);
-      const totalIncomePerSecond2 = calculateTotalIncomePerSecond(trade2);
+        document.getElementById('sortOrder').addEventListener('change', (event) => {
+            currentSortOrder = event.target.value;
+            renderStructures();
+        });
 
-      results += `--- Trade Summary ---\n\n`;
 
-      results += `Trade 1:\n`;
-      results += `  Variant: ${trade1.variant.name} (x${trade1.variant.multiplier})\n`;
-      results += `  Manager: ${trade1.manager.name} (x${trade1.manager.multiplier})\n`;
-      results += `  Structures: ${trade1.structures.map(s => s.name).join(', ')}\n`;
-      results += `  Total income per second: ${totalIncomePerSecond1.toFixed(2)}\n\n`;
+        // Functions for the Trade section
+        function populateTradeSelects() {
+            [1, 2].forEach((num) => {
+                const variantSelect = document.getElementById(`tradeVariant${num}`);
+                const managerSelect = document.getElementById(`tradeManager${num}`);
+                const structureSelect = document.getElementById(`tradeStructureSelect${num}`);
 
-      results += `Trade 2:\n`;
-      results += `  Variant: ${trade2.variant.name} (x${trade2.variant.multiplier})\n`;
-      results += `  Manager: ${trade2.manager.name} (x${trade2.manager.multiplier})\n`;
-      results += `  Structures: ${trade2.structures.map(s => s.name).join(', ')}\n`;
-      results += `  Total income per second: ${totalIncomePerSecond2.toFixed(2)}\n\n`;
+                // Populate variants
+                variantSelect.innerHTML = "";
+                variants.forEach(v => {
+                    const option = document.createElement("option");
+                    option.value = v.name;
+                    option.textContent = v.name;
+                    variantSelect.appendChild(option);
+                });
+                variantSelect.addEventListener('change', (event) => {
+                    tradeStates[num].variant = variants.find(v => v.name === event.target.value);
+                    updateTradeStructureList(num); // Update the list to reflect bonuses
+                });
 
-      const difference = totalIncomePerSecond1 - totalIncomePerSecond2;
-      results += `--- Comparison Result ---\n`;
-      if (difference > 0) {
-        results += `Trade 1 is better than Trade 2 by ${difference.toFixed(2)} money/sec.\n`;
-      } else if (difference < 0) {
-        results += `Trade 2 is better than Trade 1 by ${Math.abs(difference).toFixed(2)} money/sec.\n`;
-      } else {
-        results += `Both trades have an equivalent income per second value.\n`;
-      }
+                // Populate managers
+                managerSelect.innerHTML = "";
+                managers.forEach(m => {
+                    const option = document.createElement("option");
+                    option.value = m.name;
+                    option.textContent = m.name;
+                    managerSelect.appendChild(option);
+                });
+                managerSelect.addEventListener('change', (event) => {
+                    tradeStates[num].manager = managers.find(m => m.name === event.target.value);
+                    updateTradeStructureList(num); // Update the list to reflect bonuses
+                });
 
-      document.getElementById("resultBox").textContent = results;
+                // Populate structures
+                structureSelect.innerHTML = "";
+                structuresData.forEach((str) => {
+                    const option = document.createElement("option");
+                    option.value = str.name;
+                    option.textContent = `${str.name} (${str.rarity})`;
+                    structureSelect.appendChild(option);
+                });
+            });
+        }
 
-      // Render the chart
-      renderTradeChart(totalIncomePerSecond1, totalIncomePerSecond2);
-    }
+        function addTradeStructure(tradeNum) {
+            const select = document.getElementById(`tradeStructureSelect${tradeNum}`);
+            const selectedName = select.value;
+            const structure = structuresData.find((s) => s.name === selectedName);
+            if (structure) {
+                tradeStates[tradeNum].structures.push(structure);
+                updateTradeStructureList(tradeNum);
+                select.value = ""; // Reset selection
+            }
+        }
 
-    // Initialization on page load
-    document.addEventListener("DOMContentLoaded", () => {
-      renderVariants();
-      renderManagers();
-      renderStructures(); // Initial render with default filter/sort
-      populateTradeSelects();
-      // Initialize empty trade lists display
-      updateTradeStructureList(1);
-      updateTradeStructureList(2);
-    });
+        function removeTradeStructure(tradeNum, index) {
+            const container = document.getElementById(`structuresList${tradeNum}`);
+            const itemToRemove = container.children[index]; // Get the specific element
 
-  </script>
+            if (itemToRemove) {
+                itemToRemove.classList.add('removing'); // Add removing class for animation
+                itemToRemove.addEventListener('animationend', () => {
+                    tradeStates[tradeNum].structures.splice(index, 1);
+                    updateTradeStructureList(tradeNum); // Re-render after animation
+                }, { once: true }); // Ensure event listener fires only once
+            }
+        }
+
+
+        function updateTradeStructureList(tradeNum) {
+            const container = document.getElementById(`structuresList${tradeNum}`);
+            container.innerHTML = "";
+            const currentVariant = tradeStates[tradeNum].variant;
+            const currentManager = tradeStates[tradeNum].manager;
+
+            tradeStates[tradeNum].structures.forEach((str, i) => {
+                const effectiveIncome = str.income * currentVariant.multiplier * currentManager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier;
+                const div = document.createElement("div");
+                div.classList.add("structure-item");
+                div.innerHTML = `
+                    ${str.name} (${formatMoney(effectiveIncome)} / ${str.cycleTime}s)
+                    <button onclick="removeTradeStructure(${tradeNum}, ${i})">×</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function clearTradeStructures(tradeNum) {
+            tradeStates[tradeNum].structures = [];
+            updateTradeStructureList(tradeNum);
+            document.getElementById("resultBox").textContent = "";
+            document.getElementById("tradeChartContainer").style.display = 'none'; // Hide chart on clear
+        }
+
+        function renderTradeChart(value1, value2) {
+            const chartContainer = document.getElementById("tradeChartContainer");
+            const chartBars = document.getElementById("chartBars");
+            chartBars.innerHTML = ''; // Clear previous bars
+
+            chartContainer.style.display = 'flex'; // Show the chart container
+
+            const maxValue = Math.max(value1, value2);
+            const scaleFactor = maxValue > 0 ? 100 / maxValue : 0; // Max height 100%
+
+            const bar1Height = value1 * scaleFactor;
+            const bar2Height = value2 * scaleFactor;
+
+            const bar1 = document.createElement('div');
+            bar1.className = 'chart-bar trade1';
+            bar1.style.height = `${Math.max(bar1Height, 5)}%`; // Min height for visibility
+            bar1.innerHTML = `<span class="bar-value">${value1.toFixed(2)}</span><span class="bar-label">Trade 1</span>`;
+
+            const bar2 = document.createElement('div');
+            bar2.className = 'chart-bar trade2';
+            bar2.style.height = `${Math.max(bar2Height, 5)}%`; // Min height for visibility
+            bar2.innerHTML = `<span class="bar-value">${value2.toFixed(2)}</span><span class="bar-label">Trade 2</span>`;
+
+            chartBars.appendChild(bar1);
+            chartBars.appendChild(bar2);
+        }
+
+        function calculateTrades() {
+            let results = "";
+            const allTradesValid = [1, 2].every(tradeNum => {
+                if (tradeStates[tradeNum].structures.length === 0) {
+                    alert(`Please add at least one structure to Trade ${tradeNum}.`);
+                    return false;
+                }
+                return true;
+            });
+
+            if (!allTradesValid) return;
+
+            const trade1 = tradeStates[1];
+            const trade2 = tradeStates[2];
+
+            const calculateTotalIncomePerSecond = (trade) => {
+                let totalIncomePerSecond = 0;
+                trade.structures.forEach((str) => {
+                    const effectiveIncome = str.income * trade.variant.multiplier * trade.manager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier;
+                    totalIncomePerSecond += effectiveIncome / str.cycleTime;
+                });
+                return totalIncomePerSecond;
+            };
+
+            const totalIncomePerSecond1 = calculateTotalIncomePerSecond(trade1);
+            const totalIncomePerSecond2 = calculateTotalIncomePerSecond(trade2);
+
+            results += `--- Trade Summary ---\n\n`;
+
+            results += `Trade 1:\n`;
+            results += `  Variant: ${trade1.variant.name} (x${trade1.variant.multiplier})\n`;
+            results += `  Manager: ${trade1.manager.name} (x${trade1.manager.multiplier})\n`;
+            results += `  Structures: ${trade1.structures.map(s => s.name).join(', ')}\n`;
+            results += `  Total income per second: ${totalIncomePerSecond1.toFixed(2)}\n\n`;
+
+            results += `Trade 2:\n`;
+            results += `  Variant: ${trade2.variant.name} (x${trade2.variant.multiplier})\n`;
+            results += `  Manager: ${trade2.manager.name} (x${trade2.manager.multiplier})\n`;
+            results += `  Structures: ${trade2.structures.map(s => s.name).join(', ')}\n`;
+            results += `  Total income per second: ${totalIncomePerSecond2.toFixed(2)}\n\n`;
+
+            const difference = totalIncomePerSecond1 - totalIncomePerSecond2;
+            results += `--- Comparison Result ---\n`;
+            if (difference > 0) {
+                results += `Trade 1 is better than Trade 2 by ${difference.toFixed(2)} money/sec.\n`;
+            } else if (difference < 0) {
+                results += `Trade 2 is better than Trade 1 by ${Math.abs(difference).toFixed(2)} money/sec.\n`;
+            } else {
+                results += `Both trades have an equivalent income per second value.\n`;
+            }
+
+            document.getElementById("resultBox").textContent = results;
+
+            // Render the chart
+            renderTradeChart(totalIncomePerSecond1, totalIncomePerSecond2);
+        }
+
+        // Initialization on page load
+        document.addEventListener("DOMContentLoaded", () => {
+            renderVariants();
+            renderManagers();
+            renderStructures(); // Initial render with default filter/sort
+            populateTradeSelects();
+            // Initialize empty trade lists display
+            updateTradeStructureList(1);
+            updateTradeStructureList(2);
+
+            // Add event listeners for global boosts
+            document.getElementById('friendsCount').addEventListener('input', updateGlobalBoosts);
+            document.getElementById('isPremium').addEventListener('change', updateGlobalBoosts);
+            
+            // Call updateGlobalBoosts at startup to set initial values
+            updateGlobalBoosts();
+        });
+
+    </script>
 </body>
 </html>
