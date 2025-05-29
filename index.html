@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Idle Life Wiki</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-/* Reset e base */
+/* Reset and base */
 * {
   box-sizing: border-box;
   transition: all 0.3s ease;
@@ -32,6 +32,7 @@ body {
   box-shadow: 6px 0 25px rgba(0, 0, 0, 0.7);
   border-top-right-radius: 25px;
   border-bottom-right-radius: 25px;
+  flex-shrink: 0; /* Prevent sidebar from shrinking */
 }
 
 .sidebar h2 {
@@ -43,7 +44,7 @@ body {
   letter-spacing: 1.1px;
 }
 
-/* Variants e Managers */
+/* Variants and Managers */
 .variant, .manager {
   background: #2a2c42;
   border-radius: 15px;
@@ -80,7 +81,7 @@ body {
   font-weight: 700;
 }
 
-/* Variants specifici */
+/* Specific Variants */
 .variant.gold {
   background: linear-gradient(90deg, #ffcc00, #ffb300);
   color: #222;
@@ -115,6 +116,30 @@ body {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+}
+
+/* Structure Filters/Sort */
+.structure-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 25px;
+  justify-content: center;
+}
+
+.structure-controls label {
+  font-weight: 600;
+  color: #cdd;
+}
+
+.structure-controls select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #4a4a6e;
+  background-color: #383852;
+  color: #eee;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
 }
 
 /* Structures container */
@@ -162,11 +187,11 @@ body {
   box-shadow:
     0 0 25px #ffd700cc,
     inset 0 0 18px #ffd70088;
-  border: none; /* togli il bordo normale */
+  border: none; /* remove normal border */
   z-index: 0;
 }
 
-/* Pseudo-elemento per il bordo rainbow */
+/* Pseudo-element for rainbow border */
 .structure.selected::before {
   content: "";
   position: absolute;
@@ -174,20 +199,20 @@ body {
   left: -4px;
   right: -4px;
   bottom: -4px;
-  border-radius: 20px; /* arrotondamento bordo */
+  border-radius: 20px; /* border rounding */
   padding: 2px;
   background: linear-gradient(270deg, red, orange, yellow, green, blue, indigo, violet, red);
   background-size: 1400% 1400%;
   animation: rainbowBorder 8s linear infinite;
   -webkit-mask:
-    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0) content-box,
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: destination-out;
   mask-composite: exclude;
   z-index: -1;
 }
 
-/* Animazione gradiente rainbow */
+/* Rainbow gradient animation */
 @keyframes rainbowBorder {
   0% {
     background-position: 0% 50%;
@@ -251,22 +276,350 @@ body {
   }
 }
 
+/* Trade section styles */
+.trade-section {
+  padding: 30px; /* Increased padding */
+  background: #1a1a2e; /* Darker background */
+  color: #eee;
+  margin-top: 40px; /* More space from wiki box */
+  border-radius: 20px; /* Slightly larger radius */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6); /* More prominent shadow */
+}
 
+.trade-section h2 {
+  color: #00ffe7;
+  text-shadow: 0 0 10px #00ffe7;
+  margin-bottom: 30px; /* More space below heading */
+  font-size: 1.8rem;
+  text-align: center;
+}
+
+.trade-input-group {
+  display: flex;
+  gap: 30px; /* Adjusted gap */
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 25px; /* Space before the calculate button */
+}
+
+.trade-card {
+  background: #2a2c42;
+  border-radius: 18px; /* Larger radius for cards */
+  padding: 25px; /* Increased padding */
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
+  width: 320px; /* Slightly larger width */
+  flex-shrink: 0;
+  border: 1px solid #3e3e5a; /* Subtle border */
+}
+
+.trade-card h3 {
+    color: #ffd700;
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.trade-card label {
+  display: block;
+  margin-bottom: 12px; /* Adjusted margin */
+  font-weight: 600;
+  color: #cdd;
+}
+
+.trade-card select, .trade-card button {
+  width: 100%;
+  padding: 12px; /* Increased padding */
+  margin-top: 8px; /* Adjusted margin */
+  border-radius: 10px; /* Larger radius */
+  border: 1px solid #4a4a6e; /* Darker border */
+  background-color: #383852; /* Darker background */
+  color: #eee;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+}
+
+.trade-card select:focus, .trade-card button:focus {
+  outline: none;
+  border-color: #00ffe7;
+  box-shadow: 0 0 8px rgba(0, 255, 231, 0.4);
+}
+
+.trade-card button {
+  cursor: pointer;
+  background-color: #00ffe7;
+  color: #111;
+  font-weight: 700;
+  margin-top: 20px; /* More space for buttons */
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.trade-card button:hover {
+  background-color: #00c7b0;
+  transform: translateY(-2px);
+}
+
+.structures-list {
+  margin-top: 15px; /* Increased margin */
+  min-height: 60px; /* Taller min-height */
+  border: 1px dashed #555;
+  padding: 12px; /* Increased padding */
+  border-radius: 10px; /* Larger radius */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px; /* Increased gap */
+  background-color: #22223a; /* Slightly lighter background */
+  max-height: 150px; /* Limit height for structures list */
+  overflow-y: auto; /* Enable scrolling */
+}
+
+.structure-item {
+  background-color: #3f44aa;
+  padding: 6px 12px; /* Adjusted padding */
+  border-radius: 6px; /* Slightly larger radius */
+  display: flex;
+  align-items: center;
+  font-size: 0.95em; /* Slightly larger font */
+  color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  opacity: 1; /* Default opacity */
+  animation: fadeIn 0.3s ease-out; /* Fade in animation */
+}
+
+.structure-item.removing {
+  animation: fadeOut 0.3s ease-in forwards; /* Fade out animation */
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(10px); }
+}
+
+
+.structure-item button {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.3em; /* Larger button */
+  line-height: 1;
+  margin-left: 8px; /* More margin */
+  cursor: pointer;
+  padding: 0 5px;
+  width: auto;
+  transition: color 0.2s ease;
+}
+
+.structure-item button:hover {
+  color: #ff5555;
+}
+
+#finishTradeBtn {
+  display: block; /* Make it a block element to center */
+  margin: 30px auto 0; /* Center the button and add top margin */
+  padding: 15px 30px; /* Larger padding */
+  font-size: 1.2rem; /* Larger font size */
+  font-weight: 700;
+  background-color: #ffd700;
+  color: #111;
+  border: none;
+  border-radius: 12px; /* Larger radius */
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(255, 215, 0, 0.5); /* More prominent shadow */
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#finishTradeBtn:hover {
+  background-color: #ffc107;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6);
+}
+
+#resultBox {
+  margin-top: 30px;
+  background: #0d0c1b; /* Even darker background for results */
+  color: #eee;
+  padding: 20px; /* Increased padding */
+  border-radius: 15px; /* Larger radius */
+  white-space: pre-wrap;
+  font-family: 'Consolas', 'Monaco', monospace;
+  max-height: 350px; /* Increased max height */
+  overflow-y: auto;
+  border: 1px solid #2e2e4e; /* Darker border */
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.7);
+}
+
+/* Bar Chart Styles */
+.trade-chart {
+  margin-top: 30px;
+  padding: 20px;
+  background: #1c1b29;
+  border-radius: 15px;
+  box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.7);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.trade-chart h3 {
+  color: #ffd700;
+  margin-bottom: 15px;
+}
+
+.chart-bars {
+  display: flex;
+  width: 100%;
+  height: 150px; /* Fixed height for the bars */
+  align-items: flex-end;
+  justify-content: space-around;
+  gap: 15px;
+  border-bottom: 2px solid #555; /* Baseline */
+  padding-bottom: 5px; /* Space for labels */
+}
+
+.chart-bar {
+  flex-grow: 1;
+  background-color: #00ffe7;
+  width: 45%; /* Adjust width for 2 bars */
+  border-radius: 8px 8px 0 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+  transition: height 0.5s ease-out; /* Smooth transition for height change */
+}
+
+.chart-bar.trade1 { background-color: #7f5af0; } /* Trade 1 color */
+.chart-bar.trade2 { background-color: #f0a500; } /* Trade 2 color */
+
+
+.bar-label {
+  color: #eee;
+  font-size: 0.9em;
+  margin-top: 5px;
+  text-align: center;
+}
+
+.bar-value {
+  color: #111;
+  font-weight: 700;
+  font-size: 0.9em;
+  position: absolute;
+  top: -20px; /* Position above the bar */
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+
+/* Responsive adjustments for trade section */
+@media (max-width: 768px) {
+  .trade-input-group {
+    flex-direction: column;
+    align-items: center;
+  }
+  .trade-card {
+    width: 90%; /* Make trade cards take more width on smaller screens */
+  }
+  .trade-section {
+    padding: 20px;
+    margin-top: 25px;
+  }
+  .chart-bars {
+    height: 120px; /* Smaller height on mobile */
+  }
+}
   </style>
 </head>
 <body>
   <div class="sidebar">
-    <div class="variants" id="variants-list"><h2>Varianti</h2></div>
+    <div class="variants" id="variants-list"><h2>Variants</h2></div>
     <div class="managers" id="managers-list"><h2>Managers</h2></div>
   </div>
 
   <div class="main">
+    <div class="structure-controls">
+        <label for="rarityFilter">Filter by Rarity:
+            <select id="rarityFilter">
+                <option value="All">All</option>
+                <option value="common">Common</option>
+                <option value="uncommon">Uncommon</option>
+                <option value="rare">Rare</option>
+                <option value="legendary">Legendary</option>
+                <option value="mythic">Mythic</option>
+                <option value="Divine">Divine</option>
+                <option value="Exclusive">Exclusive</option>
+                <option value="starter">Starter</option>
+            </select>
+        </label>
+        <label for="sortOrder">Sort by:
+            <select id="sortOrder">
+                <option value="name-asc">Name (A-Z)</option>
+                <option value="name-desc">Name (Z-A)</option>
+                <option value="mps-asc">Money/sec (Low to High)</option>
+                <option value="mps-desc">Money/sec (High to Low)</option>
+                <option value="price-asc">Price (Low to High)</option>
+                <option value="price-desc">Price (High to Low)</option>
+            </select>
+        </label>
+    </div>
+
     <div class="structures" id="structures-container"></div>
-    <div class="wiki-box" id="wiki-text">Seleziona una struttura per vedere i dettagli.</div>
+    <div class="wiki-box" id="wiki-text">Select a structure to see details.</div>
+
+    <div class="trade-section">
+      <h2>Trade Calculator</h2>
+      
+      <div class="trade-input-group">
+        
+        <div class="trade-card">
+          <h3>Trade 1</h3>
+          <label>Variant:
+            <select id="tradeVariant1"></select>
+          </label>
+          <label>Manager:
+            <select id="tradeManager1"></select>
+          </label>
+          <select id="tradeStructureSelect1"></select>
+          <button onclick="addTradeStructure(1)">Add Structure</button>
+          <div id="structuresList1" class="structures-list"></div>
+          <button onclick="clearTradeStructures(1)">Clear Trade 1</button>
+        </div>
+
+        <div class="trade-card">
+          <h3>Trade 2</h3>
+          <label>Variant:
+            <select id="tradeVariant2"></select>
+          </label>
+          <label>Manager:
+            <select id="tradeManager2"></select>
+          </label>
+          <select id="tradeStructureSelect2"></select>
+          <button onclick="addTradeStructure(2)">Add Structure</button>
+          <div id="structuresList2" class="structures-list"></div>
+          <button onclick="clearTradeStructures(2)">Clear Trade 2</button>
+        </div>
+      </div>
+
+      <button id="finishTradeBtn" onclick="calculateTrades()">Calculate Trades</button>
+
+      <div id="tradeChartContainer" class="trade-chart" style="display: none;">
+        <h3>Trade Comparison (Money/sec)</h3>
+        <div class="chart-bars" id="chartBars">
+          </div>
+      </div>
+
+      <pre id="resultBox"></pre>
+    </div>
   </div>
 
-  <!-- Script identico, mantenuto per funzionalità -->
   <script>
+    // Base Data
     const multipliers = {
       Base: 1, Gold: 1.5, Rainbow: 2, Inferno: 3, Oblivion: 4, Celestial: 5
     };
@@ -275,6 +628,7 @@ body {
       Inferno: "inferno", Oblivion: "oblivion", Celestial: "Celestial"
     };
     const variants = Object.keys(multipliers).map(name => ({ name, multiplier: multipliers[name] }));
+
     const managers = [
       { name: "Base Manager", multiplier: 1 },
       { name: "Clown Manager", multiplier: 1.2 },
@@ -284,41 +638,66 @@ body {
       { name: "Modern Manager", multiplier: 2.4 },
       { name: "Angel Manager", multiplier: 3 },
     ];
-    const prices = [30, 200, 0, 500, 1200, 3500, 8000, 15000, 45000, 200000, 750000, 2500000, 10000000, 150000000, 1000000000, 12000000000, 0, 0, 0, 0, 0, 0];
+
+    // Array of objects for structures, including price and adjusting index
     const structuresData = [
-      { name: "Noob", income: 1, cycleTime: 4, rarity: "common" },
-      { name: "Business Man", income: 5, cycleTime: 4, rarity: "common" },
-      { name: "Builder", income: 10, cycleTime: 4, rarity: "starter" },
-      { name: "Teacher", income: 10, cycleTime: 5, rarity: "common" },
-      { name: "Gardener", income: 20, cycleTime: 8, rarity: "uncommon" },
-      { name: "Painter", income: 75, cycleTime: 10, rarity: "uncommon" },
-      { name: "Chef", income: 105, cycleTime: 10, rarity: "uncommon" },
-      { name: "Mine", income: 189, cycleTime: 12, rarity: "rare" },
-      { name: "Fortune Magician", income: 450, cycleTime: 15, rarity: "rare" },
-      { name: "Bank", income: 1500, cycleTime: 20, rarity: "legendary" },
-      { name: "Skyscraper", income: 4500, cycleTime: 30, rarity: "legendary" },
-      { name: "Stadium", income: 14000, cycleTime: 35, rarity: "mythic" },
-      { name: "Waterpark", income: 50000, cycleTime: 45, rarity: "mythic" },
-      { name: "Castle", income: 250000, cycleTime: 40, rarity: "mythic" },
-      { name: "Club", income: 600000, cycleTime: 60, rarity: "Divine" },
-      { name: "Airport", income: 2500000, cycleTime: 60, rarity: "Divine" },
-      { name: "Astronaut", income: 1000, cycleTime: 8, rarity: "Exclusive" },
-      { name: "Alien Gardener", income: 1800, cycleTime: 10, rarity: "Exclusive" },
-      { name: "Ufo", income: 10000, cycleTime: 20, rarity: "Exclusive" },
-      { name: "Black Hole", income: 100000, cycleTime: 25, rarity: "Exclusive" },
-      { name: "Galaxy", income: 200000, cycleTime: 10, rarity: "Exclusive" },
+      { name: "Noob", income: 1, cycleTime: 4, rarity: "common", price: 30 },
+      { name: "Business Man", income: 5, cycleTime: 4, rarity: "common", price: 200 },
+      { name: "Builder", income: 10, cycleTime: 4, rarity: "starter", price: 0 }, // Price 0 as per your original array
+      { name: "Teacher", income: 10, cycleTime: 5, rarity: "common", price: 500 },
+      { name: "Gardener", income: 20, cycleTime: 8, rarity: "uncommon", price: 1200 },
+      { name: "Painter", income: 75, cycleTime: 10, rarity: "uncommon", price: 3500 },
+      { name: "Chef", income: 105, cycleTime: 10, rarity: "uncommon", price: 8000 },
+      { name: "Mine", income: 189, cycleTime: 12, rarity: "rare", price: 15000 },
+      { name: "Fortune Magician", income: 450, cycleTime: 15, rarity: "rare", price: 45000 },
+      { name: "Bank", income: 1500, cycleTime: 20, rarity: "legendary", price: 200000 },
+      { name: "Skyscraper", income: 4500, cycleTime: 30, rarity: "legendary", price: 750000 },
+      { name: "Stadium", income: 14000, cycleTime: 35, rarity: "mythic", price: 2500000 },
+      { name: "Waterpark", income: 50000, cycleTime: 45, rarity: "mythic", price: 10000000 },
+      { name: "Castle", income: 250000, cycleTime: 40, rarity: "mythic", price: 150000000 },
+      { name: "Club", income: 600000, cycleTime: 60, rarity: "Divine", price: 1000000000 },
+      { name: "Airport", income: 2500000, cycleTime: 60, rarity: "Divine", price: 12000000000 },
+      { name: "Astronaut", income: 1000, cycleTime: 8, rarity: "Exclusive", price: 0 },
+      { name: "Alien Gardener", income: 1800, cycleTime: 10, rarity: "Exclusive", price: 0 },
+      { name: "Ufo", income: 10000, cycleTime: 20, rarity: "Exclusive", price: 0 },
+      { name: "Black Hole", income: 100000, cycleTime: 25, rarity: "Exclusive", price: 0 },
+      { name: "Galaxy", income: 200000, cycleTime: 10, rarity: "Exclusive", price: 0 },
     ];
 
+    // Selected state for the Wiki
     let selectedVariant = variants[0];
     let selectedManager = managers[0];
     let selectedStructureIndex = null;
 
+    // State for Trades
+    const tradeStates = {
+      1: {
+        variant: variants[0],
+        manager: managers[0],
+        structures: []
+      },
+      2: {
+        variant: variants[0],
+        manager: managers[0],
+        structures: []
+      }
+    };
+
+    // Filter and Sort state for Wiki structures
+    let currentRarityFilter = 'All';
+    let currentSortOrder = 'name-asc';
+
+    // Function to format money
     function formatMoney(amount) {
-      if (amount >= 1e6) return "$" + (amount / 1e6).toFixed(2) + "M";
-      if (amount >= 1e3) return "$" + (amount / 1e3).toFixed(1) + "K";
-      return "$" + amount.toLocaleString();
+      if (amount === undefined || amount === null) return "$0";
+      if (amount >= 1e12) return "$" + (amount / 1e12).toFixed(2) + "T"; // Trillions
+      if (amount >= 1e9) return "$" + (amount / 1e9).toFixed(2) + "B"; // Billions
+      if (amount >= 1e6) return "$" + (amount / 1e6).toFixed(2) + "M"; // Millions
+      if (amount >= 1e3) return "$" + (amount / 1e3).toFixed(1) + "K"; // Thousands
+      return "$" + amount.toLocaleString('en-US'); // Use US localization for numbers
     }
 
+    // Rendering functions for Sidebar and Wiki
     function renderManagers() {
       const container = document.getElementById("managers-list");
       container.innerHTML = '<h2>Managers</h2>';
@@ -332,7 +711,7 @@ body {
           document.querySelectorAll(".manager").forEach(el => el.classList.remove("selected"));
           div.classList.add("selected");
           updateWiki();
-          renderStructures();
+          renderStructures(); // Re-render structures with new manager multiplier
         });
         container.appendChild(div);
       });
@@ -340,7 +719,7 @@ body {
 
     function renderVariants() {
       const container = document.getElementById("variants-list");
-      container.innerHTML = '<h2>Varianti</h2>';
+      container.innerHTML = '<h2>Variants</h2>';
       variants.forEach((variant) => {
         const div = document.createElement("div");
         div.className = `variant ${variantClasses[variant.name]}`;
@@ -351,7 +730,7 @@ body {
           document.querySelectorAll(".variant").forEach(el => el.classList.remove("selected"));
           div.classList.add("selected");
           updateWiki();
-          renderStructures();
+          renderStructures(); // Re-render structures with new variant multiplier
         });
         container.appendChild(div);
       });
@@ -360,19 +739,51 @@ body {
     function renderStructures() {
       const container = document.getElementById("structures-container");
       container.innerHTML = "";
-      structuresData.forEach((struc, i) => {
+
+      // Apply filter
+      let filteredStructures = structuresData.filter(s =>
+        currentRarityFilter === 'All' || s.rarity.toLowerCase() === currentRarityFilter.toLowerCase()
+      );
+
+      // Apply sort
+      filteredStructures.sort((a, b) => {
+        if (currentSortOrder === 'name-asc') {
+          return a.name.localeCompare(b.name);
+        } else if (currentSortOrder === 'name-desc') {
+          return b.name.localeCompare(a.name);
+        } else if (currentSortOrder === 'mps-asc') {
+          const mpsA = (a.income * selectedVariant.multiplier * selectedManager.multiplier) / a.cycleTime;
+          const mpsB = (b.income * selectedVariant.multiplier * selectedManager.multiplier) / b.cycleTime;
+          return mpsA - mpsB;
+        } else if (currentSortOrder === 'mps-desc') {
+          const mpsA = (a.income * selectedVariant.multiplier * selectedManager.multiplier) / a.cycleTime;
+          const mpsB = (b.income * selectedVariant.multiplier * selectedManager.multiplier) / b.cycleTime;
+          return mpsB - mpsA;
+        } else if (currentSortOrder === 'price-asc') {
+          return a.price - b.price;
+        } else if (currentSortOrder === 'price-desc') {
+          return b.price - a.price;
+        }
+        return 0;
+      });
+
+      filteredStructures.forEach((struc, i) => {
         const income = struc.income * selectedVariant.multiplier * selectedManager.multiplier;
         const moneyPerSec = (income / struc.cycleTime).toFixed(2);
         const div = document.createElement("div");
         div.className = "structure";
-        if (i === selectedStructureIndex) div.classList.add("selected");
+        // Find original index to maintain selected state across filter/sort
+        const originalIndex = structuresData.findIndex(s => s.name === struc.name);
+        if (originalIndex === selectedStructureIndex) div.classList.add("selected");
+
         div.innerHTML = `
           <h3>${struc.name}</h3>
           <p class="rarity">Rarity: ${struc.rarity}</p>
-          <p>Price: ${formatMoney(prices[i])}</p>
-          <p>Money/sec: ${moneyPerSec}</p>`;
+          <p>Price: ${formatMoney(struc.price)}</p>
+          <p>Money/sec: ${moneyPerSec}</p>
+        `;
         div.addEventListener("click", () => {
-          selectedStructureIndex = i;
+          selectedStructureIndex = originalIndex; // Store original index
           document.querySelectorAll(".structure").forEach(el => el.classList.remove("selected"));
           div.classList.add("selected");
           updateWiki();
@@ -384,7 +795,7 @@ body {
     function updateWiki() {
       const container = document.getElementById("wiki-text");
       if (selectedStructureIndex === null) {
-        container.innerHTML = "Seleziona una struttura per vedere i dettagli.";
+        container.innerHTML = "Select a structure to see details.";
         return;
       }
       const s = structuresData[selectedStructureIndex];
@@ -392,18 +803,216 @@ body {
       const mps = (income / s.cycleTime).toFixed(2);
       container.innerHTML = `
         <h3>${s.name} (${selectedVariant.name})</h3>
-        <p><strong>Price:</strong> ${formatMoney(prices[selectedStructureIndex])}</p>
-        <p><strong>Money:</strong> ${formatMoney(income)}</p>
-        <p><strong>Time:</strong> ${s.cycleTime} sec</p>
+        <p><strong>Price:</strong> ${formatMoney(s.price)}</p>
+        <p><strong>Money per cycle:</strong> ${formatMoney(income)}</p>
+        <p><strong>Cycle time:</strong> ${s.cycleTime} sec</p>
         <p><strong>Money/sec:</strong> ${mps}</p>
         <p><strong>Manager boost:</strong> x${selectedManager.multiplier}</p>
-        <p><strong>Variant:</strong> x${selectedVariant.multiplier}</p>`;
+        <p><strong>Variant boost:</strong> x${selectedVariant.multiplier}</p>
+      `;
     }
 
-    renderVariants();
-    renderManagers();
-    renderStructures();
+    // Event Listeners for Filters and Sort
+    document.getElementById('rarityFilter').addEventListener('change', (event) => {
+        currentRarityFilter = event.target.value;
+        renderStructures();
+    });
+
+    document.getElementById('sortOrder').addEventListener('change', (event) => {
+        currentSortOrder = event.target.value;
+        renderStructures();
+    });
+
+
+    // Functions for the Trade section
+    function populateTradeSelects() {
+      [1, 2].forEach((num) => {
+        const variantSelect = document.getElementById(`tradeVariant${num}`);
+        const managerSelect = document.getElementById(`tradeManager${num}`);
+        const structureSelect = document.getElementById(`tradeStructureSelect${num}`);
+
+        // Populate variants
+        variantSelect.innerHTML = "";
+        variants.forEach(v => {
+          const option = document.createElement("option");
+          option.value = v.name;
+          option.textContent = v.name;
+          variantSelect.appendChild(option);
+        });
+        variantSelect.addEventListener('change', (event) => {
+          tradeStates[num].variant = variants.find(v => v.name === event.target.value);
+          updateTradeStructureList(num); // Update the list to reflect bonuses
+        });
+
+        // Populate managers
+        managerSelect.innerHTML = "";
+        managers.forEach(m => {
+          const option = document.createElement("option");
+          option.value = m.name;
+          option.textContent = m.name;
+          managerSelect.appendChild(option);
+        });
+        managerSelect.addEventListener('change', (event) => {
+          tradeStates[num].manager = managers.find(m => m.name === event.target.value);
+          updateTradeStructureList(num); // Update the list to reflect bonuses
+        });
+
+        // Populate structures
+        structureSelect.innerHTML = "";
+        structuresData.forEach((str) => {
+          const option = document.createElement("option");
+          option.value = str.name;
+          option.textContent = `${str.name} (${str.rarity})`;
+          structureSelect.appendChild(option);
+        });
+      });
+    }
+
+    function addTradeStructure(tradeNum) {
+      const select = document.getElementById(`tradeStructureSelect${tradeNum}`);
+      const selectedName = select.value;
+      const structure = structuresData.find((s) => s.name === selectedName);
+      if (structure) {
+        tradeStates[tradeNum].structures.push(structure);
+        updateTradeStructureList(tradeNum);
+        select.value = ""; // Reset selection
+      }
+    }
+
+    function removeTradeStructure(tradeNum, index) {
+        const container = document.getElementById(`structuresList${tradeNum}`);
+        const itemToRemove = container.children[index]; // Get the specific element
+
+        if (itemToRemove) {
+            itemToRemove.classList.add('removing'); // Add removing class for animation
+            itemToRemove.addEventListener('animationend', () => {
+                tradeStates[tradeNum].structures.splice(index, 1);
+                updateTradeStructureList(tradeNum); // Re-render after animation
+            }, { once: true }); // Ensure event listener fires only once
+        }
+    }
+
+
+    function updateTradeStructureList(tradeNum) {
+      const container = document.getElementById(`structuresList${tradeNum}`);
+      container.innerHTML = "";
+      const currentVariant = tradeStates[tradeNum].variant;
+      const currentManager = tradeStates[tradeNum].manager;
+
+      tradeStates[tradeNum].structures.forEach((str, i) => {
+        const effectiveIncome = str.income * currentVariant.multiplier * currentManager.multiplier;
+        const div = document.createElement("div");
+        div.classList.add("structure-item");
+        div.innerHTML = `
+          ${str.name} (${formatMoney(effectiveIncome)} / ${str.cycleTime}s)
+          <button onclick="removeTradeStructure(${tradeNum}, ${i})">×</button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function clearTradeStructures(tradeNum) {
+      tradeStates[tradeNum].structures = [];
+      updateTradeStructureList(tradeNum);
+      document.getElementById("resultBox").textContent = "";
+      document.getElementById("tradeChartContainer").style.display = 'none'; // Hide chart on clear
+    }
+
+    function renderTradeChart(value1, value2) {
+        const chartContainer = document.getElementById("tradeChartContainer");
+        const chartBars = document.getElementById("chartBars");
+        chartBars.innerHTML = ''; // Clear previous bars
+
+        chartContainer.style.display = 'flex'; // Show the chart container
+
+        const maxValue = Math.max(value1, value2);
+        const scaleFactor = maxValue > 0 ? 100 / maxValue : 0; // Max height 100%
+
+        const bar1Height = value1 * scaleFactor;
+        const bar2Height = value2 * scaleFactor;
+
+        const bar1 = document.createElement('div');
+        bar1.className = 'chart-bar trade1';
+        bar1.style.height = `${Math.max(bar1Height, 5)}%`; // Min height for visibility
+        bar1.innerHTML = `<span class="bar-value">${value1.toFixed(2)}</span><span class="bar-label">Trade 1</span>`;
+
+        const bar2 = document.createElement('div');
+        bar2.className = 'chart-bar trade2';
+        bar2.style.height = `${Math.max(bar2Height, 5)}%`; // Min height for visibility
+        bar2.innerHTML = `<span class="bar-value">${value2.toFixed(2)}</span><span class="bar-label">Trade 2</span>`;
+
+        chartBars.appendChild(bar1);
+        chartBars.appendChild(bar2);
+    }
+
+    function calculateTrades() {
+      let results = "";
+      const allTradesValid = [1, 2].every(tradeNum => {
+        if (tradeStates[tradeNum].structures.length === 0) {
+          alert(`Please add at least one structure to Trade ${tradeNum}.`);
+          return false;
+        }
+        return true;
+      });
+
+      if (!allTradesValid) return;
+
+      const trade1 = tradeStates[1];
+      const trade2 = tradeStates[2];
+
+      const calculateTotalIncomePerSecond = (trade) => {
+        let totalIncomePerSecond = 0;
+        trade.structures.forEach((str) => {
+          const effectiveIncome = str.income * trade.variant.multiplier * trade.manager.multiplier;
+          totalIncomePerSecond += effectiveIncome / str.cycleTime;
+        });
+        return totalIncomePerSecond;
+      };
+
+      const totalIncomePerSecond1 = calculateTotalIncomePerSecond(trade1);
+      const totalIncomePerSecond2 = calculateTotalIncomePerSecond(trade2);
+
+      results += `--- Trade Summary ---\n\n`;
+
+      results += `Trade 1:\n`;
+      results += `  Variant: ${trade1.variant.name} (x${trade1.variant.multiplier})\n`;
+      results += `  Manager: ${trade1.manager.name} (x${trade1.manager.multiplier})\n`;
+      results += `  Structures: ${trade1.structures.map(s => s.name).join(', ')}\n`;
+      results += `  Total income per second: ${totalIncomePerSecond1.toFixed(2)}\n\n`;
+
+      results += `Trade 2:\n`;
+      results += `  Variant: ${trade2.variant.name} (x${trade2.variant.multiplier})\n`;
+      results += `  Manager: ${trade2.manager.name} (x${trade2.manager.multiplier})\n`;
+      results += `  Structures: ${trade2.structures.map(s => s.name).join(', ')}\n`;
+      results += `  Total income per second: ${totalIncomePerSecond2.toFixed(2)}\n\n`;
+
+      const difference = totalIncomePerSecond1 - totalIncomePerSecond2;
+      results += `--- Comparison Result ---\n`;
+      if (difference > 0) {
+        results += `Trade 1 is better than Trade 2 by ${difference.toFixed(2)} money/sec.\n`;
+      } else if (difference < 0) {
+        results += `Trade 2 is better than Trade 1 by ${Math.abs(difference).toFixed(2)} money/sec.\n`;
+      } else {
+        results += `Both trades have an equivalent income per second value.\n`;
+      }
+
+      document.getElementById("resultBox").textContent = results;
+
+      // Render the chart
+      renderTradeChart(totalIncomePerSecond1, totalIncomePerSecond2);
+    }
+
+    // Initialization on page load
+    document.addEventListener("DOMContentLoaded", () => {
+      renderVariants();
+      renderManagers();
+      renderStructures(); // Initial render with default filter/sort
+      populateTradeSelects();
+      // Initialize empty trade lists display
+      updateTradeStructureList(1);
+      updateTradeStructureList(2);
+    });
+
   </script>
 </body>
 </html>
-
