@@ -1,1503 +1,1681 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Idle Life Wiki & Trade Calculator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Idle Life Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* General Reset & Base Styles */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            transition: all 0.3s ease-in-out; /* Smooth transitions for most elements */
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0a081a, #201e3d, #1a1a2e); /* Deeper, richer background */
-            color: #e0e0f0;
-            display: flex;
-            min-height: 100vh; /* Use min-height for content flexibility */
-            overflow-x: hidden; /* Prevent horizontal scroll */
-            background-attachment: fixed; /* Keep background fixed */
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 300px; /* Slightly narrower sidebar */
-            background: linear-gradient(180deg, #101020, #151a30); /* Darker, more defined sidebar */
-            padding: 30px 20px;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            box-shadow: 6px 0 30px rgba(0, 0, 0, 0.8); /* Stronger shadow */
-            border-top-right-radius: 25px;
-            border-bottom-right-radius: 25px;
-            flex-shrink: 0;
-            position: sticky; /* Keep sidebar in place */
-            top: 0; /* Align to top */
-            height: 100vh; /* Take full viewport height */
-        }
-
-        .sidebar h2 {
-            color: #00e0ff; /* Brighter cyan */
-            text-shadow: 0 0 15px rgba(0, 224, 255, 0.7); /* More intense glow */
-            margin-bottom: 30px; /* More space */
-            font-size: 1.6rem;
-            font-weight: 700;
-            letter-spacing: 1.2px;
-            text-align: center;
-            position: relative;
-            padding-bottom: 10px;
-        }
-
-        .sidebar h2::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            bottom: 0;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: #00e0ff;
-            border-radius: 2px;
-            box-shadow: 0 0 8px rgba(0, 224, 255, 0.5);
-        }
-
-        /* Variants and Managers */
-        .variant, .manager {
-            background: #25263a; /* Subtle dark blue */
-            border-radius: 12px; /* Softer corners */
-            margin: 10px 0; /* Less vertical margin */
-            padding: 12px 20px;
-            font-weight: 600;
-            font-size: 1rem; /* Slightly smaller font */
-            cursor: pointer;
-            border: 2px solid transparent;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* Softer shadow */
-            color: #c9c9e6; /* Lighter text color */
-            user-select: none;
-            position: relative; /* For pseudo-elements */
-            overflow: hidden; /* For hover effects */
-        }
-
-        .variant:hover, .manager:hover {
-            background-color: #3b3d5e; /* Hover background */
-            color: #fff;
-            box-shadow: 0 0 18px rgba(127, 90, 240, 0.6); /* Purple glow */
-            transform: translateY(-5px) scale(1.02); /* More pronounced lift */
-            border-color: #7f5af0; /* Hover border color */
-        }
-
-        .variant.selected, .manager.selected {
-            border: 3px solid; /* Solid border for selected */
-            border-image: linear-gradient(45deg, #ffc107, #f0a500, #ff8c00) 1; /* Gold gradient border */
-            background: linear-gradient(90deg, #f0a500, #ffc107); /* Gold background */
-            color: #1a1a1a; /* Darker text for contrast */
-            box-shadow: 0 0 25px rgba(255, 204, 0, 0.8), inset 0 0 10px rgba(0,0,0,0.5); /* Stronger glow */
-            transform: translateY(-3px) scale(1.03);
-            font-weight: 700;
-        }
-
-        /* Specific Variants - Refined gradients and shadows */
-        .variant.gold {
-            background: linear-gradient(90deg, #ffcc00, #e6b800);
-            color: #1a1a1a;
-            box-shadow: 0 0 15px rgba(255, 204, 0, 0.8);
-        }
-        .variant.rainbow {
-            background: linear-gradient(90deg, #f00, #f80, #ff0, #0f0, #0ff, #00f, #80f);
-            background-size: 400% 100%; /* For animation */
-            animation: rainbowBackground 8s linear infinite;
-            color: #fff;
-            text-shadow: 0 0 5px rgba(0,0,0,0.5);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
-        }
-        @keyframes rainbowBackground {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
-        .variant.inferno {
-            background: linear-gradient(90deg, #ff512f, #dd2476, #ff0000); /* More intense fire */
-            color: #fff;
-            box-shadow: 0 0 18px rgba(255, 79, 79, 0.7);
-        }
-        .variant.oblivion {
-            background: linear-gradient(90deg, #1e1e1e, #333333, #444444); /* Deeper dark */
-            color: #ddd;
-            box-shadow: 0 0 15px rgba(102, 102, 102, 0.7);
-        }
-        .variant.Celestial {
-            background: linear-gradient(90deg, #74ebd5, #9face6, #acb6e5); /* Softer, celestial glow */
-            color: #1a1a1a;
-            box-shadow: 0 0 18px rgba(116, 235, 213, 0.7);
-        }
-
-        /* Main content */
-        .main {
-            flex: 1;
-            padding: 40px; /* More generous padding */
-            background: #121212;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 30px; /* Add some general spacing between sections */
-        }
-
-        /* Structure Filters/Sort */
-        .structure-controls {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px; /* Increased gap */
-            margin-bottom: 30px; /* More space below */
-            justify-content: center;
-            background: #1a1a2e; /* Match main section background */
-            padding: 20px 30px;
-            border-radius: 15px;
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
-        }
-
-        .structure-controls label {
-            font-weight: 600;
-            color: #b0b0d0; /* Softer label color */
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .structure-controls select {
-            padding: 10px 15px; /* Larger padding */
-            border-radius: 10px; /* More rounded */
-            border: 1px solid #4a4a6e;
-            background-color: #30304a; /* Darker input background */
-            color: #eee;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem; /* Slightly larger font */
-            appearance: none; /* Remove default arrow */
-            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23eeeeee%22%20d%3D%22M287%20197.3L159.2%2069.5c-4.7-4.7-12.3-4.7-17%200L5.4%20197.3c-4.7%204.7-4.7%2012.3%200%2017l17%2017c4.7%204.7%2012.3%204.7%2017%200l93.8-93.8l93.8%2093.8c4.7%204.7%2012.3%204.7%2017%200l17-17c4.7-4.7%204.7-12.3%200-17z%22%2F%3E%3C%2Fsvg%3E'); /* Custom arrow */
-            background-repeat: no-repeat;
-            background-position: right 10px top 50%;
-            background-size: 12px auto;
-            cursor: pointer;
-        }
-        .structure-controls select:focus {
-            outline: none;
-            border-color: #00e0ff;
-            box-shadow: 0 0 10px rgba(0, 224, 255, 0.5);
-        }
-
-        /* Game Boosts Inputs Section */
-        .game-boosts-inputs {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 40px; /* Larger gap for better visual separation */
-            margin-bottom: 40px;
-            padding: 30px; /* Increased padding */
-            background: #1a1a2e;
-            border-radius: 25px; /* More rounded */
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7); /* Stronger shadow */
-            color: #e0e0f0;
-            align-items: center;
-            position: relative; /* For decorative elements */
-        }
-
-        .game-boosts-inputs::before, .game-boosts-inputs::after {
-            content: '';
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            opacity: 0.2;
-            filter: blur(15px);
-        }
-        .game-boosts-inputs::before {
-            top: -20px;
-            left: -20px;
-            background: #00e0ff;
-        }
-        .game-boosts-inputs::after {
-            bottom: -20px;
-            right: -20px;
-            background: #ffc107;
-        }
-
-        .boost-input-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px; /* Increased gap */
-            padding: 20px 30px;
-            background: #2a2c42;
-            border-radius: 18px; /* More rounded */
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.6); /* Deeper inset shadow */
-            min-width: 250px; /* Slightly wider */
-            border: 1px solid #383852;
-            backdrop-filter: blur(3px); /* Subtle blur effect */
-        }
-
-        .boost-input-group label {
-            font-weight: 600;
-            color: #cdd;
-            font-size: 1.15rem; /* Larger font */
-            margin-bottom: 5px;
-        }
-
-        .boost-input-group input[type="number"],
-        .boost-input-group input[type="checkbox"] {
-            padding: 12px; /* Larger padding */
-            border-radius: 10px; /* More rounded */
-            border: 1px solid #4a4a6e;
-            background-color: #383852;
-            color: #eee;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.05rem; /* Slightly larger font */
-            text-align: center;
-        }
-
-        .boost-input-group input[type="number"] {
-            width: 90px; /* Wider input */
-        }
-
-        .boost-input-group input[type="checkbox"] {
-            width: 24px; /* Larger checkbox */
-            height: 24px;
-            appearance: none;
-            background-color: #555; /* Darker unchecked background */
-            border: 2px solid #777; /* Stronger border */
-            cursor: pointer;
-            position: relative;
-            transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-            outline: none;
-        }
-
-        .boost-input-group input[type="checkbox"]:checked {
-            background-color: #00ff00;
-            border-color: #00cc00;
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
-        }
-
-        /* Checkmark style */
-        .boost-input-group input[type="checkbox"]:checked::after {
-            content: '✔';
-            color: #111;
-            font-size: 1.4rem; /* Larger checkmark */
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-weight: bold;
-        }
-
-        .current-boost-display {
-            font-size: 1.4rem; /* Larger font */
-            font-weight: 700;
-            margin-top: 15px; /* More margin */
-            color: #ffd700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7); /* Enhanced glow */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .current-boost-display i {
-            margin-right: 10px; /* More space for icon */
-            color: #00ffe7;
-            text-shadow: 0 0 8px rgba(0, 255, 231, 0.6);
-        }
-
-        /* Structures container */
-        .structures {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 30px; /* Increased gap */
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        /* Each structure card */
-        .structure {
-            background: linear-gradient(145deg, #181825, #28283a); /* Deeper background */
-            border-radius: 20px; /* More rounded */
-            padding: 25px 22px; /* Slightly more padding */
-            width: 260px; /* Slightly wider cards */
-            cursor: pointer;
-            color: #eee;
-            border: 2px solid transparent;
-            text-align: center;
-            box-shadow:
-                0 10px 25px rgba(0, 0, 0, 0.6), /* More prominent shadow */
-                inset 0 0 10px rgba(16, 16, 32, 0.7); /* Deeper inset */
-            transition:
-                box-shadow 0.3s ease,
-                border-color 0.3s ease,
-                transform 0.3s ease,
-                background 0.3s ease; /* Add background transition */
-            user-select: none;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .structure::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at top left, rgba(0, 224, 255, 0.1), transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .structure:hover::before {
-            opacity: 1;
-        }
-
-        .structure:hover {
-            box-shadow:
-                0 0 25px rgba(0, 224, 255, 0.8), /* Brighter cyan glow */
-                inset 0 0 15px rgba(0, 224, 255, 0.6); /* Brighter inset */
-            border-color: #00e0ff;
-            transform: translateY(-8px) scale(1.05); /* More lift and scale */
-        }
-
-        .structure h3 {
-            font-size: 1.4rem;
-            margin-bottom: 8px;
-            color: #ffcc00; /* Gold for names */
-            text-shadow: 0 0 5px rgba(255, 204, 0, 0.5);
-        }
-        .structure p {
-            font-size: 0.95rem;
-            color: #b0b0d0;
-            margin-bottom: 5px;
-        }
-        .structure .rarity {
-            font-weight: 600;
-            color: #a3e635; /* Green for rarity */
-        }
-        .structure.selected {
-            position: relative;
-            background: linear-gradient(145deg, #7f5af0, #5f3dc4); /* Purple background */
-            color: #fff;
-            font-weight: 700;
-            transform: translateY(-6px) scale(1.06); /* Stronger lift */
-            box-shadow:
-                0 0 30px rgba(255, 215, 0, 0.9), /* Intense gold glow */
-                inset 0 0 20px rgba(255, 215, 0, 0.5);
-            border: none;
-            z-index: 1;
-            overflow: visible; /* Allow pseudo-element to extend */
-        }
-
-        .structure.selected::before {
-            content: "";
-            position: absolute;
-            top: -5px;
-            left: -5px;
-            right: -5px;
-            bottom: -5px;
-            border-radius: 22px;
-            padding: 3px;
-            background: linear-gradient(270deg, #f00, #f80, #ff0, #0f0, #0ff, #00f, #80f, #f00);
-            background-size: 1600% 1600%; /* Wider range for animation */
-            animation: rainbowBorder 10s linear infinite; /* Slower, smoother animation */
-            -webkit-mask:
-                linear-gradient(#fff 0 0) content-box,
-                linear-gradient(#fff 0 0);
-            -webkit-mask-composite: destination-out;
-            mask-composite: exclude;
-            z-index: -1;
-            transition: none; /* Do not animate this on hover/select */
-        }
-
-        @keyframes rainbowBorder {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
-
-        /* Wiki info box */
-        .wiki-box {
-            margin-top: 40px;
-            background: linear-gradient(145deg, #1c1b29, #252435); /* Subtle gradient */
-            padding: 35px 40px; /* More padding */
-            border-radius: 25px; /* More rounded */
-            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.6); /* Deeper inset shadow */
-            font-size: 1.15rem; /* Slightly larger font */
-            color: #d0d0e0; /* Softer text color */
-            line-height: 1.6; /* Better readability */
-            user-select: text;
-            border: 1px solid #30304a; /* Subtle border */
-        }
-
-        .wiki-box h3 {
-            color: #ffd700;
-            text-shadow: 0 0 12px rgba(255, 215, 0, 0.6); /* Stronger glow */
-            margin-bottom: 25px;
-            font-weight: 700;
-            letter-spacing: 1.2px;
-            text-align: center;
-        }
-
-        .wiki-box p strong {
-            color: #00e0ff; /* Cyan for key info */
-            text-shadow: 0 0 5px rgba(0, 224, 255, 0.3);
-        }
-
-        /* Trade section styles */
-        .trade-section {
-            padding: 40px; /* Increased padding */
-            background: linear-gradient(145deg, #1a1a2e, #201e3d); /* Matched with body gradient for depth */
-            color: #eee;
-            margin-top: 50px; /* More space */
-            border-radius: 30px; /* Significantly larger radius */
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7); /* More prominent shadow */
-            border: 2px solid #282840; /* Subtle border */
-            position: relative;
-            overflow: hidden;
-        }
-
-        .trade-section::before {
-            content: '';
-            position: absolute;
-            top: -50px;
-            left: -50px;
-            width: 150px;
-            height: 150px;
-            background: radial-gradient(circle, rgba(127, 90, 240, 0.15), transparent 70%);
-            border-radius: 50%;
-        }
-         .trade-section::after {
-            content: '';
-            position: absolute;
-            bottom: -50px;
-            right: -50px;
-            width: 150px;
-            height: 150px;
-            background: radial-gradient(circle, rgba(255, 193, 7, 0.15), transparent 70%);
-            border-radius: 50%;
-        }
-
-
-        .trade-section h2 {
-            color: #00e0ff;
-            text-shadow: 0 0 15px rgba(0, 224, 255, 0.7);
-            margin-bottom: 40px; /* More space */
-            font-size: 2rem; /* Larger heading */
-            text-align: center;
-            position: relative;
-            padding-bottom: 15px;
-        }
-        .trade-section h2::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            bottom: 0;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: #00e0ff;
-            border-radius: 3px;
-            box-shadow: 0 0 10px rgba(0, 224, 255, 0.5);
-        }
-
-
-        .trade-input-group {
-            display: flex;
-            gap: 40px; /* Increased gap */
-            flex-wrap: wrap;
-            justify-content: center;
-            margin-bottom: 35px; /* Space before the calculate button */
-        }
-
-        .trade-card {
-            background: linear-gradient(145deg, #2a2c42, #383a52); /* Deeper gradient */
-            border-radius: 25px; /* Larger radius for cards */
-            padding: 30px; /* Increased padding */
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            width: 350px; /* Wider card */
-            flex-shrink: 0;
-            border: 1px solid #4e4e6a; /* More visible border */
-            position: relative;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .trade-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-        }
-
-        .trade-card h3 {
-            color: #ffd700;
-            margin-top: 0;
-            margin-bottom: 25px;
-            text-align: center;
-            font-size: 1.6rem;
-            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
-        }
-
-        .trade-card label {
-            display: block;
-            margin-bottom: 15px; /* Adjusted margin */
-            font-weight: 600;
-            color: #cdd;
-            font-size: 1.05rem;
-        }
-
-        .trade-card select, .trade-card button {
-            width: 100%;
-            padding: 14px; /* Increased padding */
-            margin-top: 10px; /* Adjusted margin */
-            border-radius: 12px; /* Larger radius */
-            border: 1px solid #4a4a6e;
-            background-color: #383852;
-            color: #eee;
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.05rem;
-            appearance: none;
-            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23eeeeee%22%20d%3D%22M287%20197.3L159.2%2069.5c-4.7-4.7-12.3-4.7-17%200L5.4%20197.3c-4.7%204.7-4.7%2012.3%200%2017l17%2017c4.7%204.7%2012.3%204.7%2017%200l93.8-93.8l93.8%2093.8c4.7%204.7%2012.3%204.7%2017%200l17-17c4.7-4.7%204.7-12.3%200-17z%22%2F%3E%3C%2Fsvg%3E');
-            background-repeat: no-repeat;
-            background-position: right 15px top 50%;
-            background-size: 14px auto;
-            cursor: pointer;
-        }
-
-        .trade-card select:focus, .trade-card button:focus {
-            outline: none;
-            border-color: #00e0ff;
-            box-shadow: 0 0 12px rgba(0, 224, 255, 0.5);
-        }
-
-        .trade-card button {
-            cursor: pointer;
-            background-color: #00e0ff; /* Cyan button */
-            color: #111;
-            font-weight: 700;
-            margin-top: 25px; /* More space for buttons */
-            transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-            box-shadow: 0 4px 10px rgba(0, 224, 255, 0.3);
-        }
-
-        .trade-card button:hover {
-            background-color: #00b3cc;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0, 224, 255, 0.4);
-        }
-        .trade-card button:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 5px rgba(0, 224, 255, 0.2);
-        }
-
-        .structures-list {
-            margin-top: 20px; /* Increased margin */
-            min-height: 80px; /* Taller min-height */
-            border: 2px dashed #555; /* More visible dashed border */
-            padding: 15px; /* Increased padding */
-            border-radius: 15px; /* Larger radius */
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px; /* Increased gap */
-            background-color: #22223a; /* Slightly lighter background */
-            max-height: 200px; /* Increased max height */
-            overflow-y: auto;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
-        }
-
-        .structure-item {
-            background-color: #3f44aa;
-            padding: 8px 14px; /* Adjusted padding */
-            border-radius: 8px; /* Slightly larger radius */
-            display: flex;
-            align-items: center;
-            font-size: 0.9em; /* Slightly larger font */
-            color: #fff;
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
-            opacity: 1; /* Default opacity */
-            animation: fadeIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother fade in */
-            white-space: nowrap; /* Prevent wrapping */
-        }
-
-        .structure-item.removing {
-            animation: fadeOut 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards; /* Smoother fade out */
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px) scale(0.9); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        @keyframes fadeOut {
-            from { opacity: 1; transform: translateY(0) scale(1); }
-            to { opacity: 0; transform: translateY(15px) scale(0.9); }
-        }
-
-        .structure-item button {
-            background: none;
-            border: none;
-            color: #fff;
-            font-size: 1.5em; /* Larger button */
-            line-height: 1;
-            margin-left: 10px; /* More margin */
-            cursor: pointer;
-            padding: 0 5px;
-            width: auto;
-            transition: color 0.2s ease, transform 0.2s ease;
-            box-shadow: none; /* Override general button shadow */
-        }
-
-        .structure-item button:hover {
-            color: #ff3333;
-            transform: rotate(15deg) scale(1.1);
-        }
-
-        #finishTradeBtn {
-            display: block;
-            margin: 40px auto 0; /* Center and add more top margin */
-            padding: 18px 35px; /* Larger padding */
-            font-size: 1.35rem; /* Larger font size */
-            font-weight: 700;
-            background-color: #ffd700;
-            color: #1a1a1a;
-            border: none;
-            border-radius: 15px; /* Larger radius */
-            cursor: pointer;
-            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.6); /* More prominent shadow */
-            transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-            letter-spacing: 1px;
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        #finishTradeBtn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: 0.5s;
-            z-index: -1;
-        }
-
-        #finishTradeBtn:hover::before {
-            left: 100%;
-        }
-
-        #finishTradeBtn:hover {
-            background-color: #ffc107;
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(255, 215, 0, 0.7);
-        }
-
-        #finishTradeBtn:active {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 10px rgba(255, 215, 0, 0.4);
-        }
-
-        #resultBox {
-            margin-top: 35px;
-            background: #0d0c1b; /* Even darker background for results */
-            color: #00ff00; /* Green text for results */
-            padding: 25px; /* Increased padding */
-            border-radius: 20px; /* Larger radius */
-            white-space: pre-wrap;
-            font-family: 'Consolas', 'Monaco', monospace;
-            max-height: 400px; /* Increased max height */
-            overflow-y: auto;
-            border: 2px solid #2e2e4e; /* Darker border */
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8); /* Deeper inset shadow */
-            font-size: 0.95rem; /* Slightly smaller for monospace readability */
-            line-height: 1.4;
-        }
-        /* Scrollbar styling for resultBox and structures-list */
-        #resultBox::-webkit-scrollbar, .structures-list::-webkit-scrollbar {
-            width: 8px;
-            background-color: #1a1a2e;
-            border-radius: 10px;
-        }
-        #resultBox::-webkit-scrollbar-thumb, .structures-list::-webkit-scrollbar-thumb {
-            background-color: #00e0ff;
-            border-radius: 10px;
-            border: 2px solid #1a1a2e;
-        }
-        #resultBox::-webkit-scrollbar-thumb:hover, .structures-list::-webkit-scrollbar-thumb:hover {
-            background-color: #00b3cc;
-        }
-
-
-        /* Bar Chart Styles */
-        .trade-chart {
-            margin-top: 40px;
-            padding: 30px; /* More padding */
-            background: linear-gradient(145deg, #1c1b29, #252435);
-            border-radius: 20px;
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.7);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px; /* Increased gap */
-            border: 1px solid #30304a;
-        }
-
-        .trade-chart h3 {
-            color: #ffd700;
-            margin-bottom: 20px;
-            font-size: 1.8rem;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
-        }
-
-        .chart-bars {
-            display: flex;
-            width: 90%; /* Wider chart area */
-            height: 180px; /* Taller fixed height for the bars */
-            align-items: flex-end;
-            justify-content: space-around;
-            gap: 25px; /* Increased gap between bars */
-            border-bottom: 3px solid #555; /* Thicker baseline */
-            padding-bottom: 10px; /* Space for labels */
-        }
-
-        .chart-bar {
-            flex-grow: 1;
-            background-color: #00ffe7;
-            width: 48%; /* Adjust width for 2 bars to be more distinct */
-            border-radius: 10px 10px 0 0; /* More rounded top corners */
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            position: relative;
-            transition: height 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Bounce effect */
-            box-shadow: 0 -5px 15px rgba(0,0,0,0.3);
-        }
-
-        .chart-bar.trade1 { background-color: #7f5af0; box-shadow: 0 -5px 15px rgba(127, 90, 240, 0.5); } /* Trade 1 color */
-        .chart-bar.trade2 { background-color: #f0a500; box-shadow: 0 -5px 15px rgba(240, 165, 0, 0.5); } /* Trade 2 color */
-
-
-        .bar-label {
-            color: #eee;
-            font-size: 1rem; /* Larger label */
-            margin-top: 8px;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .bar-value {
-            color: #111;
-            font-weight: 700;
-            font-size: 1.1em; /* Larger value */
-            position: absolute;
-            top: -28px; /* Position further above the bar */
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 4px 8px;
-            border-radius: 6px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-
-        /* Responsive */
-        @media (max-width: 1200px) {
-            body {
-                flex-direction: column;
-                height: auto; /* Allow body to grow */
-            }
-            .sidebar {
-                flex-direction: row;
-                flex-wrap: wrap; /* Allow wrapping of items */
-                overflow-x: auto;
-                overflow-y: hidden;
-                width: 100%;
-                height: auto; /* Adjust height dynamically */
-                max-height: 280px; /* Max height for scrollable sidebar */
-                padding: 25px 20px;
-                border-radius: 0;
-                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
-                position: sticky;
-                top: 0;
-                z-index: 1000; /* Ensure it stays on top */
-                justify-content: center; /* Center items on smaller screens */
-            }
-            .sidebar h2 {
-                width: 100%;
-                margin-bottom: 20px;
-            }
-            .variant, .manager {
-                min-width: 150px; /* Ensure minimum width */
-                margin: 0 10px 15px 0; /* Space between items */
-                flex-shrink: 0; /* Prevent shrinking too much */
-            }
-            .main {
-                padding: 30px;
-                height: auto; /* Allow main content to take necessary height */
-            }
-            .trade-input-group {
-                flex-direction: column;
-                align-items: center;
-            }
-            .trade-card {
-                width: 90%;
-                max-width: 400px;
-            }
-            .chart-bars {
-                height: 150px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .main {
-                padding: 20px;
-            }
-            .structure-controls {
-                flex-direction: column;
-                align-items: center;
-            }
-            .game-boosts-inputs {
-                flex-direction: column;
-                gap: 25px;
-                padding: 20px;
-            }
-            .boost-input-group {
-                width: 100%;
-                max-width: 300px;
-                padding: 15px 20px;
-            }
-            .structures {
-                gap: 20px;
-            }
-            .structure {
-                width: 46%; /* Adjust width for 2 columns */
-                padding: 20px 18px;
-            }
-            .trade-section {
-                padding: 25px;
-                margin-top: 35px;
-            }
-            .trade-section h2 {
-                font-size: 1.6rem;
-                margin-bottom: 30px;
-            }
-            .trade-card {
-                padding: 25px;
-            }
-            .chart-bars {
-                height: 120px;
-                width: 95%;
-            }
-            .bar-value {
-                font-size: 1em;
-                top: -25px;
-            }
-            #finishTradeBtn {
-                padding: 15px 25px;
-                font-size: 1.1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .sidebar {
-                max-height: 220px; /* Even smaller sidebar on very small screens */
-            }
-            .variant, .manager {
-                min-width: 120px;
-                font-size: 0.9rem;
-                padding: 10px 15px;
-            }
-            .main {
-                padding: 15px;
-            }
-            .structure {
-                width: 95%; /* Single column layout for structures */
-            }
-            .trade-card {
-                width: 95%;
-            }
-            .wiki-box {
-                padding: 25px;
-                font-size: 1rem;
-            }
-            .trade-section h2 {
-                font-size: 1.4rem;
-            }
-            .trade-chart h3 {
-                font-size: 1.5rem;
-            }
-        }
+    :root {
+    /* Color Palette */
+    --primary-color: #6a11cb; /* Deep Purple */
+    --secondary-color: #2575fc; /* Bright Blue */
+    --accent-color: #00d4ff; /* Cyan */
+    --background-color: #1a1a2e; /* Dark Blue/Purple */
+    --card-bg-color: #2e2e4a; /* Slightly lighter dark blue */
+    --text-color: #e0e0e0; /* Light Gray */
+    --text-color-light: #ffffff; /* White */
+    --border-color: #4a4a6b; /* Muted Purple */
+    --hover-color: #4f039c; /* Darker primary for hover */
+    --gradient-start: #3a005c; /* Darker purple for gradients */
+    --gradient-end: #0f0f1d; /* Very dark blue for gradients */
+
+    /* Rarities */
+    --rarity-common: #888888; /* Gray */
+    --rarity-uncommon: #4CAF50; /* Green */
+    --rarity-rare: #2196F3; /* Blue */
+    --rarity-legendary: #FF9800; /* Orange */
+    --rarity-mythic: #F44336; /* Red */
+    --rarity-divine: #9C27B0; /* Deep Purple */
+    --rarity-exclusive: #FFD700; /* Gold */
+    --rarity-starter: #673AB7; /* Indigo */
+
+    /* Rainbow Variant specific colors (subtle gradient) */
+    --rainbow-start: #ff7e5f;
+    --rainbow-end: #feb47b;
+}
+
+/* Base Styles & Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, var(--background-color), var(--gradient-end));
+    color: var(--text-color);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+header {
+    background: var(--primary-color);
+    color: var(--text-color-light);
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    margin-bottom: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* Ensure header stays on top */
+}
+
+header h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 2.8em;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+    letter-spacing: 1px;
+}
+
+.main-layout-wrapper {
+    display: flex;
+    flex-grow: 1; /* Allow main content to take available space */
+    width: 100%;
+    max-width: 1400px; /* Max width for content */
+    margin: 20px auto;
+    padding: 0 20px;
+    gap: 30px; /* Space between sidebar and main content */
+}
+
+/* Sidebar */
+.sidebar {
+    flex: 0 0 280px; /* Fixed width sidebar */
+    background: var(--card-bg-color);
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    position: sticky; /* Sticky sidebar */
+    top: calc(20px + 60px); /* Adjust based on header height + margin */
+    align-self: flex-start; /* Align to the top of its container */
+    max-height: calc(100vh - 40px - 60px); /* Max height for scrolling */
+    overflow-y: auto; /* Enable scrolling for content */
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: #3a3a5a;
+    border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: var(--hover-color);
+}
+
+.content-area {
+    flex-grow: 1; /* Main content takes remaining space */
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+section {
+    background: var(--card-bg-color);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+h2 {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--accent-color);
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+    font-size: 2em;
+    position: relative; /* For decorative elements */
+}
+
+h2::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(to right, var(--secondary-color), var(--accent-color));
+    border-radius: 2px;
+}
+
+/* Global Boosts */
+.global-boosts {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+}
+
+.boost-item {
+    background: linear-gradient(135deg, #3a3a5a, #4a4a6b);
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3), 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    color: var(--text-color-light);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.boost-item:hover {
+    transform: translateY(-3px);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4), 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.boost-item label {
+    margin-right: 5px;
+    white-space: nowrap;
+}
+
+.boost-item input[type="number"],
+.boost-item input[type="checkbox"] {
+    transform: scale(1.2);
+    margin-right: 5px;
+    accent-color: var(--accent-color); /* Style checkbox itself */
+}
+
+.boost-info {
+    font-size: 1em;
+    color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.boost-info i {
+    font-size: 1.2em;
+    color: var(--secondary-color);
+}
+
+#premiumStatusDisplay.active {
+    color: var(--rarity-exclusive); /* Gold color for active premium */
+}
+
+#premiumStatusDisplay.inactive {
+    color: var(--rarity-common); /* Gray for inactive */
+}
+
+/* Managers and Variants (in Sidebar) */
+.selection-section h2 {
+    font-size: 1.8em;
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-bottom: 15px;
+}
+
+#managers-list,
+#variants-list {
+    display: flex;
+    flex-direction: column; /* Stack vertically */
+    gap: 12px;
+}
+
+.manager, .variant {
+    background: linear-gradient(90deg, #3a3a5a, #4a4a6b);
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+    font-weight: 500;
+    text-align: center;
+    font-size: 1.1em;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.manager:hover, .variant:hover {
+    background: var(--hover-color);
+    border-color: var(--accent-color);
+    transform: scale(1.02);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.manager.selected, .variant.selected {
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    border-color: var(--accent-color);
+    box-shadow: 0 0 18px rgba(0, 212, 255, 0.8); /* Stronger glow */
+    transform: scale(1.05);
+    font-weight: 700;
+    color: var(--text-color-light);
+}
+
+/* Variant specific classes (subtle gradients) */
+.variant.base { background: linear-gradient(90deg, #8c8c8c, #a0a0a0); }
+.variant.gold { background: linear-gradient(90deg, #daa520, #e0b63c); }
+.variant.rainbow { background: linear-gradient(90deg, var(--rainbow-start), var(--rainbow-end)); color: #333; } /* Lighter text for rainbow */
+.variant.inferno { background: linear-gradient(90deg, #a00000, #b00000); }
+.variant.oblivion { background: linear-gradient(90deg, #330033, #440044); color: #ff00ff; }
+.variant.celestial { background: linear-gradient(90deg, #000080, #000099); color: #add8e6; }
+
+
+/* Filters, Sort, Search */
+.filters-sort-search {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, #2a2a42, #3a3a5a);
+    border-radius: 12px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column; /* Stack label and input */
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.filter-group label {
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--accent-color);
+    font-size: 1em;
+}
+
+.filters-sort-search select,
+.filters-sort-search input[type="text"] {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: #3a3a5a;
+    color: var(--text-color-light);
+    font-size: 1em;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23e0e0e0%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13%205.7L146.2%20208.8%2018.6%2075.1c-6.7-6.7-17.6-6.7-24.2%200-6.8%206.7-6.8%2017.7%200%2024.4l137.2%20137.2c6.7%206.7%2017.6%206.7%2024.2%200l137.2-137.2c6.7-6.8%206.7-17.7%200-24.4z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 12px top 50%;
+    background-size: 15px auto;
+    padding-right: 40px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.filters-sort-search input[type="text"]::placeholder {
+    color: #b0b0b0;
+}
+
+/* Rarity Checkbox Group */
+.rarity-checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    background-color: #3a3a5a; /* A specific background for the checkboxes */
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #4a4a6b;
+}
+
+.rarity-checkbox-item {
+    display: flex;
+    align-items: center;
+    background-color: #4a4a6b;
+    padding: 8px 15px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    border: 1px solid transparent;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.rarity-checkbox-item:hover {
+    background-color: var(--hover-color);
+    transform: translateY(-1px);
+}
+
+.rarity-checkbox-item.selected {
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.6);
+    border-color: var(--accent-color);
+    transform: scale(1.02);
+}
+
+.rarity-checkbox-item input[type="checkbox"] {
+    margin-right: 8px;
+    accent-color: var(--accent-color);
+    transform: scale(1.1);
+}
+
+.rarity-checkbox-item label {
+    font-size: 0.95em;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--text-color-light);
+}
+
+/* Structures Grid */
+.structures-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+.structure {
+    background: linear-gradient(135deg, #3a3a5a, #4a4a6b);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden; /* For gradient border effect */
+}
+
+.structure::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 12px;
+    padding: 2px; /* controls the border thickness */
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+
+.structure:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5);
+}
+
+.structure.selected {
+    border-color: var(--accent-color); /* Fallback */
+    box-shadow: 0 0 25px rgba(0, 212, 255, 0.9);
+    background: linear-gradient(135deg, var(--primary-color), var(--hover-color));
+}
+
+.structure.selected::before {
+    opacity: 1; /* Show gradient border when selected */
+}
+
+.structure h3 {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--text-color-light);
+    margin-bottom: 10px;
+    font-size: 1.4em;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.structure p {
+    font-size: 1em;
+    margin-bottom: 6px;
+    color: var(--text-color);
+}
+
+.structure p:last-child {
+    font-weight: bold;
+    color: var(--accent-color);
+    font-size: 1.2em;
+    margin-top: 10px;
+}
+
+/* Rarity classes for structure cards */
+.rarity {
+    font-size: 0.85em;
+    padding: 4px 10px;
+    border-radius: 20px;
+    display: inline-block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), 0 1px 3px rgba(0, 0, 0, 0.1);
+    letter-spacing: 0.5px;
+}
+
+.rarity.common { background-color: var(--rarity-common); }
+.rarity.uncommon { background-color: var(--rarity-uncommon); }
+.rarity.rare { background-color: var(--rarity-rare); }
+.rarity.legendary { background-color: var(--rarity-legendary); }
+.rarity.mythic { background-color: var(--rarity-mythic); }
+.rarity.divine { background-color: var(--rarity-divine); }
+.rarity.exclusive { background-color: var(--rarity-exclusive); color: #333; } /* Gold text for exclusive */
+.rarity.starter { background-color: var(--rarity-starter); }
+
+
+/* Wiki Section */
+.wiki-box {
+    background: linear-gradient(135deg, #3a3a5a, #4a4a6b);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
+    text-align: center;
+}
+
+.wiki-box h3 {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--accent-color);
+    margin-bottom: 18px;
+    font-size: 2em;
+    text-align: center;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.wiki-box p {
+    margin-bottom: 10px;
+    font-size: 1.15em;
+    color: var(--text-color);
+    max-width: 90%; /* Limit line length for readability */
+}
+
+.wiki-box strong {
+    color: var(--text-color-light);
+    font-weight: 700;
+}
+
+/* Trade Section */
+.trade-panels-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.trade-panel {
+    flex: 1;
+    min-width: 320px;
+    max-width: 580px;
+    background: linear-gradient(135deg, #3a3a5a, #4a4a6b);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.trade-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at top left, rgba(0, 212, 255, 0.1), transparent 50%),
+                radial-gradient(circle at bottom right, rgba(106, 17, 203, 0.1), transparent 50%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+.trade-panel h3 {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--accent-color);
+    margin-bottom: 25px;
+    font-size: 1.8em;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.trade-controls {
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* Labels and inputs */
+    gap: 15px 20px;
+    margin-bottom: 25px;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.trade-controls label {
+    font-weight: 600;
+    white-space: nowrap;
+    color: var(--text-color-light);
+    font-size: 1em;
+}
+
+.trade-controls select {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: #4a4a6b;
+    color: var(--text-color-light);
+    font-size: 1em;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23e0e0e0%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13%205.7L146.2%20208.8%2018.6%2075.1c-6.7-6.7-17.6-6.7-24.2%200-6.8%206.7-6.8%2017.7%200%2024.4l137.2%20137.2c6.7%206.7%2017.6%206.7%2024.2%200l137.2-137.2c6.7-6.8%206.7-17.7%200-24.4z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 12px top 50%;
+    background-size: 15px auto;
+    padding-right: 40px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.trade-controls button {
+    grid-column: span 2; /* Span across both columns */
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    white-space: nowrap;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.trade-controls .add-btn {
+    background-color: var(--secondary-color);
+    color: var(--text-color-light);
+}
+
+.trade-controls .add-btn:hover {
+    background-color: #1e5bbd;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.trade-controls .clear-btn {
+    background-color: #dc3545; /* Red for clear */
+    color: var(--text-color-light);
+}
+
+.trade-controls .clear-btn:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.structures-trade-list {
+    background: #2a2a42;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    min-height: 120px; /* Slightly larger min-height */
+    max-height: 280px; /* Slightly larger max-height */
+    overflow-y: auto;
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 1;
+    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.structures-trade-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.structures-trade-list::-webkit-scrollbar-track {
+    background: #3a3a5a;
+    border-radius: 10px;
+}
+
+.structures-trade-list::-webkit-scrollbar-thumb {
+    background: var(--secondary-color);
+    border-radius: 10px;
+}
+
+.structures-trade-list::-webkit-scrollbar-thumb:hover {
+    background: #007bff;
+}
+
+
+.structure-item {
+    background: #4a4a6b;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1em;
+    color: var(--text-color-light);
+    transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.structure-item:last-child {
+    margin-bottom: 0;
+}
+
+.structure-item.removing {
+    opacity: 0;
+    transform: translateX(-30px);
+}
+
+.structure-item button {
+    background: none;
+    border: none;
+    color: #ff6347; /* Tomato */
+    font-size: 1.6em;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+    padding: 0 5px; /* Add some padding for easier click */
+}
+
+.structure-item button:hover {
+    color: #ff0000;
+    transform: scale(1.3);
+}
+
+.total-mps-display {
+    font-weight: bold;
+    color: var(--accent-color);
+    text-align: center;
+    margin-top: 15px;
+    font-size: 1.3em;
+    padding: 8px;
+    background: #2a2a42;
+    border-radius: 8px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.calculate-btn {
+    display: block;
+    width: fit-content;
+    margin: 30px auto;
+    padding: 18px 35px;
+    font-size: 1.5em;
+    font-weight: bold;
+    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    color: var(--text-color-light);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.calculate-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.15);
+    transform: skewX(-30deg);
+    transition: all 0.5s ease;
+}
+
+.calculate-btn:hover::before {
+    left: 100%;
+}
+
+.calculate-btn:hover {
+    transform: translateY(-7px) scale(1.03);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+    filter: brightness(1.15);
+}
+
+.result-box {
+    background: linear-gradient(135deg, #2a2a42, #3a3a5a);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 25px;
+    white-space: pre-wrap; /* Preserve newlines */
+    font-family: 'Roboto Mono', monospace; /* Monospace for results */
+    font-size: 1.05em;
+    color: var(--text-color-light);
+    margin-top: 25px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+    max-height: 450px; /* Increased max height */
+    overflow-y: auto;
+    position: relative;
+    z-index: 1;
+}
+
+.result-box::-webkit-scrollbar {
+    width: 8px;
+}
+
+.result-box::-webkit-scrollbar-track {
+    background: #3a3a5a;
+    border-radius: 10px;
+}
+
+.result-box::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 10px;
+}
+
+.result-box::-webkit-scrollbar-thumb:hover {
+    background: var(--hover-color);
+}
+
+/* Chart Styles */
+.trade-chart-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px; /* Increased height for chart */
+    background: linear-gradient(135deg, #2a2a42, #3a3a5a);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+    margin-top: 25px;
+    display: none; /* Hidden by default, shown when calculateTrades() is called */
+    position: relative;
+    z-index: 1;
+}
+
+.chart-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 40px; /* Increased gap between bars */
+    height: 85%; /* Bars take more height */
+    width: 100%;
+    max-width: 350px; /* Wider chart */
+    border-bottom: 3px solid var(--border-color);
+    padding-bottom: 10px;
+    position: relative;
+}
+
+.chart-bar {
+    width: 90px; /* Wider bars */
+    background: linear-gradient(to top, var(--primary-color), var(--secondary-color));
+    border-radius: 10px 10px 0 0;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    transition: height 0.6s ease-out, background 0.3s ease; /* Smoother transition */
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255,255,255,0.1); /* Subtle white border */
+}
+
+.chart-bar.trade1 { background: linear-gradient(to top, #007bff, #00c6ff); } /* Blue gradient */
+.chart-bar.trade2 { background: linear-gradient(to top, #ff416c, #ff4b2b); } /* Red/Orange gradient */
+
+
+.bar-value {
+    position: absolute;
+    top: -30px;
+    font-size: 1em;
+    font-weight: bold;
+    color: var(--text-color-light);
+    white-space: nowrap;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.chart-labels {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    max-width: 350px;
+    margin-top: 15px;
+    font-weight: bold;
+    color: var(--text-color-light);
+    gap: 40px;
+}
+.chart-labels span {
+    flex: 1;
+    text-align: center;
+    color: var(--accent-color);
+    font-size: 1.1em;
+}
+
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 30px;
+    background: #1a1a2e;
+    color: #909090;
+    font-size: 0.9em;
+    border-top: 1px solid #2e2e4a;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+    .main-layout-wrapper {
+        flex-direction: column; /* Stack sidebar and content */
+        margin: 15px auto;
+        padding: 0 15px;
+        gap: 25px;
+    }
+
+    .sidebar {
+        position: relative; /* No longer sticky */
+        top: auto;
+        max-height: none; /* No max height, content flows */
+        flex: auto; /* Allow sidebar to take natural height */
+    }
+
+    .selection-section h2 {
+        text-align: center;
+    }
+
+    .selection-section {
+        flex-direction: column; /* Stack managers and variants */
+        align-items: stretch;
+    }
+
+    .filters-sort-search {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .filters-sort-search select,
+    .filters-sort-search input[type="text"] {
+        width: 100%;
+    }
+
+    .trade-panels-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .trade-panel {
+        max-width: 100%;
+    }
+
+    .trade-controls {
+        grid-template-columns: 1fr; /* Single column for controls */
+    }
+    .trade-controls button {
+        grid-column: span 1;
+    }
+}
+
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 2.2em;
+    }
+    section {
+        padding: 20px;
+    }
+    h2 {
+        font-size: 1.8em;
+    }
+    .structure {
+        min-width: 180px;
+    }
+    .wiki-box p {
+        font-size: 1em;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.8em;
+    }
+    .container {
+        padding: 0 10px;
+    }
+    .boost-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+        padding: 10px 15px;
+    }
+    .structure {
+        min-width: 140px; /* Smaller cards for tiny screens */
+        padding: 15px;
+    }
+    .filters-sort-search {
+        padding: 15px;
+        gap: 15px;
+    }
+    .rarity-checkbox-item {
+        padding: 6px 12px;
+    }
+    .trade-panel {
+        padding: 20px;
+    }
+    .trade-controls button {
+        padding: 10px 15px;
+        font-size: 1em;
+    }
+    .calculate-btn {
+        padding: 15px 25px;
+        font-size: 1.2em;
+    }
+    .result-box {
+        padding: 15px;
+        font-size: 0.95em;
+    }
+    .chart-bar {
+        width: 70px;
+        gap: 20px;
+    }
+    .chart-labels {
+        gap: 20px;
+    }
+}
     </style>
 </head>
 <body>
-    <div class="sidebar">
-        <div class="variants" id="variants-list"><h2>Variants</h2></div>
-        <div class="managers" id="managers-list"><h2>Managers</h2></div>
-    </div>
+    <header>
+        <h1>Idle Life Calculator</h1>
+    </header>
 
-    <div class="main">
-        <div class="structure-controls">
-            <label for="rarityFilter">Filter by Rarity:
-                <select id="rarityFilter">
-                    <option value="All">All</option>
-                    <option value="common">Common</option>
-                    <option value="uncommon">Uncommon</option>
-                    <option value="rare">Rare</option>
-                    <option value="legendary">Legendary</option>
-                    <option value="mythic">Mythic</option>
-                    <option value="Divine">Divine</option>
-                    <option value="Exclusive">Exclusive</option>
-                    <option value="starter">Starter</option>
-                </select>
-            </label>
-            <label for="sortOrder">Sort by:
-                <select id="sortOrder">
-                    <option value="name-asc">Name (A-Z)</option>
-                    <option value="name-desc">Name (Z-A)</option>
-                    <option value="mps-asc">Money/sec (Low to High)</option>
-                    <option value="mps-desc">Money/sec (High to Low)</option>
-                    <option value="price-asc">Price (Low to High)</option>
-                    <option value="price-desc">Price (High to Low)</option>
-                </select>
-            </label>
-        </div>
+    <div class="main-layout-wrapper">
+        <aside class="sidebar">
+            <section class="selection-section">
+                <h2>Variants</h2>
+                <div id="variants-list"></div>
+            </section>
+            <section class="selection-section">
+                <h2>Managers</h2>
+                <div id="managers-list"></div>
+            </section>
+        </aside>
 
-        <div class="game-boosts-inputs">
-            <div class="boost-input-group">
-                <label for="friendsCount">Online Friends (0-5):</label>
-                <input type="number" id="friendsCount" value="0" min="0" max="5">
-                <span id="onlineFriendsPercentageDisplay" class="current-boost-display"><i class="fas fa-users"></i> +0%</span>
-            </div>
-            <div class="boost-input-group">
-                <label for="isPremium">Premium Account:</label>
-                <input type="checkbox" id="isPremium">
-                <span id="premiumStatusDisplay" class="current-boost-display"><i class="fas fa-crown"></i> Inactive</span>
-            </div>
-        </div>
-
-        <div class="structures" id="structures-container"></div>
-        <div class="wiki-box" id="wiki-text">Select a structure to see details.</div>
-
-        <div class="trade-section">
-            <h2>Trade Calculator</h2>
-
-            <div class="trade-input-group">
-
-                <div class="trade-card">
-                    <h3>Trade 1</h3>
-                    <label>Variant:
-                        <select id="tradeVariant1"></select>
-                    </label>
-                    <label>Manager:
-                        <select id="tradeManager1"></select>
-                    </label>
-                    <select id="tradeStructureSelect1"></select>
-                    <button onclick="addTradeStructure(1)">Add Structure</button>
-                    <div id="structuresList1" class="structures-list"></div>
-                    <button onclick="clearTradeStructures(1)">Clear Trade 1</button>
+        <main class="content-area">
+            <section class="config-section">
+                <h2>Global Configuration</h2>
+                <div class="global-boosts">
+                    <div class="boost-item">
+                        <label for="friendsCount">Online Friends (Max 5):</label>
+                        <input type="number" id="friendsCount" value="0" min="0" max="5">
+                        <span id="onlineFriendsPercentageDisplay" class="boost-info"><i class="fas fa-users"></i> +0%</span>
+                    </div>
+                    <div class="boost-item">
+                        <label for="isPremium">Premium Account:</label>
+                        <input type="checkbox" id="isPremium">
+                        <span id="premiumStatusDisplay" class="boost-info inactive"><i class="fas fa-crown"></i> Inactive</span>
+                    </div>
                 </div>
+            </section>
 
-                <div class="trade-card">
-                    <h3>Trade 2</h3>
-                    <label>Variant:
-                        <select id="tradeVariant2"></select>
-                    </label>
-                    <label>Manager:
-                        <select id="tradeManager2"></select>
-                    </label>
-                    <select id="tradeStructureSelect2"></select>
-                    <button onclick="addTradeStructure(2)">Add Structure</button>
-                    <div id="structuresList2" class="structures-list"></div>
-                    <button onclick="clearTradeStructures(2)">Clear Trade 2</button>
+            <section class="structures-section">
+                <h2>Available Structures</h2>
+                <div class="filters-sort-search">
+                    <div class="filter-group">
+                        <label for="sortOrder">Sort by:</label>
+                        <select id="sortOrder">
+                            <option value="name-asc">Name (A-Z)</option>
+                            <option value="name-desc">Name (Z-A)</option>
+                            <option value="mps-desc">MPS (Max-Min)</option>
+                            <option value="mps-asc">MPS (Min-Max)</option>
+                            <option value="price-asc">Price (Min-Max)</option>
+                            <option value="price-desc">Price (Max-Min)</option>
+                        </select>
+                    </div>
+                    <div class="filter-group rarity-filters-container">
+                        <label>Filter by Rarity:</label>
+                        <div id="rarityFilter" class="rarity-checkbox-group"></div>
+                    </div>
+                    <div class="filter-group search-group">
+                        <label for="searchStructures">Search Structure:</label>
+                        <input type="text" id="searchStructures" placeholder="Structure name...">
+                    </div>
                 </div>
-            </div>
+                <div id="structures-container" class="structures-grid"></div>
+            </section>
 
-            <button id="finishTradeBtn" onclick="calculateTrades()">Calculate Trades</button>
-
-            <div id="tradeChartContainer" class="trade-chart" style="display: none;">
-                <h3>Trade Comparison (Money/sec)</h3>
-                <div class="chart-bars" id="chartBars">
-                </div>
-            </div>
-
-            <pre id="resultBox"></pre>
-        </div>
-    </div>
-
-    <script>
-        // Base Data
-        const multipliers = {
-            Base: 1, Gold: 1.5, Rainbow: 2, Inferno: 3, Oblivion: 4, Celestial: 5
-        };
-        const variantClasses = {
-            Base: "base", Gold: "gold", Rainbow: "rainbow",
-            Inferno: "inferno", Oblivion: "oblivion", Celestial: "Celestial"
-        };
-        const variants = Object.keys(multipliers).map(name => ({ name, multiplier: multipliers[name] }));
-
-        const managers = [
-            { name: "Base Manager", multiplier: 1 },
-            { name: "Clown Manager", multiplier: 1.2 },
-            { name: "Soldier Manager", multiplier: 1.4 },
-            { name: "Mayor Manager", multiplier: 1.6 },
-            { name: "King Manager", multiplier: 2.0 },
-            { name: "Modern Manager", multiplier: 2.4 },
-            { name: "Angel Manager", multiplier: 3 },
-        ];
-
-        // Array of objects for structures, including price and adjusting index
-        const structuresData = [
-            { name: "Noob", income: 1, cycleTime: 4, rarity: "common", price: 30 },
-            { name: "Business Man", income: 5, cycleTime: 4, rarity: "common", price: 200 },
-            { name: "Builder", income: 10, cycleTime: 4, rarity: "starter", price: 0 },
-            { name: "Teacher", income: 10, cycleTime: 5, rarity: "common", price: 500 },
-            { name: "Gardener", income: 20, cycleTime: 8, rarity: "uncommon", price: 1200 },
-            { name: "Painter", income: 75, cycleTime: 10, rarity: "uncommon", price: 3500 },
-            { name: "Chef", income: 105, cycleTime: 10, rarity: "uncommon", price: 8000 },
-            { name: "Mine", income: 189, cycleTime: 12, rarity: "rare", price: 15000 },
-            { name: "Fortune Magician", income: 450, cycleTime: 15, rarity: "rare", price: 45000 },
-            { name: "Bank", income: 1500, cycleTime: 20, rarity: "legendary", price: 200000 },
-            { name: "Skyscraper", income: 4500, cycleTime: 30, rarity: "legendary", price: 750000 },
-            { name: "Stadium", income: 14000, cycleTime: 35, rarity: "mythic", price: 2500000 },
-            { name: "Waterpark", income: 50000, cycleTime: 45, rarity: "mythic", price: 10000000 },
-            { name: "Castle", income: 250000, cycleTime: 40, rarity: "mythic", price: 150000000 },
-            { name: "Club", income: 600000, cycleTime: 60, rarity: "Divine", price: 1000000000 },
-            { name: "Airport", income: 2880000, cycleTime: 60, rarity: "Divine", price: 12000000000 },
-            { name: "Astronaut", income: 1000, cycleTime: 8, rarity: "Exclusive", price: 0 },
-            { name: "Alien Gardener", income: 1800, cycleTime: 10, rarity: "Exclusive", price: 0 },
-            { name: "Ufo", income: 10000, cycleTime: 20, rarity: "Exclusive", price: 0 },
-            { name: "Black Hole", income: 100000, cycleTime: 25, rarity: "Exclusive", price: 0 },
-            { name: "Galaxy", income: 200000, cycleTime: 10, rarity: "Exclusive", price: 0 },
-        ];
-
-        // Selected state for the Wiki
-        let selectedVariant = variants[0];
-        let selectedManager = managers[0];
-        let selectedStructureIndex = null;
-
-        // State for Trades - now stores captured global boost multipliers
-        const tradeStates = {
-            1: {
-                variant: variants[0],
-                manager: managers[0],
-                structures: [] // Each structure here will store its income, cycleTime, and *captured global boosts*
-            },
-            2: {
-                variant: variants[0],
-                manager: managers[0],
-                structures: []
-            }
-        };
-
-        // Filter and Sort state for Wiki structures
-        let currentRarityFilter = 'All';
-        let currentSortOrder = 'name-asc';
-
-        // Global Boosts - These are dynamic inputs affecting the WIKI and when adding items to TRADE
-        let globalFriendsBoostMultiplier = 1;
-        let globalPremiumMultiplier = 1;
-
-        // Function to format money
-        function formatMoney(amount) {
-            if (amount === undefined || amount === null) return "$0";
-            if (amount >= 1e12) return "$" + (amount / 1e12).toFixed(2) + "T"; // Trillions
-            if (amount >= 1e9) return "$" + (amount / 1e9).toFixed(2) + "B"; // Billions
-            if (amount >= 1e6) return "$" + (amount / 1e6).toFixed(2) + "M"; // Millions
-            if (amount >= 1e3) return "$" + (amount / 1e3).toFixed(1) + "K"; // Thousands
-            return "$" + amount.toLocaleString('en-US'); // Use US localization for numbers
-        }
-
-        // Function to update global boosts and re-render affected sections
-        function updateGlobalBoosts() {
-            const friendsCount = parseInt(document.getElementById('friendsCount').value);
-            const isPremiumActive = document.getElementById('isPremium').checked;
-
-            // --- Calculate Friends Bonus ---
-            const MAX_FRIENDS_FOR_BOOST = 5;
-            const FRIEND_BONUS_PER_FRIEND = 0.05; // 5% per friend
-
-            let actualFriendsCount = Math.min(friendsCount, MAX_FRIENDS_FOR_BOOST);
-            globalFriendsBoostMultiplier = 1 + (actualFriendsCount * FRIEND_BONUS_PER_FRIEND);
-            document.getElementById('onlineFriendsPercentageDisplay').innerHTML = `<i class="fas fa-users"></i> +${(actualFriendsCount * 5)}%`;
-
-            // --- Calculate Premium Bonus ---
-            const PREMIUM_BONUS_MULTIPLIER = 1.10; // 10% bonus
-            globalPremiumMultiplier = isPremiumActive ? PREMIUM_BONUS_MULTIPLIER : 1;
-
-            const premiumStatusElement = document.getElementById('premiumStatusDisplay');
-            premiumStatusElement.innerHTML = `<i class="fas fa-crown"></i> ${isPremiumActive ? `Active (x${PREMIUM_BONUS_MULTIPLIER})` : 'Inactive'}`;
-            premiumStatusElement.style.color = isPremiumActive ? '#00ff00' : '#ff5555';
-            premiumStatusElement.style.textShadow = isPremiumActive ? '0 0 8px #00ff00' : '0 0 8px #ff5555';
-
-            // Re-render sections that depend on these boosts (Wiki and Structures display)
-            renderStructures();
-            updateWiki();
-            // Trade lists are NOT re-rendered here because their boost values are captured on add.
-            // However, we still need to call updateTradeStructureList for each trade state
-            // to ensure the _displayed_ values are updated if trade-specific variant/manager changes.
-            // But importantly, the _captured global boosts_ will remain fixed for each item.
-            updateTradeStructureList(1); // Re-render for Trade 1 with its current selections
-            updateTradeStructureList(2); // Re-render for Trade 2 with its current selections
-        }
-
-        // Rendering functions for Sidebar and Wiki
-        function renderManagers() {
-            const container = document.getElementById("managers-list");
-            container.innerHTML = '<h2>Managers</h2>';
-            managers.forEach((mgr) => {
-                const div = document.createElement("div");
-                div.className = "manager";
-                if (mgr === selectedManager) div.classList.add("selected");
-                div.textContent = `${mgr.name}: x${mgr.multiplier}`;
-                div.addEventListener("click", () => {
-                    selectedManager = mgr;
-                    document.querySelectorAll(".manager").forEach(el => el.classList.remove("selected"));
-                    div.classList.add("selected");
-                    updateWiki();
-                    renderStructures(); // Re-render structures with new manager multiplier
-                });
-                container.appendChild(div);
-            });
-        }
-
-        function renderVariants() {
-            const container = document.getElementById("variants-list");
-            container.innerHTML = '<h2>Variants</h2>';
-            variants.forEach((variant) => {
-                const div = document.createElement("div");
-                div.className = `variant ${variantClasses[variant.name]}`;
-                if (variant === selectedVariant) div.classList.add("selected");
-                div.textContent = variant.name;
-                div.addEventListener("click", () => {
-                    selectedVariant = variant;
-                    document.querySelectorAll(".variant").forEach(el => el.classList.remove("selected"));
-                    div.classList.add("selected");
-                    updateWiki();
-                    renderStructures(); // Re-render structures with new variant multiplier
-                });
-                container.appendChild(div);
-            });
-        }
-
-        function renderStructures() {
-            const container = document.getElementById("structures-container");
-            container.innerHTML = "";
-
-            // Apply filter
-            let filteredStructures = structuresData.filter(s =>
-                currentRarityFilter === 'All' || s.rarity.toLowerCase() === currentRarityFilter.toLowerCase()
-            );
-
-            // Apply sort
-            filteredStructures.sort((a, b) => {
-                if (currentSortOrder === 'name-asc') {
-                    return a.name.localeCompare(b.name);
-                } else if (currentSortOrder === 'name-desc') {
-                    return b.name.localeCompare(a.name); // Corrected localeCompare order
-                } else if (currentSortOrder === 'mps-asc') {
-                    // Calculate MPS with current global boosts for sorting display
-                    const mpsA = (a.income * selectedVariant.multiplier * selectedManager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier) / a.cycleTime;
-                    const mpsB = (b.income * selectedVariant.multiplier * selectedManager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier) / b.cycleTime;
-                    return mpsA - mpsB;
-                } else if (currentSortOrder === 'mps-desc') {
-                    const mpsA = (a.income * selectedVariant.multiplier * selectedManager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier) / a.cycleTime;
-                    const mpsB = (b.income * selectedVariant.multiplier * selectedManager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier) / b.cycleTime;
-                    return mpsB - mpsA;
-                } else if (currentSortOrder === 'price-asc') {
-                    return a.price - b.price;
-                } else if (currentSortOrder === 'price-desc') {
-                    return b.price - a.price;
-                }
-                return 0;
-            });
-
-            filteredStructures.forEach((struc) => {
-                const income = struc.income * selectedVariant.multiplier * selectedManager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier;
-                const moneyPerSec = (income / struc.cycleTime).toFixed(2);
-                const div = document.createElement("div");
-                div.className = "structure";
-                // Find original index to maintain selected state across filter/sort
-                const originalIndex = structuresData.findIndex(s => s.name === struc.name);
-                if (originalIndex === selectedStructureIndex) div.classList.add("selected");
-
-                div.innerHTML = `
-                    <h3>${struc.name}</h3>
-                    <p class="rarity">Rarity: ${struc.rarity}</p>
-                    <p>Price: ${formatMoney(struc.price)}</p>
-                    <p>Money/sec: ${moneyPerSec}</p>
-                `;
-                div.addEventListener("click", () => {
-                    selectedStructureIndex = originalIndex; // Store original index
-                    document.querySelectorAll(".structure").forEach(el => el.classList.remove("selected"));
-                    div.classList.add("selected");
-                    updateWiki();
-                });
-                container.appendChild(div);
-            });
-        }
-
-        function updateWiki() {
-            const container = document.getElementById("wiki-text");
-            if (selectedStructureIndex === null) {
-                container.innerHTML = `
+            <section class="wiki-section">
+                <div id="wiki-text" class="wiki-box">
                     <h3>Idle Life Wiki</h3>
-                    <p>Select a structure from the list above to see its detailed information,
-                    calculated with your currently selected Variant, Manager, and global boosts.</p>
-                `;
-                return;
-            }
-            const s = structuresData[selectedStructureIndex];
-            const income = s.income * selectedVariant.multiplier * selectedManager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier;
-            const mps = (income / s.cycleTime).toFixed(2);
-            container.innerHTML = `
-                <h3>${s.name} (${selectedVariant.name})</h3>
-                <p><strong>Price:</strong> ${formatMoney(s.price)}</p>
-                <p><strong>Rarity:</strong> ${s.rarity}</p>
-                <p><strong>Money per cycle:</strong> ${formatMoney(income)}</p>
-                <p><strong>Cycle time:</strong> ${s.cycleTime} sec</p>
-                <p><strong>Money/sec (Current):</strong> ${mps}</p>
-                <p><strong>Manager boost:</strong> x${selectedManager.multiplier}</p>
-                <p><strong>Variant boost:</strong> x${selectedVariant.multiplier}</p>
-                <p><strong>Friends boost:</strong> x${globalFriendsBoostMultiplier.toFixed(2)} (${((globalFriendsBoostMultiplier - 1) * 100).toFixed(0)}%)</p>
-                <p><strong>Premium boost:</strong> x${globalPremiumMultiplier.toFixed(2)} (${((globalPremiumMultiplier - 1) * 100).toFixed(0)}%)</p>
-            `;
+                    <p>Select a structure from the list above to view detailed information,
+                    calculated with the currently selected Variant, Manager, and global boosts.</p>
+                </div>
+            </section>
+
+            <section class="trade-section">
+                <h2>Trade Comparison</h2>
+                <div class="trade-panels-container">
+                    <div class="trade-panel">
+                        <h3>Trade 1</h3>
+                        <div class="trade-controls">
+                            <label for="tradeVariant1">Variant:</label>
+                            <select id="tradeVariant1"></select>
+                            <label for="tradeManager1">Manager:</label>
+                            <select id="tradeManager1"></select>
+                            <label for="tradeStructureSelect1">Add Structure:</label>
+                            <select id="tradeStructureSelect1"></select>
+                            <button onclick="addTradeStructure(1)" class="add-btn">Add</button>
+                            <button onclick="clearTradeStructures(1)" class="clear-btn">Clear</button>
+                        </div>
+                        <div id="structuresList1" class="structures-trade-list"></div>
+                        <p id="trade1TotalMps" class="total-mps-display">Total MPS: $0</p>
+                    </div>
+
+                    <div class="trade-panel">
+                        <h3>Trade 2</h3>
+                        <div class="trade-controls">
+                            <label for="tradeVariant2">Variant:</label>
+                            <select id="tradeVariant2"></select>
+                            <label for="tradeManager2">Manager:</label>
+                            <select id="tradeManager2"></select>
+                            <label for="tradeStructureSelect2">Add Structure:</label>
+                            <select id="tradeStructureSelect2"></select>
+                            <button onclick="addTradeStructure(2)" class="add-btn">Add</button>
+                            <button onclick="clearTradeStructures(2)" class="clear-btn">Clear</button>
+                        </div>
+                        <div id="structuresList2" class="structures-trade-list"></div>
+                        <p id="trade2TotalMps" class="total-mps-display">Total MPS: $0</p>
+                    </div>
+                </div>
+
+                <button onclick="calculateTrades()" class="calculate-btn">Compare Trades!</button>
+
+                <div id="tradeChartContainer" class="trade-chart-container">
+                    <div id="chartBars" class="chart-bars"></div>
+                    <div class="chart-labels">
+                        <span>Trade 1</span>
+                        <span>Trade 2</span>
+                    </div>
+                </div>
+                <pre id="resultBox" class="result-box"></pre>
+            </section>
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Idle Life Calculator</p>
+    </footer>
+        <script>
+    // Define the multipliers object here
+    const multipliers = {
+        Base: 1, Gold: 1.5, Rainbow: 2.0,
+        Inferno: 3, Oblivion: 4.0, Celestial: 5.0
+    };
+
+    const variantClasses = {
+        Base: "base", Gold: "gold", Rainbow: "rainbow",
+        Inferno: "inferno", Oblivion: "oblivion", Celestial: "celestial"
+    };
+    const variants = Object.keys(multipliers).map(name => ({ name, multiplier: multipliers[name] }));
+
+    const managers = [
+        { name: "Base Manager", multiplier: 1 },
+        { name: "Clown Manager", multiplier: 1.2 },
+        { name: "Soldier Manager", multiplier: 1.4 },
+        { name: "Mayor Manager", multiplier: 1.6 },
+        { name: "King Manager", multiplier: 2.0 },
+        { name: "Modern Manager", multiplier: 2.4 },
+        { name: "Angel Manager", multiplier: 3 },
+    ];
+
+    const structuresData = [
+        { name: "Noob", income: 1, cycleTime: 4, rarity: "common", price: 30 },
+        { name: "Business Man", income: 5, cycleTime: 4, rarity: "common", price: 200 },
+        { name: "Builder", income: 10, cycleTime: 4, rarity: "starter", price: 0 },
+        { name: "Teacher", income: 10, cycleTime: 5, rarity: "common", price: 500 },
+        { name: "Gardener", income: 20, cycleTime: 8, rarity: "uncommon", price: 1200 },
+        { name: "Painter", income: 75, cycleTime: 10, rarity: "uncommon", price: 3500 },
+        { name: "Chef", income: 105, cycleTime: 10, rarity: "uncommon", price: 8000 },
+        { name: "Mine", income: 189, cycleTime: 12, rarity: "rare", price: 15000 },
+        { name: "Fortune Magician", income: 450, cycleTime: 15, rarity: "rare", price: 45000 },
+        { name: "Bank", income: 1500, cycleTime: 20, rarity: "legendary", price: 200000 },
+        { name: "Skyscraper", income: 4500, cycleTime: 30, rarity: "legendary", price: 750000 },
+        { name: "Stadium", income: 14000, cycleTime: 35, rarity: "mythic", price: 2500000 },
+        { name: "Waterpark", income: 50000, cycleTime: 45, rarity: "mythic", price: 10000000 },
+        { name: "Castle", income: 250000, cycleTime: 40, rarity: "mythic", price: 150000000 },
+        { name: "Club", income: 600000, cycleTime: 60, rarity: "Divine", price: 1000000000 },
+        { name: "Airport", income: 2880000, cycleTime: 60, rarity: "Divine", price: 12000000000 },
+        { name: "Astronaut", income: 1000, cycleTime: 8, rarity: "Exclusive", price: 0 },
+        { name: "Alien Gardener", income: 1800, cycleTime: 10, rarity: "Exclusive", price: 0 },
+        { name: "Ufo", income: 10000, cycleTime: 20, rarity: "Exclusive", price: 0 },
+        { name: "Black Hole", income: 100000, cycleTime: 25, rarity: "Exclusive", price: 0 },
+        { name: "Galaxy", income: 200000, cycleTime: 10, rarity: "Exclusive", price: 0 },
+    ];
+
+    // State variables
+    let selectedVariant = variants[0];
+    let selectedManager = managers[0];
+    let selectedStructureIndex = null;
+
+    const tradeStates = {
+        1: {
+            variant: variants[0],
+            manager: managers[0],
+            structures: []
+        },
+        2: {
+            variant: variants[0],
+            manager: managers[0],
+            structures: []
         }
+    };
 
-        // Event Listeners for Filters and Sort
-        document.getElementById('rarityFilter').addEventListener('change', (event) => {
-            currentRarityFilter = event.target.value;
-            renderStructures();
+    let currentRarityFilter = []; // Stores selected rarity names
+    let currentSortOrder = 'name-asc';
+    let currentSearchQuery = '';
+
+    let globalFriendsBoostMultiplier = 1;
+    let globalPremiumMultiplier = 1;
+
+    const MAX_FRIENDS_FOR_BOOST = 5;
+    const FRIEND_BONUS_PER_FRIEND = 0.05;
+    const PREMIUM_BONUS_MULTIPLIER = 1.10;
+
+    // --- Core Functions ---
+
+    function formatMoney(amount) {
+        if (amount === undefined || amount === null || isNaN(amount)) return "$0";
+        if (amount >= 1e12) return "$" + (amount / 1e12).toFixed(2) + "T";
+        if (amount >= 1e9) return "$" + (amount / 1e9).toFixed(2) + "B";
+        if (amount >= 1e6) return "$" + (amount / 1e6).toFixed(2) + "M";
+        if (amount >= 1e3) return "$" + (amount / 1e3).toFixed(1) + "K";
+        return "$" + amount.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+    }
+
+    function updateGlobalBoosts() {
+        const friendsCountInput = document.getElementById('friendsCount');
+        const friendsCount = parseInt(friendsCountInput.value) || 0;
+        const isPremiumActive = document.getElementById('isPremium').checked;
+
+        let actualFriendsCount = Math.min(Math.max(0, friendsCount), MAX_FRIENDS_FOR_BOOST);
+
+        globalFriendsBoostMultiplier = 1 + (actualFriendsCount * FRIEND_BONUS_PER_FRIEND);
+        document.getElementById('onlineFriendsPercentageDisplay').innerHTML = `<i class="fas fa-users"></i> +${(actualFriendsCount * FRIEND_BONUS_PER_FRIEND * 100).toFixed(0)}%`;
+
+        globalPremiumMultiplier = isPremiumActive ? PREMIUM_BONUS_MULTIPLIER : 1;
+
+        const premiumStatusElement = document.getElementById('premiumStatusDisplay');
+        premiumStatusElement.innerHTML = `<i class="fas fa-crown"></i> ${isPremiumActive ? `Active (x${PREMIUM_BONUS_MULTIPLIER.toFixed(2)})` : 'Inactive'}`;
+        premiumStatusElement.classList.toggle('active', isPremiumActive);
+        premiumStatusElement.classList.toggle('inactive', !isPremiumActive);
+
+        renderStructures();
+        updateWiki();
+        // Recalculate trade lists to reflect current global boosts *if* trade items are added
+        // (The individual trade items' boosts are captured, but the overall display might need a refresh)
+        updateTradeStructureList(1);
+        updateTradeStructureList(2);
+    }
+
+    function renderManagers() {
+        const container = document.getElementById("managers-list");
+        container.innerHTML = ''; // Clears only the manager items, not the H2
+        managers.forEach((mgr) => {
+            const div = document.createElement("div");
+            div.className = "manager";
+            if (mgr === selectedManager) div.classList.add("selected");
+            div.textContent = `${mgr.name}: x${mgr.multiplier}`;
+            div.addEventListener("click", () => {
+                selectedManager = mgr;
+                document.querySelectorAll(".manager").forEach(el => el.classList.remove("selected"));
+                div.classList.add("selected");
+                updateWiki();
+                renderStructures();
+            });
+            container.appendChild(div);
         });
+    }
 
-        document.getElementById('sortOrder').addEventListener('change', (event) => {
-            currentSortOrder = event.target.value;
-            renderStructures();
+    function renderVariants() {
+        const container = document.getElementById("variants-list");
+        container.innerHTML = ''; // Clears only the variant items, not the H2
+        variants.forEach((variant) => {
+            const div = document.createElement("div");
+            div.className = `variant ${variantClasses[variant.name]}`;
+            if (variant === selectedVariant) div.classList.add("selected");
+            div.textContent = variant.name;
+            div.addEventListener("click", () => {
+                selectedVariant = variant;
+                document.querySelectorAll(".variant").forEach(el => el.classList.remove("selected"));
+                div.classList.add("selected");
+                updateWiki();
+                renderStructures();
+            });
+            container.appendChild(div);
         });
+    }
 
+    function renderRarityFilters() {
+        const container = document.getElementById('rarityFilter');
+        container.innerHTML = ''; // Clear previous checkboxes
 
-        // Functions for the Trade section
-        function populateTradeSelects() {
-            [1, 2].forEach((num) => {
-                const variantSelect = document.getElementById(`tradeVariant${num}`);
-                const managerSelect = document.getElementById(`tradeManager${num}`);
-                const structureSelect = document.getElementById(`tradeStructureSelect${num}`);
+        const uniqueRarities = Array.from(new Set(structuresData.map(s => s.rarity.toLowerCase())));
+        uniqueRarities.sort();
 
-                // Populate variants
-                variantSelect.innerHTML = "";
-                variants.forEach(v => {
-                    const option = document.createElement("option");
-                    option.value = v.name;
-                    option.textContent = v.name;
-                    variantSelect.appendChild(option);
+        // Add 'All' option
+        const allCheckboxDiv = document.createElement('div');
+        allCheckboxDiv.className = 'rarity-checkbox-item';
+        allCheckboxDiv.classList.add('selected'); // 'All' is selected by default
+        allCheckboxDiv.innerHTML = `<input type="checkbox" id="rarity-all" value="All" checked><label for="rarity-all">All</label>`;
+        allCheckboxDiv.querySelector('input').addEventListener('change', (event) => {
+            if (event.target.checked) {
+                currentRarityFilter = []; // Clear all others
+                document.querySelectorAll('.rarity-checkbox-item input').forEach(cb => {
+                    if (cb.id !== 'rarity-all') cb.checked = false;
                 });
-                variantSelect.value = tradeStates[num].variant.name; // Set initial selection
-                variantSelect.addEventListener('change', (event) => {
-                    tradeStates[num].variant = variants.find(v => v.name === event.target.value);
-                    updateTradeStructureList(num); // Update the list to reflect current variant/manager bonuses
+                document.querySelectorAll('.rarity-checkbox-item').forEach(item => {
+                    if (item.querySelector('input').id !== 'rarity-all') item.classList.remove('selected');
                 });
-
-                // Populate managers
-                managerSelect.innerHTML = "";
-                managers.forEach(m => {
-                    const option = document.createElement("option");
-                    option.value = m.name;
-                    option.textContent = m.name;
-                    managerSelect.appendChild(option);
-                });
-                managerSelect.value = tradeStates[num].manager.name; // Set initial selection
-                managerSelect.addEventListener('change', (event) => {
-                    tradeStates[num].manager = managers.find(m => m.name === event.target.value);
-                    updateTradeStructureList(num); // Update the list to reflect current variant/manager bonuses
-                });
-
-                // Populate structures (all structures are available to add)
-                structureSelect.innerHTML = "";
-                structuresData.forEach((str) => {
-                    const option = document.createElement("option");
-                    option.value = str.name;
-                    option.textContent = `${str.name} (${str.rarity})`;
-                    structureSelect.appendChild(option);
-                });
-                // Ensure the select defaults to the first option, or a placeholder if available
-                if (structuresData.length > 0) {
-                    structureSelect.value = structuresData[0].name;
+                allCheckboxDiv.classList.add('selected');
+            } else {
+                if (currentRarityFilter.length === 0) { // If 'All' is the only one checked and trying to uncheck
+                    event.target.checked = true; // Keep 'All' checked
+                    return;
                 }
+            }
+            renderStructures();
+        });
+        container.appendChild(allCheckboxDiv);
+        currentRarityFilter = []; // Start with no specific filters, 'All' implicitly
+
+        uniqueRarities.forEach(rarity => {
+            const div = document.createElement('div');
+            div.className = `rarity-checkbox-item rarity-${rarity}`;
+            div.innerHTML = `<input type="checkbox" id="rarity-${rarity}" value="${rarity}"><label for="rarity-${rarity}">${rarity.charAt(0).toUpperCase() + rarity.slice(1)}</label>`;
+
+            div.querySelector('input').addEventListener('change', (event) => {
+                const allCheckbox = document.getElementById('rarity-all');
+                const allCheckboxItem = allCheckbox.closest('.rarity-checkbox-item');
+
+                if (event.target.checked) {
+                    currentRarityFilter.push(event.target.value);
+                    div.classList.add('selected');
+                    if (allCheckbox.checked) {
+                        allCheckbox.checked = false;
+                        allCheckboxItem.classList.remove('selected');
+                        currentRarityFilter = currentRarityFilter.filter(r => r !== 'All');
+                    }
+                } else {
+                    currentRarityFilter = currentRarityFilter.filter(r => r !== event.target.value);
+                    div.classList.remove('selected');
+                    if (currentRarityFilter.length === 0) {
+                        allCheckbox.checked = true;
+                        allCheckboxItem.classList.add('selected');
+                    }
+                }
+                renderStructures();
             });
+            container.appendChild(div);
+        });
+    }
+
+
+    function renderStructures() {
+        const container = document.getElementById("structures-container");
+        container.innerHTML = "";
+
+        let filteredStructures = structuresData.filter(s => {
+            const matchesRarity = currentRarityFilter.length === 0 || currentRarityFilter.includes(s.rarity.toLowerCase());
+            const matchesSearch = s.name.toLowerCase().includes(currentSearchQuery.toLowerCase());
+            return matchesRarity && matchesSearch;
+        });
+
+        filteredStructures.sort((a, b) => {
+            if (currentSortOrder === 'name-asc') {
+                return a.name.localeCompare(b.name);
+            } else if (currentSortOrder === 'name-desc') {
+                return b.name.localeCompare(a.name);
+            } else if (currentSortOrder === 'mps-asc') {
+                const mpsA = (a.income * selectedVariant.multiplier * selectedManager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier) / a.cycleTime;
+                const mpsB = (b.income * selectedVariant.multiplier * selectedManager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier) / b.cycleTime;
+                return mpsA - mpsB;
+            } else if (currentSortOrder === 'mps-desc') {
+                const mpsA = (a.income * selectedVariant.multiplier * selectedManager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier) / a.cycleTime;
+                const mpsB = (b.income * selectedVariant.multiplier * selectedManager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier) / b.cycleTime;
+                return mpsB - mpsA;
+            } else if (currentSortOrder === 'price-asc') {
+                return a.price - b.price;
+            } else if (currentSortOrder === 'price-desc') {
+                return b.price - a.price;
+            }
+            return 0;
+        });
+
+        filteredStructures.forEach((struc) => {
+            const income = struc.income * selectedVariant.multiplier * selectedManager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier;
+            const moneyPerSec = (income / struc.cycleTime).toFixed(2);
+            const div = document.createElement("div");
+            div.className = "structure";
+            div.classList.add(`rarity-${struc.rarity.toLowerCase()}`);
+            const originalIndex = structuresData.findIndex(s => s.name === struc.name);
+            if (originalIndex === selectedStructureIndex) div.classList.add("selected");
+
+            div.innerHTML = `
+                <h3>${struc.name}</h3>
+                <p class="rarity ${struc.rarity.toLowerCase()}">${struc.rarity}</p>
+                <p>Price: ${formatMoney(struc.price)}</p>
+                <p>Money/sec: ${moneyPerSec}</p>
+            `;
+            div.addEventListener("click", () => {
+                selectedStructureIndex = originalIndex;
+                document.querySelectorAll(".structure").forEach(el => el.classList.remove("selected"));
+                div.classList.add("selected");
+                updateWiki();
+            });
+            container.appendChild(div);
+        });
+    }
+
+    function updateWiki() {
+        const container = document.getElementById("wiki-text");
+        if (selectedStructureIndex === null) {
+            container.innerHTML = `
+                <h3>Idle Life Wiki</h3>
+                <p>Select a structure from the list above to view detailed information,
+                calculated with the currently selected Variant, Manager, and global boosts.</p>
+            `;
+            return;
         }
+        const s = structuresData[selectedStructureIndex];
+        const income = s.income * selectedVariant.multiplier * selectedManager.multiplier * globalFriendsBoostMultiplier * globalPremiumMultiplier;
+        const mps = (income / s.cycleTime).toFixed(2);
+        container.innerHTML = `
+            <h3>${s.name} (Variant: ${selectedVariant.name})</h3>
+            <p><strong>Price:</strong> ${formatMoney(s.price)}</p>
+            <p><strong>Rarity:</strong> <span class="rarity ${s.rarity.toLowerCase()}">${s.rarity}</span></p>
+            <p><strong>Money per cycle:</strong> ${formatMoney(income)}</p>
+            <p><strong>Cycle time:</strong> ${s.cycleTime} sec</p>
+            <p><strong>Money/sec (Current):</strong> ${mps}</p>
+            <p><strong>Manager boost:</strong> x${selectedManager.multiplier.toFixed(2)}</p>
+            <p><strong>Variant boost:</strong> x${selectedVariant.multiplier.toFixed(2)}</p>
+            <p><strong>Friends boost:</strong> x${globalFriendsBoostMultiplier.toFixed(2)} (${((globalFriendsBoostMultiplier - 1) * 100).toFixed(0)}%)</p>
+            <p><strong>Premium boost:</strong> x${globalPremiumMultiplier.toFixed(2)} (${((globalPremiumMultiplier - 1) * 100).toFixed(0)}%)</p>
+        `;
+    }
 
-        function addTradeStructure(tradeNum) {
-            const select = document.getElementById(`tradeStructureSelect${tradeNum}`);
-            const selectedName = select.value;
-            const structure = structuresData.find((s) => s.name === selectedName);
+    // Event Listeners for Filters and Sort
+    document.getElementById('sortOrder').addEventListener('change', (event) => {
+        currentSortOrder = event.target.value;
+        renderStructures();
+    });
 
-            if (structure) {
-                // CAPTURE GLOBAL BOOSTS AT THE MOMENT OF ADDITION
-                const capturedFriendsBoost = globalFriendsBoostMultiplier;
-                const capturedPremiumBoost = globalPremiumMultiplier;
+    document.getElementById('searchStructures').addEventListener('input', (event) => {
+        currentSearchQuery = event.target.value;
+        renderStructures();
+    });
 
-                // Create a new object for the trade item, including the captured boosts
-                const tradeItem = {
-                    ...structure, // Copy all properties from the base structure
-                    capturedFriendsBoost: capturedFriendsBoost,
-                    capturedPremiumBoost: capturedPremiumBoost
-                };
+    // Event Listeners for Global Boosts
+    document.getElementById('friendsCount').addEventListener('input', updateGlobalBoosts);
+    document.getElementById('isPremium').addEventListener('change', updateGlobalBoosts);
 
-                tradeStates[tradeNum].structures.push(tradeItem);
+    // --- Trade Functions ---
+
+    function populateTradeSelects() {
+        [1, 2].forEach((num) => {
+            const variantSelect = document.getElementById(`tradeVariant${num}`);
+            const managerSelect = document.getElementById(`tradeManager${num}`);
+            const structureSelect = document.getElementById(`tradeStructureSelect${num}`);
+
+            // Populate variants
+            variantSelect.innerHTML = "";
+            variants.forEach(v => {
+                const option = document.createElement("option");
+                option.value = v.name;
+                option.textContent = v.name;
+                variantSelect.appendChild(option);
+            });
+            variantSelect.value = tradeStates[num].variant.name; // Set initial selection
+            variantSelect.addEventListener('change', (event) => {
+                tradeStates[num].variant = variants.find(v => v.name === event.target.value);
+                // No need to call updateTradeStructureList here directly for *each* change
+                // as captured multipliers prevent dynamic update after addition.
+                // It will update when calculateTrades() is called.
+            });
+
+            // Populate managers
+            managerSelect.innerHTML = "";
+            managers.forEach(m => {
+                const option = document.createElement("option");
+                option.value = m.name;
+                option.textContent = m.name;
+                managerSelect.appendChild(option);
+            });
+            managerSelect.value = tradeStates[num].manager.name; // Set initial selection
+            managerSelect.addEventListener('change', (event) => {
+                tradeStates[num].manager = managers.find(m => m.name === event.target.value);
+                // Same as above, no need to update trade structures list directly.
+            });
+
+            // Populate structures (all structures are available to add)
+            structureSelect.innerHTML = "";
+            structuresData.forEach((str) => {
+                const option = document.createElement("option");
+                option.value = str.name;
+                option.textContent = `${str.name} (${str.rarity})`;
+                structureSelect.appendChild(option);
+            });
+            if (structuresData.length > 0) {
+                structureSelect.value = structuresData[0].name;
+            }
+        });
+    }
+
+    function addTradeStructure(tradeNum) {
+        const select = document.getElementById(`tradeStructureSelect${tradeNum}`);
+        const selectedName = select.value;
+        const structure = structuresData.find((s) => s.name === selectedName);
+
+        if (structure) {
+            // CAPTURE ALL RELEVANT BOOSTS AT THE MOMENT OF ADDITION
+            const capturedFriendsBoost = globalFriendsBoostMultiplier;
+            const capturedPremiumBoost = globalPremiumMultiplier;
+            const capturedVariantMultiplier = tradeStates[tradeNum].variant.multiplier;
+            const capturedManagerMultiplier = tradeStates[tradeNum].manager.multiplier;
+            const capturedVariantName = tradeStates[tradeNum].variant.name;
+            const capturedManagerName = tradeStates[tradeNum].manager.name;
+
+            // Create a new object for the trade item, including all captured boosts
+            const tradeItem = {
+                ...structure, // Copy all properties from the base structure
+                capturedFriendsBoost: capturedFriendsBoost,
+                capturedPremiumBoost: capturedPremiumBoost,
+                capturedVariantMultiplier: capturedVariantMultiplier,
+                capturedManagerMultiplier: capturedManagerMultiplier,
+                capturedVariantName: capturedVariantName,
+                capturedManagerName: capturedManagerName
+            };
+
+            tradeStates[tradeNum].structures.push(tradeItem);
+            updateTradeStructureList(tradeNum);
+            select.value = structuresData[0].name; // Reset selection to first item
+        }
+    }
+
+    window.removeTradeStructure = function(tradeNum, index) { // Make global for onclick
+        const container = document.getElementById(`structuresList${tradeNum}`);
+        const itemToRemove = container.children[index];
+
+        if (itemToRemove) {
+            itemToRemove.classList.add('removing');
+            setTimeout(() => {
+                tradeStates[tradeNum].structures.splice(index, 1);
                 updateTradeStructureList(tradeNum);
-                select.value = structuresData[0].name; // Reset selection to first item
-            }
+            }, 400); // Wait for animation to finish
         }
+    }
 
-        function removeTradeStructure(tradeNum, index) {
-            const container = document.getElementById(`structuresList${tradeNum}`);
-            const itemToRemove = container.children[index]; // Get the specific element
+    function updateTradeStructureList(tradeNum) {
+        const container = document.getElementById(`structuresList${tradeNum}`);
+        container.innerHTML = "";
 
-            if (itemToRemove) {
-                itemToRemove.classList.add('removing'); // Add removing class for animation
-                itemToRemove.addEventListener('animationend', () => {
-                    tradeStates[tradeNum].structures.splice(index, 1);
-                    updateTradeStructureList(tradeNum); // Re-render after animation
-                }, { once: true }); // Ensure event listener fires only once
-            }
+        tradeStates[tradeNum].structures.forEach((str, i) => {
+            // Calculate effective income using the CAPTURED values
+            const effectiveIncome = str.income * str.capturedVariantMultiplier * str.capturedManagerMultiplier * str.capturedFriendsBoost * str.capturedPremiumBoost;
+            const effectiveMps = effectiveIncome / str.cycleTime;
+
+            const div = document.createElement("div");
+            div.classList.add("structure-item");
+            // Display captured variant/manager names for clarity
+            div.innerHTML = `
+                <span>${str.name} (<span class="trade-item-variant">${str.capturedVariantName}</span> / <span class="trade-item-manager">${str.capturedManagerName}</span>)</span>
+                <span>${formatMoney(effectiveMps)}/s</span>
+                <button onclick="removeTradeStructure(${tradeNum}, ${i})"><i class="fas fa-times"></i></button>
+            `;
+            container.appendChild(div);
+        });
+
+        const totalMpsDisplay = document.getElementById(`trade${tradeNum}TotalMps`);
+        if (totalMpsDisplay) {
+            const totalIncomePerSecond = tradeStates[tradeNum].structures.reduce((sum, str) => {
+                const effectiveIncome = str.income * str.capturedVariantMultiplier * str.capturedManagerMultiplier * str.capturedFriendsBoost * str.capturedPremiumBoost;
+                return sum + (effectiveIncome / str.cycleTime);
+            }, 0);
+            totalMpsDisplay.textContent = `Total MPS: ${formatMoney(totalIncomePerSecond)}`;
         }
+    }
 
-        function updateTradeStructureList(tradeNum) {
-            const container = document.getElementById(`structuresList${tradeNum}`);
-            container.innerHTML = "";
-            const currentVariant = tradeStates[tradeNum].variant;
-            const currentManager = tradeStates[tradeNum].manager;
-
-            tradeStates[tradeNum].structures.forEach((str, i) => {
-                // IMPORTANT FIX: Use the CAPTURED global boosts (str.capturedFriendsBoost, str.capturedPremiumBoost)
-                // for displaying the income value inside the trade item.
-                const effectiveIncome = str.income * currentVariant.multiplier * currentManager.multiplier * str.capturedFriendsBoost * str.capturedPremiumBoost;
-                const div = document.createElement("div");
-                div.classList.add("structure-item");
-                div.innerHTML = `
-                    ${str.name} (${formatMoney(effectiveIncome)} / ${str.cycleTime}s)
-                    <button onclick="removeTradeStructure(${tradeNum}, ${i})">×</button>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        function clearTradeStructures(tradeNum) {
+    window.clearTradeStructures = function(tradeNum) { // Make global for onclick
+        if (confirm(`Are you sure you want to clear all structures from Trade ${tradeNum}?`)) {
             tradeStates[tradeNum].structures = [];
             updateTradeStructureList(tradeNum);
             document.getElementById("resultBox").textContent = "";
-            document.getElementById("tradeChartContainer").style.display = 'none'; // Hide chart on clear
+            document.getElementById("tradeChartContainer").style.display = 'none';
         }
+    }
 
-        function renderTradeChart(value1, value2) {
-            const chartContainer = document.getElementById("tradeChartContainer");
-            const chartBars = document.getElementById("chartBars");
-            chartBars.innerHTML = ''; // Clear previous bars
+    function renderTradeChart(value1, value2) {
+        const chartContainer = document.getElementById("tradeChartContainer");
+        const chartBars = document.getElementById("chartBars");
+        chartBars.innerHTML = '';
 
-            chartContainer.style.display = 'flex'; // Show the chart container
+        chartContainer.style.display = 'flex'; // Show chart
 
-            const maxValue = Math.max(value1, value2);
-            // Ensure a minimum height for bars even if value is 0
-            const scaleFactor = maxValue > 0 ? 100 / maxValue : 0;
-            const minHeightPercentage = 5; // 5% minimum height for a visible bar
+        const maxValue = Math.max(value1, value2, 1); // Ensure maxValue is at least 1 to avoid division by zero
+        const minHeightPercentage = 5; // Minimum height for bars to be visible
 
-            const bar1Height = value1 * scaleFactor;
-            const bar2Height = value2 * scaleFactor;
+        const bar1Height = (value1 / maxValue) * 100;
+        const bar2Height = (value2 / maxValue) * 100;
 
-            const bar1 = document.createElement('div');
-            bar1.className = 'chart-bar trade1';
-            bar1.style.height = `${Math.max(bar1Height, minHeightPercentage)}%`;
-            bar1.innerHTML = `<span class="bar-value">${value1.toFixed(2)}</span><span class="bar-label">Trade 1</span>`;
+        const bar1 = document.createElement('div');
+        bar1.className = 'chart-bar trade1';
+        bar1.style.height = `${Math.max(bar1Height, minHeightPercentage)}%`;
+        bar1.innerHTML = `<span class="bar-value">${formatMoney(value1)}</span>`;
 
-            const bar2 = document.createElement('div');
-            bar2.className = 'chart-bar trade2';
-            bar2.style.height = `${Math.max(bar2Height, minHeightPercentage)}%`;
-            bar2.innerHTML = `<span class="bar-value">${value2.toFixed(2)}</span><span class="bar-label">Trade 2</span>`;
+        const bar2 = document.createElement('div');
+        bar2.className = 'chart-bar trade2';
+        bar2.style.height = `${Math.max(bar2Height, minHeightPercentage)}%`;
+        bar2.innerHTML = `<span class="bar-value">${formatMoney(value2)}</span>`;
 
-            chartBars.appendChild(bar1);
-            chartBars.appendChild(bar2);
-        }
+        chartBars.appendChild(bar1);
+        chartBars.appendChild(bar2);
+    }
 
-        function calculateTrades() {
-            let results = "";
-            const allTradesValid = [1, 2].every(tradeNum => {
-                if (tradeStates[tradeNum].structures.length === 0) {
-                    alert(`Please add at least one structure to Trade ${tradeNum}.`);
-                    return false;
-                }
-                return true;
-            });
-
-            if (!allTradesValid) return;
-
-            const trade1 = tradeStates[1];
-            const trade2 = tradeStates[2];
-
-            const calculateTotalIncomePerSecond = (trade) => {
-                let totalIncomePerSecond = 0;
-                trade.structures.forEach((str) => {
-                    // Use captured global boosts, and current trade-specific variant/manager boosts
-                    const effectiveIncome = str.income * trade.variant.multiplier * trade.manager.multiplier * str.capturedFriendsBoost * str.capturedPremiumBoost;
-                    totalIncomePerSecond += effectiveIncome / str.cycleTime;
-                });
-                return totalIncomePerSecond;
-            };
-
-            const totalIncomePerSecond1 = calculateTotalIncomePerSecond(trade1);
-            const totalIncomePerSecond2 = calculateTotalIncomePerSecond(trade2);
-
-            results += `--- Trade Summary ---\n\n`;
-
-            results += `Trade 1:\n`;
-            results += `  Variant: ${trade1.variant.name} (x${trade1.variant.multiplier})\n`;
-            results += `  Manager: ${trade1.manager.name} (x${trade1.manager.multiplier})\n`;
-            results += `  Structures:\n`;
-            trade1.structures.forEach(s => {
-                results += `    - ${s.name} (Captured Friends x${s.capturedFriendsBoost.toFixed(2)}, Premium x${s.capturedPremiumBoost.toFixed(2)})\n`;
-            });
-            results += `  Total income per second: ${totalIncomePerSecond1.toFixed(2)}\n\n`;
-
-            results += `Trade 2:\n`;
-            results += `  Variant: ${trade2.variant.name} (x${trade2.variant.multiplier})\n`;
-            results += `  Manager: ${trade2.manager.name} (x${trade2.manager.multiplier})\n`;
-            results += `  Structures:\n`;
-            trade2.structures.forEach(s => {
-                results += `    - ${s.name} (Captured Friends x${s.capturedFriendsBoost.toFixed(2)}, Premium x${s.capturedPremiumBoost.toFixed(2)})\n`;
-            });
-            results += `  Total income per second: ${totalIncomePerSecond2.toFixed(2)}\n\n`;
-
-            const difference = totalIncomePerSecond1 - totalIncomePerSecond2;
-            results += `--- Comparison Result ---\n`;
-            if (difference > 0.01) { // Add a small epsilon for floating point comparison
-                results += `Trade 1 is better than Trade 2 by ${difference.toFixed(2)} money/sec.\n`;
-            } else if (difference < -0.01) {
-                results += `Trade 2 is better than Trade 1 by ${Math.abs(difference).toFixed(2)} money/sec.\n`;
-            } else {
-                results += `Both trades have an equivalent income per second value (difference: ${difference.toFixed(2)}).\n`;
+    window.calculateTrades = function() { // Make global for onclick
+        let results = "";
+        const allTradesValid = [1, 2].every(tradeNum => {
+            if (tradeStates[tradeNum].structures.length === 0) {
+                alert(`Please add at least one structure to Trade ${tradeNum}.`);
+                return false;
             }
+            return true;
+        });
 
-            document.getElementById("resultBox").textContent = results;
-
-            // Render the chart
-            renderTradeChart(totalIncomePerSecond1, totalIncomePerSecond2);
+        if (!allTradesValid) {
+            document.getElementById("resultBox").textContent = "";
+            document.getElementById("tradeChartContainer").style.display = 'none';
+            return;
         }
 
-        // Initialization on page load
-        document.addEventListener("DOMContentLoaded", () => {
-            renderVariants();
-            renderManagers();
-            updateGlobalBoosts(); // Initial call to set global boost display
-            renderStructures(); // Initial render with default filter/sort
+        const trade1 = tradeStates[1];
+        const trade2 = tradeStates[2];
 
-            populateTradeSelects(); // Populate the trade variant, manager, and structure selects
-            updateTradeStructureList(1); // Initialize empty trade lists display
-            updateTradeStructureList(2);
+        const calculateTotalIncomePerSecond = (trade) => {
+            let totalIncomePerSecond = 0;
+            trade.structures.forEach((str) => {
+                const effectiveIncome = str.income * str.capturedVariantMultiplier * str.capturedManagerMultiplier * str.capturedFriendsBoost * str.capturedPremiumBoost;
+                totalIncomePerSecond += effectiveIncome / str.cycleTime;
+            });
+            return totalIncomePerSecond;
+        };
 
-            // Add event listeners for global boosts inputs
-            document.getElementById('friendsCount').addEventListener('input', updateGlobalBoosts);
-            document.getElementById('isPremium').addEventListener('change', updateGlobalBoosts);
+        const totalIncomePerSecond1 = calculateTotalIncomePerSecond(trade1);
+        const totalIncomePerSecond2 = calculateTotalIncomePerSecond(trade2);
+
+        results += `--- Trade Summary ---\n\n`;
+
+        // Detailed breakdown for Trade 1
+        results += `Trade 1 (Variant: ${trade1.variant.name} / Manager: ${trade1.manager.name}):\n`;
+        results += `  Structures (${trade1.structures.length} items):\n`;
+        trade1.structures.forEach(s => {
+            const currentIncome = s.income * s.capturedVariantMultiplier * s.capturedManagerMultiplier * s.capturedFriendsBoost * s.capturedPremiumBoost;
+            results += `    - ${s.name} (Rarity: ${s.rarity}, Income: ${formatMoney(currentIncome)}, Cycle: ${s.cycleTime}s, MPS: ${formatMoney(currentIncome / s.cycleTime)})\n`;
+            results += `      [Applied Boosts: Variant: x${s.capturedVariantMultiplier.toFixed(2)}, Manager: x${s.capturedManagerMultiplier.toFixed(2)}, Friends: x${s.capturedFriendsBoost.toFixed(2)}, Premium: x${s.capturedPremiumBoost.toFixed(2)}]\n`;
         });
+        results += `  Total Income per Second: ${formatMoney(totalIncomePerSecond1)}\n\n`;
+
+        // Detailed breakdown for Trade 2
+        results += `Trade 2 (Variant: ${trade2.variant.name} / Manager: ${trade2.manager.name}):\n`;
+        results += `  Structures (${trade2.structures.length} items):\n`;
+        trade2.structures.forEach(s => {
+            const currentIncome = s.income * s.capturedVariantMultiplier * s.capturedManagerMultiplier * s.capturedFriendsBoost * s.capturedPremiumBoost;
+            results += `    - ${s.name} (Rarity: ${s.rarity}, Income: ${formatMoney(currentIncome)}, Cycle: ${s.cycleTime}s, MPS: ${formatMoney(currentIncome / s.cycleTime)})\n`;
+            results += `      [Applied Boosts: Variant: x${s.capturedVariantMultiplier.toFixed(2)}, Manager: x${s.capturedManagerMultiplier.toFixed(2)}, Friends: x${s.capturedFriendsBoost.toFixed(2)}, Premium: x${s.capturedPremiumBoost.toFixed(2)}]\n`;
+        });
+        results += `  Total Income per Second: ${formatMoney(totalIncomePerSecond2)}\n\n`;
+
+        results += `--- Comparison ---\n`;
+        if (totalIncomePerSecond1 > totalIncomePerSecond2) {
+            const diff = totalIncomePerSecond1 - totalIncomePerSecond2;
+            const percentageDiff = (diff / totalIncomePerSecond2) * 100;
+            results += `Trade 1 is better by ${formatMoney(diff)} money/sec! (${percentageDiff.toFixed(2)}% increase)\n`;
+        } else if (totalIncomePerSecond2 > totalIncomePerSecond1) {
+            const diff = totalIncomePerSecond2 - totalIncomePerSecond1;
+            const percentageDiff = (diff / totalIncomePerSecond1) * 100;
+            results += `Trade 2 is better by ${formatMoney(diff)} money/sec! (${percentageDiff.toFixed(2)}% increase)\n`;
+        } else {
+            results += `Both trades have the same income per second!\n`;
+        }
+
+        document.getElementById("resultBox").textContent = results;
+        renderTradeChart(totalIncomePerSecond1, totalIncomePerSecond2);
+    }
+
+    // Initialize everything on page load
+    document.addEventListener("DOMContentLoaded", () => {
+        renderVariants();
+        renderManagers();
+        renderRarityFilters();
+        updateGlobalBoosts();
+        renderStructures();
+        updateWiki();
+        populateTradeSelects();
+        updateTradeStructureList(1);
+        updateTradeStructureList(2);
+    });
 
     </script>
 </body>
